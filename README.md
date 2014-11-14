@@ -10,3 +10,5 @@ Constructive Solid Geometry (CSG) is a modeling technique that uses Boolean oper
 Documentation
 =============
 
+This library provides three CSG operations: union, subtract, and intersect.
+See the demo Projct for more information.
