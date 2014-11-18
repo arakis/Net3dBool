@@ -35,7 +35,7 @@ namespace Net3dBool
  *  
  * @author Danilo Balby Silva Castanheira (danbalby@yahoo.com)
  */
-    public class BooleanModeller : ICloneable
+    public class BooleanModeller
     {
         /** solid where boolean operations will be applied */
         private Object3D object1, object2;
@@ -76,11 +76,11 @@ namespace Net3dBool
      * 
      * @return cloned BooleanModeller object
      */
-        public Object Clone()
+        public BooleanModeller Clone()
         {
             BooleanModeller clone = new BooleanModeller();
-            clone.object1 = (Object3D)object1.Clone();
-            clone.object2 = (Object3D)object2.Clone();
+            clone.object1 = object1.Clone();
+            clone.object2 = object2.Clone();
             return clone;
         }
 
@@ -135,9 +135,9 @@ namespace Net3dBool
      */
         private Solid composeSolid(int faceStatus1, int faceStatus2, int faceStatus3)
         {
-            ArrayList vertices = new ArrayList();
-            ArrayList indices = new ArrayList();
-            ArrayList colors = new ArrayList();
+            var vertices = new List<Vertex>();
+            var indices = new List<int>();
+            var colors = new List<Color3f>();
 
             //group the elements of the two solids whose faces fit with the desired status  
             groupObjectComponents(object1, vertices, indices, colors, faceStatus1, faceStatus2);
@@ -147,17 +147,17 @@ namespace Net3dBool
             Point3d[] verticesArray = new Point3d[vertices.Count];
             for (int i = 0; i < vertices.Count; i++)
             {
-                verticesArray[i] = ((Vertex)vertices[i]).getPosition();
+                verticesArray[i] = vertices[i].getPosition();
             }
             int[] indicesArray = new int[indices.Count];
             for (int i = 0; i < indices.Count; i++)
             {
-                indicesArray[i] = (int)indices[i];
+                indicesArray[i] = indices[i];
             }
             Color3f[] colorsArray = new Color3f[colors.Count];
             for (int i = 0; i < colors.Count; i++)
             {
-                colorsArray[i] = (Color3f)((Color3f)colors[i]).Clone();
+                colorsArray[i] = colors[i].Clone();
             }
 
             //returns the solid containing the grouped elements
@@ -175,7 +175,7 @@ namespace Net3dBool
      * @param faceStatus1 a status expected for the faces used to to fill the data arrays
      * @param faceStatus2 a status expected for the faces used to to fill the data arrays
      */
-        private void groupObjectComponents(Object3D obj, ArrayList vertices, ArrayList indices, ArrayList colors, int faceStatus1, int faceStatus2)
+        private void groupObjectComponents(Object3D obj, List<Vertex> vertices, List<int> indices, List<Color3f> colors, int faceStatus1, int faceStatus2)
         {
             Face face;
             //for each face..

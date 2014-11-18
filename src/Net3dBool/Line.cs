@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Line : ICloneable
+    public class Line
     {
         /** a line point */
         private Point3d point;
@@ -88,8 +88,8 @@ namespace Net3dBool
      */
         public Line(Vector3d direction, Point3d point)
         {
-            this.direction = (Vector3d)direction.Clone();
-            this.point = (Point3d)point.Clone();
+            this.direction = direction.Clone();
+            this.point = point.Clone();
             direction.normalize();
         }
 
@@ -100,11 +100,11 @@ namespace Net3dBool
      * 
      * @return cloned Line object
      */
-        public Object Clone()
+        public Line Clone()
         {
             Line clone = new Line();
-            clone.direction = (Vector3d)direction.Clone();
-            clone.point = (Point3d)point.Clone();
+            clone.direction = direction.Clone();
+            clone.point = point.Clone();
             return clone;
         }
 
@@ -127,7 +127,7 @@ namespace Net3dBool
      */
         public Point3d getPoint()
         {
-            return (Point3d)point.Clone();
+            return point.Clone();
         }
 
         /**
@@ -137,7 +137,7 @@ namespace Net3dBool
      */
         public Vector3d getDirection()
         {
-            return (Vector3d)direction.Clone();
+            return direction.Clone();
         }
 
         //-----------------------------------SETS---------------------------------------//
@@ -149,7 +149,7 @@ namespace Net3dBool
      */
         public void setPoint(Point3d point)
         {
-            this.point = (Point3d)point.Clone();
+            this.point = point.Clone();
         }
 
         /**
@@ -159,7 +159,7 @@ namespace Net3dBool
      */
         public void setDirection(Vector3d direction)
         {
-            this.direction = (Vector3d)direction.Clone();
+            this.direction = direction.Clone();
         }
 
         //--------------------------------OTHERS----------------------------------------//
@@ -256,7 +256,7 @@ namespace Net3dBool
                 //if line is contained in the plane...
                 if (Math.Abs(numerator) < TOL)
                 {
-                    return (Point3d)point.Clone();
+                    return point.Clone();
                 }
                 else
                 {

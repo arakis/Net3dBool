@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Face:  ICloneable
+    public class Face
     {
         /** first vertex */
         public Vertex v1;
@@ -81,12 +81,12 @@ namespace Net3dBool
      * 
      * @return cloned face object
      */
-        public Object Clone()
+        public Face Clone()
         {
             Face clone = new Face();
-            clone.v1 = (Vertex)v1.Clone();
-            clone.v2 = (Vertex)v2.Clone();
-            clone.v3 = (Vertex)v3.Clone();
+            clone.v1 = v1.Clone();
+            clone.v2 = v2.Clone();
+            clone.v3 = v3.Clone();
             clone.status = status;
             return clone;
         }
@@ -108,21 +108,13 @@ namespace Net3dBool
      * @param anObject the other face to be tested
      * @return true if they are equal, false otherwise. 
      */
-        public bool equals(Object anObject)
+        public bool equals(Face face)
         {
-            if (!(anObject is Face))
-            {
-                return false;
-            }
-            else
-            {
-                Face face = (Face)anObject;
-                bool cond1 = v1.equals(face.v1) && v2.equals(face.v2) && v3.equals(face.v3);
-                bool cond2 = v1.equals(face.v2) && v2.equals(face.v3) && v3.equals(face.v1);
-                bool cond3 = v1.equals(face.v3) && v2.equals(face.v1) && v3.equals(face.v2);
+            bool cond1 = v1.equals(face.v1) && v2.equals(face.v2) && v3.equals(face.v3);
+            bool cond2 = v1.equals(face.v2) && v2.equals(face.v3) && v3.equals(face.v1);
+            bool cond3 = v1.equals(face.v3) && v2.equals(face.v1) && v3.equals(face.v2);
 
-                return cond1 || cond2 || cond3;                 
-            }
+            return cond1 || cond2 || cond3;                 
         }
 
         //-------------------------------------GETS-------------------------------------//

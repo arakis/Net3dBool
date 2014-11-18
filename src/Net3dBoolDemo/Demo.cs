@@ -38,6 +38,13 @@ namespace Net3dBoolDemo
             c3.rotate(Math.PI / 2, 0);
             c3.rotate(0, Math.PI / 2);
 
+            //--
+
+//            var modeller = new Net3dBool.BooleanModeller(b, c1);
+//            mesh = modeller.getDifference();
+
+            //--
+
             var modeller = new Net3dBool.BooleanModeller(b, s);
             var tmp = modeller.getIntersection();
 

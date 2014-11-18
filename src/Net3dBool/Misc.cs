@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Color3f : ICloneable
+
+    public class Color3f
     {
 
         public double r;
@@ -18,7 +19,7 @@ namespace Net3dBool
             this.b = b;
         }
 
-        public object Clone()
+        public Color3f Clone()
         {
             return new Color3f(r, g, b);
         }

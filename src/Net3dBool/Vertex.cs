@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Vertex :ICloneable
+    public class Vertex
     {
         /** vertex coordinate in X */
         public double x;
@@ -27,7 +27,7 @@ namespace Net3dBool
         /** vertex coordinate in Z */
         public double z;
         /** references to vertices conected to it by an edge  */
-        private ArrayList adjacentVertices;
+        private List<Vertex> adjacentVertices;
         /** vertex status relative to other object */
         private int status;
         /** vertex color */
@@ -55,13 +55,13 @@ namespace Net3dBool
      */
         public Vertex(Point3d position, Color3f color)
         {
-            this.color = (Color3f)color.Clone();
+            this.color = color.Clone();
 
             x = position.x;
             y = position.y;
             z = position.z;
 
-            adjacentVertices = new ArrayList();
+            adjacentVertices = new List<Vertex>();
             status = UNKNOWN;
         }
 
@@ -75,13 +75,13 @@ namespace Net3dBool
      */
         public Vertex(double x, double y, double z, Color3f color)
         {
-            this.color = (Color3f)color.Clone();
+            this.color = color.Clone();
 
             this.x = x;
             this.y = y;
             this.z = z;
 
-            adjacentVertices = new ArrayList();
+            adjacentVertices = new List<Vertex>();
             status = UNKNOWN;
         }
 
@@ -94,13 +94,13 @@ namespace Net3dBool
      */
         public Vertex(Point3d position, Color3f color, int status)
         {
-            this.color = (Color3f)color.Clone();
+            this.color = color.Clone();
 
             x = position.x;
             y = position.y;
             z = position.z;
 
-            adjacentVertices = new ArrayList();
+            adjacentVertices = new List<Vertex>();
             this.status = status;
         }
 
@@ -115,13 +115,13 @@ namespace Net3dBool
      */
         public Vertex(double x, double y, double z, Color3f color, int status)
         {
-            this.color = (Color3f)color.Clone();
+            this.color = color.Clone();
 
             this.x = x;
             this.y = y;
             this.z = z;
 
-            adjacentVertices = new ArrayList();
+            adjacentVertices = new List<Vertex>();
             this.status = status;
         }
 
@@ -136,18 +136,18 @@ namespace Net3dBool
      * 
      * @return cloned vertex object
      */
-        public Object Clone()
+        public Vertex Clone()
         {
             Vertex clone = new Vertex();
             clone.x = x;
             clone.y = y;
             clone.z = z;
-            clone.color = (Color3f)color.Clone();
+            clone.color = color.Clone();
             clone.status = status;
-            clone.adjacentVertices = new ArrayList();
+            clone.adjacentVertices = new List<Vertex>();
             for (int i = 0; i < adjacentVertices.Count; i++)
             {
-                clone.adjacentVertices.Add(((Vertex)adjacentVertices[i]).Clone());                               
+                clone.adjacentVertices.Add(adjacentVertices[i].Clone());                               
             }
 
             return clone;
@@ -170,18 +170,10 @@ namespace Net3dBool
      * @param anObject the other vertex to be tested
      * @return true if they are equal, false otherwise. 
      */
-        public bool equals(Object anObject)
+        public bool equals(Vertex vertex)
         {
-            if (!(anObject is Vertex))
-            {
-                return false;
-            }
-            else
-            {
-                Vertex vertex = (Vertex)anObject;
-                return  Math.Abs(x - vertex.x) < TOL && Math.Abs(y - vertex.y) < TOL
-                && Math.Abs(z - vertex.z) < TOL && color.Equals(vertex.color);          
-            }
+            return  Math.Abs(x - vertex.x) < TOL && Math.Abs(y - vertex.y) < TOL
+            && Math.Abs(z - vertex.z) < TOL && color.Equals(vertex.color);          
         }
 
         //--------------------------------------SETS------------------------------------//
@@ -221,7 +213,7 @@ namespace Net3dBool
             Vertex[] vertices = new Vertex[adjacentVertices.Count];
             for (int i = 0; i < adjacentVertices.Count; i++)
             {
-                vertices[i] = (Vertex)adjacentVertices[i]; 
+                vertices[i] = adjacentVertices[i]; 
             }
             return vertices;
         }
@@ -243,7 +235,7 @@ namespace Net3dBool
      */
         public Color3f getColor()
         {
-            return (Color3f)color.Clone();
+            return color.Clone();
         }
 
         //----------------------------------OTHERS--------------------------------------//

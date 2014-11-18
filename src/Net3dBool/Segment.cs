@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Segment: ICloneable
+    public class Segment
     {
         /** line resulting from the two planes intersection */
         private Line line;
@@ -138,20 +138,20 @@ namespace Net3dBool
      * 
      * @return cloned Segment object
      */
-        public Object Clone()
+        public Segment Clone()
         {
             Segment clone = new Segment();
-            clone.line = (Line)line.Clone();
+            clone.line = line.Clone();
             clone.index = index;
             clone.startDist = startDist;
             clone.endDist = endDist;
             clone.startDist = startType;
             clone.middleType = middleType;
             clone.endType = endType;
-            clone.startVertex = (Vertex)startVertex.Clone();
-            clone.endVertex = (Vertex)endVertex.Clone();
-            clone.startPos = (Point3d)startPos.Clone();
-            clone.endPos = (Point3d)endPos.Clone();
+            clone.startVertex = startVertex.Clone();
+            clone.endVertex = endVertex.Clone();
+            clone.startPos = startPos.Clone();
+            clone.endPos = endPos.Clone();
 
             return clone;
         }

@@ -96,7 +96,7 @@ namespace Net3dBool
             Point3d[] newVertices = new Point3d[vertices.Length];
             for (int i = 0; i < newVertices.Length; i++)
             {
-                newVertices[i] = (Point3d)vertices[i];
+                newVertices[i] = vertices[i];
             }
             return newVertices;
         }
@@ -163,8 +163,8 @@ namespace Net3dBool
             {
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    this.vertices[i] = (Point3d)vertices[i].Clone();
-                    this.colors[i] = (Color3f)colors[i].Clone();
+                    this.vertices[i] = vertices[i].Clone();
+                    this.colors[i] = colors[i].Clone();
                 }
                 Array.Copy(indices, 0, this.indices, 0, indices.Length);
 

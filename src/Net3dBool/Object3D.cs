@@ -24,12 +24,12 @@ using System.Collections.Generic;
 namespace Net3dBool
 {
 
-    public class Object3D: ICloneable
+    public class Object3D
     {
         /** solid vertices  */
-        private ArrayList vertices;
+        private List<Vertex> vertices;
         /** solid faces */
-        private ArrayList faces;
+        private List<Face> faces;
         /** object representing the solid extremes */
         private Bound bound;
 
@@ -49,10 +49,10 @@ namespace Net3dBool
             Point3d[] verticesPoints = solid.getVertices();
             int[] indices = solid.getIndices();
             Color3f[] colors = solid.getColors();
-            ArrayList verticesTemp = new ArrayList();
+            var verticesTemp = new List<Vertex>();
 
             //create vertices
-            vertices = new ArrayList();
+            vertices = new List<Vertex>();
             for (int i = 0; i < verticesPoints.Length; i++)
             {
                 vertex = addVertex(verticesPoints[i], colors[i], Vertex.UNKNOWN);
@@ -60,12 +60,12 @@ namespace Net3dBool
             }
 
             //create faces
-            faces = new ArrayList();
+            faces = new List<Face>();
             for (int i = 0; i < indices.Length; i = i + 3)
             {
-                v1 = (Vertex)verticesTemp[indices[i]];
-                v2 = (Vertex)verticesTemp[indices[i + 1]];
-                v3 = (Vertex)verticesTemp[indices[i + 2]];
+                v1 = verticesTemp[indices[i]];
+                v2 = verticesTemp[indices[i + 1]];
+                v3 = verticesTemp[indices[i + 2]];
                 addFace(v1, v2, v3);
             }
 
@@ -84,18 +84,18 @@ namespace Net3dBool
      * 
      * @return cloned Object3D object
      */
-        public Object Clone()
+        public Object3D Clone()
         {
             Object3D clone = new Object3D();
-            clone.vertices = new ArrayList();
+            clone.vertices = new List<Vertex>();
             for (int i = 0; i < vertices.Count; i++)
             {
-                clone.vertices.Add(((Vertex)vertices[i]).Clone());
+                clone.vertices.Add(vertices[i].Clone());
             }
-            clone.faces = new ArrayList();
+            clone.faces = new List<Face>();
             for (int i = 0; i < vertices.Count; i++)
             {
-                clone.faces.Add(((Face)faces[i]).Clone());
+                clone.faces.Add(faces[i].Clone());
             }
             clone.bound = bound;
 
@@ -128,7 +128,7 @@ namespace Net3dBool
             }
             else
             {
-                return (Face)faces[index];
+                return faces[index];
             }
         }
 
@@ -197,7 +197,7 @@ namespace Net3dBool
             }
             else
             {
-                vertex = (Vertex)vertices[i];
+                vertex = vertices[i];
                 vertex.setStatus(status);
                 return vertex;
             }
@@ -362,7 +362,7 @@ namespace Net3dBool
             int startType, endType, middleType;
             double startDist, endDist;
 
-            Face face = (Face)getFace(facePos);
+            Face face = getFace(facePos);
             Vertex startVertex = segment1.getStartVertex();
             Vertex endVertex = segment1.getEndVertex();
 
@@ -562,7 +562,7 @@ namespace Net3dBool
      */     
         private void breakFaceInTwo(int facePos, Point3d newPos, int splitEdge)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex = addVertex(newPos, face.v1.getColor(), Vertex.BOUNDARY); 
@@ -593,7 +593,7 @@ namespace Net3dBool
      */     
         private void breakFaceInTwo(int facePos, Point3d newPos, Vertex endVertex)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex = addVertex(newPos, face.v1.getColor(), Vertex.BOUNDARY);
@@ -625,7 +625,7 @@ namespace Net3dBool
      */
         private void breakFaceInThree(int facePos, Point3d newPos1, Point3d newPos2, int splitEdge)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex1 = addVertex(newPos1, face.v1.getColor(), Vertex.BOUNDARY);   
@@ -660,7 +660,7 @@ namespace Net3dBool
      */
         private void breakFaceInThree(int facePos, Point3d newPos, Vertex endVertex)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex = addVertex(newPos, face.v1.getColor(), Vertex.BOUNDARY);
@@ -696,7 +696,7 @@ namespace Net3dBool
      */
         private void breakFaceInThree(int facePos, Point3d newPos1, Point3d newPos2, Vertex startVertex, Vertex endVertex)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex1 = addVertex(newPos1, face.v1.getColor(), Vertex.BOUNDARY);
@@ -748,7 +748,7 @@ namespace Net3dBool
      */
         private void breakFaceInThree(int facePos, Point3d newPos)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex = addVertex(newPos, face.v1.getColor(), Vertex.BOUNDARY);
@@ -768,7 +768,7 @@ namespace Net3dBool
      */ 
         private void breakFaceInFour(int facePos, Point3d newPos1, Point3d newPos2, Vertex endVertex)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex1 = addVertex(newPos1, face.v1.getColor(), Vertex.BOUNDARY);
@@ -807,7 +807,7 @@ namespace Net3dBool
      */     
         private void breakFaceInFive(int facePos, Point3d newPos1, Point3d newPos2, int linedVertex)
         {
-            Face face = (Face)faces[facePos];
+            Face face = faces[facePos];
             faces.RemoveAt(facePos);
 
             Vertex vertex1 = addVertex(newPos1, face.v1.getColor(), Vertex.BOUNDARY);
