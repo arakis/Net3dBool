@@ -138,7 +138,7 @@ namespace Net3dBoolDemo
 
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1.0f, 64.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 0.1f, 150.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }
@@ -147,31 +147,28 @@ namespace Net3dBoolDemo
         {
             base.OnRenderFrame(e);
 
+//            GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
+//            GL.PolygonMode(MaterialFace.Back, PolygonMode.Point);
+
+            GL.Enable(EnableCap.CullFace);
 
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
-//            GL.Enable(EnableCap.Lighting);
-//            GL.Enable(EnableCap.Light0);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-
-//            GL.ShadeModel(ShadingModel.Smooth);
-//            GL.Enable(EnableCap.ColorMaterial);
-//            float[] mat_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
-//            float[] mat_shininess = { 50.0f };
-//            GL.Material(MaterialFace.Front, MaterialParameter.Specular, mat_specular);
-//            GL.Material(MaterialFace.Front, MaterialParameter.Shininess, mat_shininess);
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref cameraMatrix);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-//            GL.Light(LightName.Light1, LightParameter.Ambient, OpenTK.Graphics.Color4.Gray);
-//            GL.Light(LightName.Light1, LightParameter.Diffuse, OpenTK.Graphics.Color4.White);
-//            GL.Light(LightName.Light1, LightParameter.Position, (new Vector4(0f, 0f, 0f, -5f)));
-//            GL.Light(LightName.Light1, LightParameter.SpotDirection, (new Vector4(0f, 0f, 1f, 0f)));
-//            GL.Enable(EnableCap.Light1);
+            //GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.ColorMaterial);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.ShadeModel(ShadingModel.Smooth);
+
+            GL.Light(LightName.Light1, LightParameter.Ambient, OpenTK.Graphics.Color4.Gray);
+            GL.Light(LightName.Light1, LightParameter.Diffuse, OpenTK.Graphics.Color4.White);
+            GL.Light(LightName.Light1, LightParameter.Position, (new Vector4(0f, 0f, 0f, 1f)));
+            GL.Enable(EnableCap.Light1);
 
             RenderMesh();
             RenderLines();
