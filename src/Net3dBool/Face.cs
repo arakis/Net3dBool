@@ -1,505 +1,529 @@
-﻿/**
- * Representation of a 3D face (triangle).
- *
- * <br><br>See: 
- * D. H. Laidlaw, W. B. Trumbore, and J. F. Hughes.  
- * "Constructive Solid Geometry for Polyhedral Objects" 
- * SIGGRAPH Proceedings, 1986, p.161. 
- * 
- * original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
- * 
- * Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
- * Project: https://github.com/Arakis/Net3dBool
- */
+﻿/*
+The MIT License (MIT)
 
+Copyright (c) 2014 Sebastian Loncar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+See:
+D. H. Laidlaw, W. B. Trumbore, and J. F. Hughes.
+"Constructive Solid Geometry for Polyhedral Objects"
+SIGGRAPH Proceedings, 1986, p.161.
+
+original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
+
+Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
+Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
+Project: https://github.com/MatterHackers/agg-sharp (an included library)
+*/
+
+using MatterHackers.VectorMath;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Face
-    {
-        /** first vertex */
-        public Vertex v1;
-        /** second vertex */
-        public Vertex v2;
-        /** third vertex */
-        public Vertex v3;
-        /** face status relative to a solid  */
-        private int status;
+	public enum Status { UNKNOWN, INSIDE, OUTSIDE, SAME, OPPOSITE, BOUNDARY };
 
-        /** face status if it is still unknown */
-        public static int UNKNOWN = 1;
-        /** face status if it is inside a solid */
-        public static int INSIDE = 2;
-        /** face status if it is outside a solid */
-        public static  int OUTSIDE = 3;
-        /** face status if it is coincident with a solid face */
-        public static  int SAME = 4;
-        /** face status if it is coincident with a solid face with opposite orientation*/
-        public static  int OPPOSITE = 5;
+	/// <summary>
+	/// Representation of a 3D face (triangle).
+	/// </summary>
+	public class Face //: IPrimitive
+	{
+		/** first vertex */
+		public Vertex v1;
+		/** second vertex */
+		public Vertex v2;
+		/** third vertex */
+		public Vertex v3;
 
-        /** point status if it is up relative to an edge - see linePositionIn_ methods */
-        private static  int UP = 6;
-        /** point status if it is down relative to an edge - see linePositionIn_ methods */
-        private static  int DOWN = 7;
-        /** point status if it is on an edge - see linePositionIn_ methods */
-        private static  int ON = 8;
-        /** point status if it isn't up, down or on relative to an edge - see linePositionIn_ methods */
-        private static  int NONE = 9;
+		private Vector3 center;
 
-        /** tolerance value to test equalities */
-        private static  double TOL = 1e-10f;
+		/** face status relative to a solid  */
+		private readonly static double EqualityTolerance = 1e-10f;
+		private enum Side { UP, DOWN, ON, NONE };
+		private Bound boundCache;
+		private bool cachedBounds = false;
+		private Plane planeCache;
+		private Status status;
 
-        //---------------------------------CONSTRUCTORS---------------------------------//
+		/** face status if it is still unknown */
+		/** face status if it is inside a solid */
+		/** face status if it is outside a solid */
+		/** face status if it is coincident with a solid face */
+		/** face status if it is coincident with a solid face with opposite orientation*/
+		/** point status if it is up relative to an edge - see linePositionIn_ methods */
+		/** point status if it is down relative to an edge - see linePositionIn_ methods */
+		/** point status if it is on an edge - see linePositionIn_ methods */
+		/** point status if it isn't up, down or on relative to an edge - see linePositionIn_ methods */
+		/** tolerance value to test equalities */
+		//---------------------------------CONSTRUCTORS---------------------------------//
 
-        /**
-     * Constructs a face with unknown status.
-     * 
-     * @param v1 a face vertex
-     * @param v2 a face vertex
-     * @param v3 a face vertex
-     */
-        public Face(Vertex v1, Vertex v2, Vertex v3)
-        {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.v3 = v3;
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		private Face()
+		{
+		}
 
-            status = UNKNOWN;
-        }
+		/// <summary>
+		/// * Constructs a face with unknown status.
+		/// </summary>
+		/// <param name="v1">a face vertex</param>
+		/// <param name="v2">a face vertex</param>
+		/// <param name="v3">a face vertex</param>
+		public Face(Vertex v1, Vertex v2, Vertex v3)
+		{
+			this.v1 = v1;
+			this.v2 = v2;
+			this.v3 = v3;
+			center = (v1.Position + v2.Position + v3.Position) / 3.0;
 
-        private Face()
-        {
-        }
+			status = Status.UNKNOWN;
+		}
 
-        //-----------------------------------OVERRIDES----------------------------------//
+		/// <summary>
+		/// Clones the face object
+		/// </summary>
+		/// <returns>cloned face object</returns>
+		public Face Clone()
+		{
+			Face clone = new Face();
+			clone.v1 = v1.Clone();
+			clone.v2 = v2.Clone();
+			clone.v3 = v3.Clone();
+			clone.center = center;
+			clone.status = status;
+			return clone;
+		}
 
-        /**
-     * Clones the face object
-     * 
-     * @return cloned face object
-     */
-        public Face Clone()
-        {
-            Face clone = new Face();
-            clone.v1 = v1.Clone();
-            clone.v2 = v2.Clone();
-            clone.v3 = v3.Clone();
-            clone.status = status;
-            return clone;
-        }
-
-        /**
+		/**
      * Makes a string definition for the Face object
-     * 
+     *
      * @return the string definition
      */
-        public String toString()
-        {
-            return v1.toString() + "\n" + v2.toString() + "\n" + v3.toString();
-        }
 
-        /**
+		public bool Equals(Face face)
+		{
+			bool cond1 = v1.Equals(face.v1) && v2.Equals(face.v2) && v3.Equals(face.v3);
+			bool cond2 = v1.Equals(face.v2) && v2.Equals(face.v3) && v3.Equals(face.v1);
+			bool cond3 = v1.Equals(face.v3) && v2.Equals(face.v1) && v3.Equals(face.v2);
+
+			return cond1 || cond2 || cond3;
+		}
+
+		public double GetIntersectCost()
+		{
+			return 350;
+		}
+
+		public Vector3 GetCenter()
+		{
+			return center;
+		}
+
+		public double GetArea()
+		{
+			//area = (a * c * sen(B))/2
+			Vector3 p1 = v1.GetPosition();
+			Vector3 p2 = v2.GetPosition();
+			Vector3 p3 = v3.GetPosition();
+			Vector3 xy = new Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+			Vector3 xz = new Vector3(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+
+			double a = (p1 - p2).Length;
+			double c = (p1 - p3).Length;
+			double B = Vector3.CalculateAngle(xy, xz);
+
+			return (a * c * Math.Sin(B)) / 2d;
+		}
+
+		public Bound GetBound()
+		{
+			if (!cachedBounds)
+			{
+				boundCache = new Bound(v1.GetPosition(), v2.GetPosition(), v3.GetPosition());
+				cachedBounds = true;
+			}
+
+			return boundCache;
+		}
+
+		public Plane GetPlane()
+		{
+			if (planeCache == null)
+			{
+				Vector3 p1 = v1.GetPosition();
+				Vector3 p2 = v2.GetPosition();
+				Vector3 p3 = v3.GetPosition();
+				planeCache = new Plane(p1, p2, p3);
+			}
+
+			return planeCache;
+		}
+
+		public Vector3 GetNormal()
+		{
+			return GetPlane().planeNormal;
+		}
+
+		public Status GetStatus()
+		{
+			return status;
+		}
+
+		public void Invert()
+		{
+			Vertex vertexTemp = v2;
+			v2 = v1;
+			v1 = vertexTemp;
+		}
+
+		/// <summary>
+		/// Classifies the face based on the ray trace technique
+		/// </summary>
+		/// <param name="obj">object3d used to compute the face status</param>
+		public void RayTraceClassify(Object3D obj)
+		{
+			//creating a ray starting at the face baricenter going to the normal direction
+			Line ray = new Line(GetNormal(), center);
+
+			bool success;
+			double distance;
+			Vector3 intersectionPoint;
+			Face closestFace = null;
+			double closestDistance;
+
+			do
+			{
+				success = true;
+				closestDistance = Double.MaxValue;
+				//for each face from the other solid...
+				for (int faceIndex = 0; faceIndex < obj.GetNumFaces(); faceIndex++)
+				{
+					Face face = obj.GetFace(faceIndex);
+					intersectionPoint = ray.ComputePlaneIntersection(face.GetPlane());
+
+					//if ray intersects the plane...
+					if (intersectionPoint.x != double.PositiveInfinity)
+					{
+						double dotProduct = Vector3.Dot(face.GetNormal(), ray.Direction);
+						distance = ray.ComputePointToPointDistance(intersectionPoint);
+
+						//if ray lies in plane...
+						if (Math.Abs(distance) < EqualityTolerance && Math.Abs(dotProduct) < EqualityTolerance)
+						{
+							//disturb the ray in order to not lie into another plane
+							ray.PerturbDirection();
+							success = false;
+							break;
+						}
+
+						//if ray starts in plane...
+						if (Math.Abs(distance) < EqualityTolerance && Math.Abs(dotProduct) > EqualityTolerance)
+						{
+							//if ray intersects the face...
+							if (face.ContainsPoint(intersectionPoint))
+							{
+								//faces coincide
+								closestFace = face;
+								closestDistance = 0;
+								break;
+							}
+						}
+
+						//if ray intersects plane...
+						else if (Math.Abs(dotProduct) > EqualityTolerance && distance > EqualityTolerance)
+						{
+							if (distance < closestDistance)
+							{
+								//if ray intersects the face;
+								if (face.ContainsPoint(intersectionPoint))
+								{
+									//this face is the closest face untill now
+									closestDistance = distance;
+									closestFace = face;
+								}
+							}
+						}
+					}
+				}
+			} while (success == false);
+
+			
+			if (closestFace == null)
+			{
+				//none face found: outside face
+				status = Status.OUTSIDE;
+			}
+			else //face found: test dot product
+			{
+				double dotProduct = Vector3.Dot(closestFace.GetNormal(), ray.Direction);
+
+				//distance = 0: coplanar faces
+				if (Math.Abs(closestDistance) < EqualityTolerance)
+				{
+					if (dotProduct > EqualityTolerance)
+					{
+						status = Status.SAME;
+					}
+					else if (dotProduct < -EqualityTolerance)
+					{
+						status = Status.OPPOSITE;
+					}
+				}
+				else if (dotProduct > EqualityTolerance)
+				{
+					//dot product > 0 (same direction): inside face
+					status = Status.INSIDE;
+				}
+				else if (dotProduct < -EqualityTolerance)
+				{
+					//dot product < 0 (opposite direction): outside face
+					status = Status.OUTSIDE;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Classifies the face if one of its vertices are classified as INSIDE or OUTSIDE
+		/// </summary>
+		/// <returns>true if the face could be classified, false otherwise</returns>
+		public bool SimpleClassify()
+		{
+			Status status1 = v1.GetStatus();
+			Status status2 = v2.GetStatus();
+			Status status3 = v3.GetStatus();
+
+			if (status1 == Status.INSIDE || status1 == Status.OUTSIDE)
+			{
+				this.status = status1;
+				return true;
+			}
+			else if (status2 == Status.INSIDE || status2 == Status.OUTSIDE)
+			{
+				this.status = status2;
+				return true;
+			}
+			else if (status3 == Status.INSIDE || status3 == Status.OUTSIDE)
+			{
+				this.status = status3;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public override string ToString()
+		{
+			return v1.toString() + "\n" + v2.toString() + "\n" + v3.toString();
+		}
+
+		/**
      * Checks if a face is equal to another. To be equal, they have to have equal
      * vertices in the same order
-     * 
+     *
      * @param anObject the other face to be tested
-     * @return true if they are equal, false otherwise. 
+     * @return true if they are equal, false otherwise.
      */
-        public bool equals(Face face)
-        {
-            bool cond1 = v1.equals(face.v1) && v2.equals(face.v2) && v3.equals(face.v3);
-            bool cond2 = v1.equals(face.v2) && v2.equals(face.v3) && v3.equals(face.v1);
-            bool cond3 = v1.equals(face.v3) && v2.equals(face.v1) && v3.equals(face.v2);
+		//-------------------------------------GETS-------------------------------------//
 
-            return cond1 || cond2 || cond3;                 
-        }
-
-        //-------------------------------------GETS-------------------------------------//
-
-        /**
+		/**
      * Gets the face bound
-     * 
-     * @return face bound 
+     *
+     * @return face bound
      */
-        public Bound getBound()
-        {
-            return new Bound(v1.getPosition(), v2.getPosition(), v3.getPosition());
-        }
-
-        /**
+		/**
      * Gets the face normal
-     * 
+     *
      * @return face normal
      */
-        public Vector3d getNormal()
-        {
-            Point3d p1 = v1.getPosition();
-            Point3d p2 = v2.getPosition();
-            Point3d p3 = v3.getPosition();
-            Vector3d xy, xz, normal;
-
-            xy = new Vector3d(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
-            xz = new Vector3d(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
-
-            normal = new Vector3d();
-            normal.cross(xy, xz);
-            normal.normalize();
-
-            return normal;
-        }
-
-        /**
+		/**
      * Gets the face status
-     * 
+     *
      * @return face status - UNKNOWN, INSIDE, OUTSIDE, SAME OR OPPOSITE
      */
-        public int getStatus()
-        {
-            return status;
-        }
-
-        /**
+		/**
      * Gets the face area
-     * 
+     *
      * @return face area
      */
-        public double getArea()
-        {
-            //area = (a * c * sen(B))/2
-            Point3d p1 = v1.getPosition();
-            Point3d p2 = v2.getPosition();
-            Point3d p3 = v3.getPosition();
-            Vector3d xy = new Vector3d(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
-            Vector3d xz = new Vector3d(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+		//-------------------------------------OTHERS-----------------------------------//
 
-            double a = p1.distance(p2);
-            double c = p1.distance(p3);
-            double B = xy.angle(xz);
+		/** Invert face direction (normal direction) */
 
-            return (a * c * Math.Sin(B)) / 2d;
-        }
+		//------------------------------------PRIVATES----------------------------------//
 
-        //-------------------------------------OTHERS-----------------------------------//
+		/// <summary>
+		/// Gets the position of a point relative to a line in the x plane
+		/// </summary>
+		/// <param name="point">point to be tested</param>
+		/// <param name="pointLine1">one of the line ends</param>
+		/// <param name="pointLine2">one of the line ends</param>
+		/// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
+		private static Side LinePositionInX(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+		{
+			double a, b, z;
+			if ((Math.Abs(pointLine1.y - pointLine2.y) > EqualityTolerance) && (((point.y >= pointLine1.y) && (point.y <= pointLine2.y)) || ((point.y <= pointLine1.y) && (point.y >= pointLine2.y))))
+			{
+				a = (pointLine2.z - pointLine1.z) / (pointLine2.y - pointLine1.y);
+				b = pointLine1.z - a * pointLine1.y;
+				z = a * point.y + b;
+				if (z > point.z + EqualityTolerance)
+				{
+					return Side.UP;
+				}
+				else if (z < point.z - EqualityTolerance)
+				{
+					return Side.DOWN;
+				}
+				else
+				{
+					return Side.ON;
+				}
+			}
+			else
+			{
+				return Side.NONE;
+			}
+		}
 
-        /** Invert face direction (normal direction) */
-        public void invert()
-        {
-            Vertex vertexTemp = v2;
-            v2 = v1;
-            v1 = vertexTemp;
-        }
+		/// <summary>
+		/// Gets the position of a point relative to a line in the y plane
+		/// </summary>
+		/// <param name="point">point to be tested</param>
+		/// <param name="pointLine1">one of the line ends</param>
+		/// <param name="pointLine2">one of the line ends</param>
+		/// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
+		private static Side LinePositionInY(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+		{
+			double a, b, z;
+			if ((Math.Abs(pointLine1.x - pointLine2.x) > EqualityTolerance) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
+			{
+				a = (pointLine2.z - pointLine1.z) / (pointLine2.x - pointLine1.x);
+				b = pointLine1.z - a * pointLine1.x;
+				z = a * point.x + b;
+				if (z > point.z + EqualityTolerance)
+				{
+					return Side.UP;
+				}
+				else if (z < point.z - EqualityTolerance)
+				{
+					return Side.DOWN;
+				}
+				else
+				{
+					return Side.ON;
+				}
+			}
+			else
+			{
+				return Side.NONE;
+			}
+		}
 
-        //------------------------------------CLASSIFIERS-------------------------------//
+		/// <summary>
+		/// Gets the position of a point relative to a line in the z plane
+		/// </summary>
+		/// <param name="point">point to be tested</param>
+		/// <param name="pointLine1">one of the line ends</param>
+		/// <param name="pointLine2">one of the line ends</param>
+		/// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
+		private static Side LinePositionInZ(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+		{
+			double a, b, y;
+			if ((Math.Abs(pointLine1.x - pointLine2.x) > EqualityTolerance) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
+			{
+				a = (pointLine2.y - pointLine1.y) / (pointLine2.x - pointLine1.x);
+				b = pointLine1.y - a * pointLine1.x;
+				y = a * point.x + b;
+				if (y > point.y + EqualityTolerance)
+				{
+					return Side.UP;
+				}
+				else if (y < point.y - EqualityTolerance)
+				{
+					return Side.DOWN;
+				}
+				else
+				{
+					return Side.ON;
+				}
+			}
+			else
+			{
+				return Side.NONE;
+			}
+		}
 
-        /**
-     * Classifies the face if one of its vertices are classified as INSIDE or OUTSIDE
-     * 
-     * @return true if the face could be classified, false otherwise 
-     */
-        public bool simpleClassify()
-        {
-            int status1 = v1.getStatus();
-            int status2 = v2.getStatus();
-            int status3 = v3.getStatus();
+		/// <summary>
+		/// Checks if the the face contains a point
+		/// </summary>
+		/// <param name="point">point to be tested</param>
+		/// <returns>true if the face contains the point, false otherwise</returns>
+		private bool ContainsPoint(Vector3 point)
+		{
+			Side result1;
+			Side result2;
+			Side result3;
+			Vector3 normal = GetNormal();
 
-            if (status1 == Vertex.INSIDE || status1 == Vertex.OUTSIDE)
-            {
-                this.status = status1;
-                return true; 
-            }
-            else if (status2 == Vertex.INSIDE || status2 == Vertex.OUTSIDE)
-            {
-                this.status = status2;
-                return true;
-            }
-            else if (status3 == Vertex.INSIDE || status3 == Vertex.OUTSIDE)
-            {
-                this.status = status3;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+			//if x is constant...
+			if (Math.Abs(normal.x) > EqualityTolerance)
+			{
+				//tests on the x plane
+				result1 = LinePositionInX(point, v1.GetPosition(), v2.GetPosition());
+				result2 = LinePositionInX(point, v2.GetPosition(), v3.GetPosition());
+				result3 = LinePositionInX(point, v3.GetPosition(), v1.GetPosition());
+			}
 
-        /**
-     * Classifies the face based on the ray trace technique
-     * 
-     * @param object object3d used to compute the face status 
-     */
-        public void rayTraceClassify(Object3D obj)
-        {
-            //creating a ray starting starting at the face baricenter going to the normal direction
-            Point3d p0 = new Point3d();
-            p0.x = (v1.x + v2.x + v3.x) / 3d;
-            p0.y = (v1.y + v2.y + v3.y) / 3d;
-            p0.z = (v1.z + v2.z + v3.z) / 3d;
-            Line ray = new Line(getNormal(), p0);
+			//if y is constant...
+			else if (Math.Abs(normal.y) > EqualityTolerance)
+			{
+				//tests on the y plane
+				result1 = LinePositionInY(point, v1.GetPosition(), v2.GetPosition());
+				result2 = LinePositionInY(point, v2.GetPosition(), v3.GetPosition());
+				result3 = LinePositionInY(point, v3.GetPosition(), v1.GetPosition());
+			}
+			else
+			{
+				//tests on the z plane
+				result1 = LinePositionInZ(point, v1.GetPosition(), v2.GetPosition());
+				result2 = LinePositionInZ(point, v2.GetPosition(), v3.GetPosition());
+				result3 = LinePositionInZ(point, v3.GetPosition(), v1.GetPosition());
+			}
 
-            bool success;
-            double dotProduct, distance; 
-            Point3d intersectionPoint;
-            Face closestFace = null;
-            double closestDistance; 
-
-            do
-            {
-                success = true;
-                closestDistance = Double.MaxValue;
-                //for each face from the other solid...
-                for (int i = 0; i < obj.getNumFaces(); i++)
-                {
-                    Face face = obj.getFace(i);
-                    dotProduct = face.getNormal().dot(ray.getDirection());
-                    intersectionPoint = ray.computePlaneIntersection(face.getNormal(), face.v1.getPosition());
-
-                    //if ray intersects the plane...  
-                    if (intersectionPoint != null)
-                    {
-                        distance = ray.computePointToPointDistance(intersectionPoint);
-
-                        //if ray lies in plane...
-                        if (Math.Abs(distance) < TOL && Math.Abs(dotProduct) < TOL)
-                        {
-                            //disturb the ray in order to not lie into another plane 
-                            ray.perturbDirection();
-                            success = false;
-                            break;
-                        }
-
-                        //if ray starts in plane...
-                        if (Math.Abs(distance) < TOL && Math.Abs(dotProduct) > TOL)
-                        {
-                            //if ray intersects the face...
-                            if (face.hasPoint(intersectionPoint))
-                            {
-                                //faces coincide
-                                closestFace = face;
-                                closestDistance = 0;
-                                break;
-                            }
-                        }
-
-                                    //if ray intersects plane... 
-                                    else if (Math.Abs(dotProduct) > TOL && distance > TOL)
-                        {
-                            if (distance < closestDistance)
-                            {
-                                //if ray intersects the face;
-                                if (face.hasPoint(intersectionPoint))
-                                {
-                                    //this face is the closest face untill now
-                                    closestDistance = distance;
-                                    closestFace = face;
-                                }
-                            }
-                        }
-                    }
-                }
-            } while(success == false);
-
-            //none face found: outside face
-            if (closestFace == null)
-            {
-                status = OUTSIDE;
-            }
-            //face found: test dot product
-            else
-            {
-                dotProduct = closestFace.getNormal().dot(ray.getDirection());
-
-                //distance = 0: coplanar faces
-                if (Math.Abs(closestDistance) < TOL)
-                {
-                    if (dotProduct > TOL)
-                    {
-                        status = SAME;
-                    }
-                    else if (dotProduct < -TOL)
-                    {
-                        status = OPPOSITE;
-                    }
-                }
-
-                    //dot product > 0 (same direction): inside face
-                    else if (dotProduct > TOL)
-                {
-                    status = INSIDE;
-                }
-
-                    //dot product < 0 (opposite direction): outside face
-                    else if (dotProduct < -TOL)
-                {
-                    status = OUTSIDE;
-                }
-            }
-        }
-
-        //------------------------------------PRIVATES----------------------------------//
-
-        /**
-     * Checks if the the face contains a point
-     * 
-     * @param point to be tested
-     * @param true if the face contains the point, false otherwise 
-     */ 
-        private bool hasPoint(Point3d point)
-        {
-            int result1, result2, result3;
-            bool hasUp, hasDown, hasOn;
-            Vector3d normal = getNormal(); 
-
-            //if x is constant...   
-            if (Math.Abs(normal.x) > TOL)
-            {
-                //tests on the x plane
-                result1 = linePositionInX(point, v1.getPosition(), v2.getPosition());
-                result2 = linePositionInX(point, v2.getPosition(), v3.getPosition());
-                result3 = linePositionInX(point, v3.getPosition(), v1.getPosition());
-            }
-
-            //if y is constant...
-            else if (Math.Abs(normal.y) > TOL)
-            {
-                //tests on the y plane
-                result1 = linePositionInY(point, v1.getPosition(), v2.getPosition());
-                result2 = linePositionInY(point, v2.getPosition(), v3.getPosition());
-                result3 = linePositionInY(point, v3.getPosition(), v1.getPosition());
-            }
-            else
-            {
-                //tests on the z plane
-                result1 = linePositionInZ(point, v1.getPosition(), v2.getPosition());
-                result2 = linePositionInZ(point, v2.getPosition(), v3.getPosition());
-                result3 = linePositionInZ(point, v3.getPosition(), v1.getPosition());
-            }
-
-            //if the point is up and down two lines...      
-            if (((result1 == UP) || (result2 == UP) || (result3 == UP)) && ((result1 == DOWN) || (result2 == DOWN) || (result3 == DOWN)))
-            {
-                return true;
-            }
-            //if the point is on of the lines...
-            else if ((result1 == ON) || (result2 == ON) || (result3 == ON))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /** 
-     * Gets the position of a point relative to a line in the x plane
-     * 
-     * @param point point to be tested
-     * @param pointLine1 one of the line ends
-     * @param pointLine2 one of the line ends
-     * @return position of the point relative to the line - UP, DOWN, ON, NONE 
-     */
-        private static int linePositionInX(Point3d point, Point3d pointLine1, Point3d pointLine2)
-        {
-            double a, b, z;
-            if ((Math.Abs(pointLine1.y - pointLine2.y) > TOL) && (((point.y >= pointLine1.y) && (point.y <= pointLine2.y)) || ((point.y <= pointLine1.y) && (point.y >= pointLine2.y))))
-            {
-                a = (pointLine2.z - pointLine1.z) / (pointLine2.y - pointLine1.y);
-                b = pointLine1.z - a * pointLine1.y;
-                z = a * point.y + b;
-                if (z > point.z + TOL)
-                {
-                    return UP;          
-                }
-                else if (z < point.z - TOL)
-                {
-                    return DOWN;
-                }
-                else
-                {
-                    return ON;
-                }
-            }
-            else
-            {
-                return NONE;
-            }
-        }
-
-        /** 
-     * Gets the position of a point relative to a line in the y plane
-     * 
-     * @param point point to be tested
-     * @param pointLine1 one of the line ends
-     * @param pointLine2 one of the line ends
-     * @return position of the point relative to the line - UP, DOWN, ON, NONE 
-     */
-
-        private static int linePositionInY(Point3d point, Point3d pointLine1, Point3d pointLine2)
-        {
-            double a, b, z;
-            if ((Math.Abs(pointLine1.x - pointLine2.x) > TOL) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
-            {
-                a = (pointLine2.z - pointLine1.z) / (pointLine2.x - pointLine1.x);
-                b = pointLine1.z - a * pointLine1.x;
-                z = a * point.x + b;
-                if (z > point.z + TOL)
-                {
-                    return UP;          
-                }
-                else if (z < point.z - TOL)
-                {
-                    return DOWN;
-                }
-                else
-                {
-                    return ON;
-                }
-            }
-            else
-            {
-                return NONE;
-            }
-        }
-
-        /** 
-     * Gets the position of a point relative to a line in the z plane
-     * 
-     * @param point point to be tested
-     * @param pointLine1 one of the line ends
-     * @param pointLine2 one of the line ends
-     * @return position of the point relative to the line - UP, DOWN, ON, NONE 
-     */
-
-        private static int linePositionInZ(Point3d point, Point3d pointLine1, Point3d pointLine2)
-        {
-            double a, b, y;
-            if ((Math.Abs(pointLine1.x - pointLine2.x) > TOL) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
-            {
-                a = (pointLine2.y - pointLine1.y) / (pointLine2.x - pointLine1.x);
-                b = pointLine1.y - a * pointLine1.x;
-                y = a * point.x + b;
-                if (y > point.y + TOL)
-                {
-                    return UP;          
-                }
-                else if (y < point.y - TOL)
-                {
-                    return DOWN;
-                }
-                else
-                {
-                    return ON;
-                }
-            }
-            else
-            {
-                return NONE;
-            }
-        }
-    }
+			//if the point is up and down two lines...
+			if (((result1 == Side.UP) || (result2 == Side.UP) || (result3 == Side.UP)) && ((result1 == Side.DOWN) || (result2 == Side.DOWN) || (result3 == Side.DOWN)))
+			{
+				return true;
+			}
+			//if the point is on of the lines...
+			else if ((result1 == Side.ON) || (result2 == Side.ON) || (result3 == Side.ON))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
 }
-
