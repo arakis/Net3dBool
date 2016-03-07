@@ -38,7 +38,6 @@ using System.IO;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
-using MatterHackers.VectorMath;
 
 namespace Net3dBool
 {

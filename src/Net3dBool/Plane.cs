@@ -29,7 +29,7 @@ either expressed or implied, of the FreeBSD Project.
 
 using System;
 
-namespace MatterHackers.VectorMath
+namespace Net3dBool
 {
 	public class Plane
 	{

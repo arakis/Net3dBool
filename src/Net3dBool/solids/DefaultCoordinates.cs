@@ -1,7 +1,4 @@
-﻿
-
-using MatterHackers.VectorMath;
-/** 
+﻿/** 
 * Sample Objects
 * 
 * <br><br>See: 

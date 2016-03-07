@@ -27,7 +27,7 @@ SOFTWARE.
 using System;
 using System.Runtime.InteropServices;
 
-namespace MatterHackers.VectorMath
+namespace Net3dBool
 {
 	/// <summary>
 	/// Represents a 3D vector using three double-precision floating-point numbers.

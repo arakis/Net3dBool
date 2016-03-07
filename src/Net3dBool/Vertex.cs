@@ -33,7 +33,6 @@ Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
 Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
-using MatterHackers.VectorMath;
 using System;
 using System.Collections;
 using System.Collections.Generic;
