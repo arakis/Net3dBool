@@ -49,11 +49,5 @@
     <Compile Include="Vector3.cs" />
     <Compile Include="Vertex.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\VectorMath\VectorMath.csproj">
-      <Project>{d3e41b4e-bfbb-44ca-94c8-95c00f754fdd}</Project>
-      <Name>VectorMath</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
