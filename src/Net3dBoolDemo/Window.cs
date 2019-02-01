@@ -31,8 +31,6 @@ namespace Net3dBoolDemo
             location = new Vector3(1f, -5f, 2f);
             mouseDelta = new Vector2();
 
-            //System.Windows.Forms.Cursor.Position = new Point(Bounds.Left + Bounds.Width / 2, Bounds.Top + Bounds.Height / 2);
-
             Mouse.Move += new EventHandler<MouseMoveEventArgs>(OnMouseMove);
 
             CreateMesh();
@@ -147,8 +145,8 @@ namespace Net3dBoolDemo
         {
             base.OnRenderFrame(e);
 
-//            GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
-//            GL.PolygonMode(MaterialFace.Back, PolygonMode.Point);
+            //            GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
+            //            GL.PolygonMode(MaterialFace.Back, PolygonMode.Point);
 
             GL.Enable(EnableCap.CullFace);
 

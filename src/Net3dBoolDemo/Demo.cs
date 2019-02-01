@@ -16,6 +16,8 @@ namespace Net3dBoolDemo
 
         public override void CreateMesh()
         {
+            var start = DateTime.UtcNow;
+            Console.Write("Generate mesh...");
 
             var box = new Net3dBool.Solid(Net3dBool.DefaultCoordinates.DEFAULT_BOX_VERTICES, Net3dBool.DefaultCoordinates.DEFAULT_BOX_COORDINATES);
             var sphere = new Net3dBool.Solid(Net3dBool.DefaultCoordinates.DEFAULT_SPHERE_VERTICES, Net3dBool.DefaultCoordinates.DEFAULT_SPHERE_COORDINATES);
@@ -33,17 +35,6 @@ namespace Net3dBoolDemo
             cylinder3.rotate(Math.PI / 2, 0);
             cylinder3.rotate(0, Math.PI / 2);
 
-            //--
-
-            //mesh = s;
-
-            //--
-
-//            var modeller = new Net3dBool.BooleanModeller(b, c1);
-//            mesh = modeller.getDifference();
-
-            //--
-
             var modeller = new Net3dBool.BooleanModeller(box, sphere);
             var tmp = modeller.GetIntersection();
 
@@ -57,6 +48,10 @@ namespace Net3dBoolDemo
             tmp = modeller.GetDifference();
 
             mesh = tmp;
+
+            var elapsed = DateTime.UtcNow - start;
+            Console.WriteLine("done.");
+            Console.WriteLine("Consumed time: {0}", elapsed);
         }
 
         public override void RenderMesh()
