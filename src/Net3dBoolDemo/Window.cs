@@ -176,14 +176,6 @@ namespace Net3dBoolDemo
             SwapBuffers();
         }
 
-        public Net3dBool.Color3f[] getColorArray(int length, Color c)
-        {
-            var ar = new Net3dBool.Color3f[length];
-            for (var i = 0; i < length; i++)
-                ar[i] = new Net3dBool.Color3f(1 / 255d * c.R, 1 / 255d * c.G, 1 / 255d * c.B);
-            return ar;
-        }
-
         public virtual void CreateMesh()
         {
         }

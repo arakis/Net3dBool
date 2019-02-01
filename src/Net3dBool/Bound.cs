@@ -1,16 +1,37 @@
-﻿/**
- * Representation of a bound - the extremes of a 3d component for each coordinate.
- *
- * <br><br>See: 
- * D. H. Laidlaw, W. B. Trumbore, and J. F. Hughes.  
- * "Constructive Solid Geometry for Polyhedral Objects" 
- * SIGGRAPH Proceedings, 1986, p.161. 
- *  
- * original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
- * 
- * Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
- * Project: https://github.com/Arakis/Net3dBool
- */
+﻿/*
+The MIT License (MIT)
+
+Copyright (c) 2014 Sebastian Loncar
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+See:
+D. H. Laidlaw, W. B. Trumbore, and J. F. Hughes.
+"Constructive Solid Geometry for Polyhedral Objects"
+SIGGRAPH Proceedings, 1986, p.161.
+
+original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
+
+Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
+Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
+Project: https://github.com/MatterHackers/agg-sharp (an included library)
+*/
 
 using System;
 using System.Collections;
@@ -18,7 +39,10 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-    public class Bound
+	/// <summary>
+	/// Representation of a bound - the extremes of a 3d component for each coordinate.
+	/// </summary>
+	public class Bound
     {
         /** maximum from the x coordinate */
         private double xMax;
@@ -33,8 +57,8 @@ namespace Net3dBool
         /** minimum from the z coordinate */
         private double zMin;
 
-        /** tolerance value to test equalities */
-        private static double TOL = 1e-10f;
+		/** tolerance value to test equalities */
+		private readonly static double EqualityTolerance = 1e-10f;
 
         //---------------------------------CONSTRUCTORS---------------------------------//
 
@@ -45,14 +69,14 @@ namespace Net3dBool
      * @param p2 point relative to the second vertex
      * @param p3 point relative to the third vertex
      */ 
-        public Bound(Point3d p1, Point3d p2, Point3d p3)
+        public Bound(Vector3 p1, Vector3 p2, Vector3 p3)
         {
             xMax = xMin = p1.x;
             yMax = yMin = p1.y;
             zMax = zMin = p1.z;
 
-            checkVertex(p2);
-            checkVertex(p3);
+            CheckVertex(p2);
+            CheckVertex(p3);
         }
 
         /**
@@ -60,7 +84,7 @@ namespace Net3dBool
      * 
      * @param vertices the object vertices
      */
-        public Bound(Point3d[] vertices)
+        public Bound(Vector3[] vertices)
         {
             xMax = xMin = vertices[0].x;
             yMax = yMin = vertices[0].y;
@@ -68,7 +92,7 @@ namespace Net3dBool
 
             for (int i = 1; i < vertices.Length; i++)
             {
-                checkVertex(vertices[i]);
+                CheckVertex(vertices[i]);
             }
         }
 
@@ -92,9 +116,9 @@ namespace Net3dBool
      * @param bound other bound to make the comparison
      * @return true if they insersect, false otherwise
      */
-        public bool overlap(Bound bound)
+        public bool Overlap(Bound bound)
         {
-            if ((xMin > bound.xMax + TOL) || (xMax < bound.xMin - TOL) || (yMin > bound.yMax + TOL) || (yMax < bound.yMin - TOL) || (zMin > bound.zMax + TOL) || (zMax < bound.zMin - TOL))
+            if ((xMin > bound.xMax + EqualityTolerance) || (xMax < bound.xMin - EqualityTolerance) || (yMin > bound.yMax + EqualityTolerance) || (yMax < bound.yMin - EqualityTolerance) || (zMin > bound.zMax + EqualityTolerance) || (zMax < bound.zMin - EqualityTolerance))
             {
                 return false;
             }
@@ -111,7 +135,7 @@ namespace Net3dBool
      * 
      * @param vertex vertex to be tested
      */
-        private void checkVertex(Point3d vertex)
+        private void CheckVertex(Vector3 vertex)
         {
             if (vertex.x > xMax)
             {
