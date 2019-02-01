@@ -1,5 +1,6 @@
 .PHONY: compile
 
 compile:
-	xbuild Net3dBool.sln
+	nuget restore Net3dBool.sln
+	msbuild Net3dBool.sln
    
