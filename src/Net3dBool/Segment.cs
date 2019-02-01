@@ -86,14 +86,14 @@ namespace Net3dBool
         //---------------------------------CONSTRUCTORS---------------------------------//
 
         /**
-     * Constructs a Segment based on elements obtained from the two planes relations 
-     * 
-     * @param line resulting from the two planes intersection
-     * @param face face that intersects with the plane
-     * @param sign1 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)
-     * @param sign2 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)
-     * @param sign3 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)  
-     */
+        * Constructs a Segment based on elements obtained from the two planes relations 
+        * 
+        * @param line resulting from the two planes intersection
+        * @param face face that intersects with the plane
+        * @param sign1 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)
+        * @param sign2 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)
+        * @param sign3 position of the face vertex1 relative to the plane (-1 behind, 1 front, 0 on)  
+        */
         public Segment(Line line, Face face, int sign1, int sign2, int sign3)
         {
             this.line = line;
@@ -160,10 +160,10 @@ namespace Net3dBool
         //-----------------------------------OVERRIDES----------------------------------//
 
         /**
-     * Clones the Segment object
-     * 
-     * @return cloned Segment object
-     */
+        * Clones the Segment object
+        * 
+        * @return cloned Segment object
+        */
         public Segment Clone()
         {
             Segment clone = new Segment();
@@ -185,90 +185,90 @@ namespace Net3dBool
         //-------------------------------------GETS-------------------------------------//
 
         /**
-     * Gets the start vertex
-     * 
-     * @return start vertex
-     */
+        * Gets the start vertex
+        * 
+        * @return start vertex
+        */
         public Vertex GetStartVertex()
         {
             return startVertex;
         }
 
         /**
-     * Gets the end vertex
-     * 
-     * @return end vertex
-     */
+        * Gets the end vertex
+        * 
+        * @return end vertex
+        */
         public Vertex GetEndVertex()
         {
             return endVertex;
         }
 
         /**
-     * Gets the distance from the origin until ending point
-     * 
-     * @return distance from the origin until the ending point
-     */
+        * Gets the distance from the origin until ending point
+        * 
+        * @return distance from the origin until the ending point
+        */
         public double GetEndDistance()
         {
             return endDist;
         }
 
         /**
-     * Gets the type of the starting point
-     * 
-     * @return type of the starting point
-     */
+        * Gets the type of the starting point
+        * 
+        * @return type of the starting point
+        */
         public int GetStartType()
         {
             return startType;
         }
 
         /**
-     * Gets the type of the segment between the starting and ending points
-     * 
-     * @return type of the segment between the starting and ending points
-     */
+        * Gets the type of the segment between the starting and ending points
+        * 
+        * @return type of the segment between the starting and ending points
+        */
         public int GetIntermediateType()
         {
             return middleType;
         }
 
         /**
-     * Gets the type of the ending point
-     * 
-     * @return type of the ending point
-     */
+        * Gets the type of the ending point
+        * 
+        * @return type of the ending point
+        */
         public int GetEndType()
         {
             return endType;
         }
 
         /**
-     * Gets the number of ends already set
-     *
-     * @return number of ends already set
-     */
+        * Gets the number of ends already set
+        *
+        * @return number of ends already set
+        */
         public int GetNumEndsSet()
         {
             return index;
         }
 
         /**
-     * Gets the starting position
-     * 
-     * @return start position
-     */
+        * Gets the starting position
+        * 
+        * @return start position
+        */
         public Vector3 GetStartPosition()
         {
             return startPos;
         }
 
         /**
-     * Gets the ending position
-     * 
-     * @return ending position
-     */
+        * Gets the ending position
+        * 
+        * @return ending position
+        */
         public Vector3 GetEndPosition()
         {
             return endPos;
@@ -277,11 +277,11 @@ namespace Net3dBool
         //------------------------------------OTHERS------------------------------------//
 
         /**
-     * Checks if two segments intersect
-     * 
-     * @param segment the other segment to check the intesection
-     * @return true if the segments intersect, false otherwise
-     */
+        * Checks if two segments intersect
+        * 
+        * @param segment the other segment to check the intesection
+        * @return true if the segments intersect, false otherwise
+        */
         public bool Intersect(Segment segment)
         {
             if (endDist < segment.StartDist + TOL || segment.endDist < StartDist + TOL)
@@ -297,11 +297,11 @@ namespace Net3dBool
         //---------------------------------PRIVATES-------------------------------------//
 
         /**
-     * Sets an end as vertex (starting point if none end were defined, ending point otherwise)
-     * 
-     * @param vertex the vertex that is an segment end 
-     * @return false if all the ends were already defined, true otherwise
-     */
+        * Sets an end as vertex (starting point if none end were defined, ending point otherwise)
+        * 
+        * @param vertex the vertex that is an segment end 
+        * @return false if all the ends were already defined, true otherwise
+        */
         private bool SetVertex(Vertex vertex)
         {
             //none end were defined - define starting point as VERTEX
@@ -350,12 +350,12 @@ namespace Net3dBool
         }
 
         /**
-     * Sets an end as edge (starting point if none end were defined, ending point otherwise)
-     * 
-     * @param vertex1 one of the vertices of the intercepted edge 
-     * @param vertex2 one of the vertices of the intercepted edge
-     * @return false if all ends were already defined, true otherwise
-     */
+        * Sets an end as edge (starting point if none end were defined, ending point otherwise)
+        * 
+        * @param vertex1 one of the vertices of the intercepted edge 
+        * @param vertex2 one of the vertices of the intercepted edge
+        * @return false if all ends were already defined, true otherwise
+        */
         private bool SetEdge(Vertex vertex1, Vertex vertex2)
         {
             Vector3 point1 = vertex1.GetPosition();

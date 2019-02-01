@@ -114,10 +114,10 @@ namespace Net3dBool
         }
 
         /**
-     * Makes a string definition for the Face object
-     *
-     * @return the string definition
-     */
+        * Makes a string definition for the Face object
+        *
+        * @return the string definition
+        */
 
         public bool Equals(Face face)
         {
@@ -338,34 +338,35 @@ namespace Net3dBool
         }
 
         /**
-     * Checks if a face is equal to another. To be equal, they have to have equal
-     * vertices in the same order
-     *
-     * @param anObject the other face to be tested
-     * @return true if they are equal, false otherwise.
-     */
+        * Checks if a face is equal to another. To be equal, they have to have equal
+        * vertices in the same order
+        *
+        * @param anObject the other face to be tested
+        * @return true if they are equal, false otherwise.
+        */
         //-------------------------------------GETS-------------------------------------//
 
         /**
-     * Gets the face bound
-     *
-     * @return face bound
-     */
+        * Gets the face bound
+        *
+        * @return face bound
+        */
         /**
-     * Gets the face normal
-     *
-     * @return face normal
-     */
+        * Gets the face normal
+        *
+        * @return face normal
+        */
         /**
-     * Gets the face status
-     *
-     * @return face status - UNKNOWN, INSIDE, OUTSIDE, SAME OR OPPOSITE
-     */
+        * Gets the face status
+        *
+        * @return face status - UNKNOWN, INSIDE, OUTSIDE, SAME OR OPPOSITE
+        */
         /**
-     * Gets the face area
-     *
-     * @return face area
-     */
+        * Gets the face area
+        *
+        * @return face area
+        */
+
         //-------------------------------------OTHERS-----------------------------------//
 
         /** Invert face direction (normal direction) */

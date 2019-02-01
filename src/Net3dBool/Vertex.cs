@@ -71,12 +71,12 @@ namespace Net3dBool
         }
 
         /**
-     * Constructs a vertex with unknown status
-     * 
-     * @param x coordinate on the x axis
-     * @param y coordinate on the y axis
-     * @param z coordinate on the z axis
-     */
+        * Constructs a vertex with unknown status
+        * 
+        * @param x coordinate on the x axis
+        * @param y coordinate on the y axis
+        * @param z coordinate on the z axis
+        */
         public Vertex(double x, double y, double z)
         {
             this.Position.x = x;
@@ -143,22 +143,22 @@ namespace Net3dBool
         }
 
         /**
-     * Makes a string definition for the Vertex object
-     * 
-     * @return the string definition
-     */
+        * Makes a string definition for the Vertex object
+        * 
+        * @return the string definition
+        */
         public String toString()
         {
             return "(" + Position.x + ", " + Position.y + ", " + Position.z + ")";
         }
 
         /**
-     * Checks if an vertex is equal to another. To be equal, they have to have the same
-     * coordinates(with some tolerance)
-     * 
-     * @param anObject the other vertex to be tested
-     * @return true if they are equal, false otherwise. 
-     */
+        * Checks if an vertex is equal to another. To be equal, they have to have the same
+        * coordinates(with some tolerance)
+        * 
+        * @param anObject the other vertex to be tested
+        * @return true if they are equal, false otherwise. 
+        */
         public bool Equals(Vertex vertex)
         {
             return Position.Equals(vertex.Position, EqualityTolerance);
@@ -167,10 +167,10 @@ namespace Net3dBool
         //--------------------------------------SETS------------------------------------//
 
         /**
-     * Sets the vertex status
-     * 
-     * @param status vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
-     */
+        * Sets the vertex status
+        * 
+        * @param status vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
+        */
         public void SetStatus(Status status)
         {
             if (status >= Status.UNKNOWN && status <= Status.BOUNDARY)
@@ -182,20 +182,20 @@ namespace Net3dBool
         //--------------------------------------GETS------------------------------------//
 
         /**
-     * Gets the vertex position
-     * 
-     * @return vertex position
-     */
+        * Gets the vertex position
+        * 
+        * @return vertex position
+        */
         public Vector3 GetPosition()
         {
             return Position;
         }
 
         /**
-     * Gets an array with the adjacent vertices
-     * 
-     * @return array of the adjacent vertices 
-     */
+        * Gets an array with the adjacent vertices
+        * 
+        * @return array of the adjacent vertices 
+        */
         public Vertex[] GetAdjacentVertices()
         {
             Vertex[] vertices = new Vertex[adjacentVertices.Count];
@@ -207,10 +207,10 @@ namespace Net3dBool
         }
 
         /**
-     * Gets the vertex status
-     * 
-     * @return vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
-     */
+        * Gets the vertex status
+        * 
+        * @return vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
+        */
         public Status GetStatus()
         {
             return status;
@@ -219,10 +219,10 @@ namespace Net3dBool
         //----------------------------------OTHERS--------------------------------------//
 
         /**
-     * Sets a vertex as being adjacent to it
-     * 
-     * @param adjacentVertex an adjacent vertex
-     */
+        * Sets a vertex as being adjacent to it
+        * 
+        * @param adjacentVertex an adjacent vertex
+        */
         public void AddAdjacentVertex(Vertex adjacentVertex)
         {
             if (!adjacentVertices.Contains(adjacentVertex))
@@ -232,10 +232,10 @@ namespace Net3dBool
         }
 
         /**
-     * Sets the vertex status, setting equally the adjacent ones
-     * 
-     * @param status new status to be set
-     */
+        * Sets the vertex status, setting equally the adjacent ones
+        * 
+        * @param status new status to be set
+        */
         public void Mark(Status status)
         {
             //mark vertex

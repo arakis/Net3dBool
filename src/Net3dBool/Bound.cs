@@ -65,12 +65,12 @@ namespace Net3dBool
         //---------------------------------CONSTRUCTORS---------------------------------//
 
         /**
-     * Bound constructor for a face
-     * 
-     * @param p1 point relative to the first vertex
-     * @param p2 point relative to the second vertex
-     * @param p3 point relative to the third vertex
-     */
+        * Bound constructor for a face
+        * 
+        * @param p1 point relative to the first vertex
+        * @param p2 point relative to the second vertex
+        * @param p3 point relative to the third vertex
+        */
         public Bound(Vector3 p1, Vector3 p2, Vector3 p3)
         {
             xMax = xMin = p1.x;
@@ -82,10 +82,10 @@ namespace Net3dBool
         }
 
         /**
-     * Bound constructor for a object 3d
-     * 
-     * @param vertices the object vertices
-     */
+        * Bound constructor for a object 3d
+        * 
+        * @param vertices the object vertices
+        */
         public Bound(Vector3[] vertices)
         {
             xMax = xMin = vertices[0].x;
@@ -101,10 +101,10 @@ namespace Net3dBool
         //----------------------------------OVERRIDES-----------------------------------//
 
         /**
-     * Makes a string definition for the bound object
-     * 
-     * @return the string definition
-     */
+        * Makes a string definition for the bound object
+        * 
+        * @return the string definition
+        */
         public String toString()
         {
             return "x: " + xMin + " .. " + xMax + "\ny: " + yMin + " .. " + yMax + "\nz: " + zMin + " .. " + zMax;
@@ -113,11 +113,11 @@ namespace Net3dBool
         //--------------------------------------OTHERS----------------------------------//
 
         /**
-     * Checks if a bound overlaps other one
-     * 
-     * @param bound other bound to make the comparison
-     * @return true if they insersect, false otherwise
-     */
+        * Checks if a bound overlaps other one
+        * 
+        * @param bound other bound to make the comparison
+        * @return true if they insersect, false otherwise
+        */
         public bool Overlap(Bound bound)
         {
             if ((xMin > bound.xMax + EqualityTolerance) || (xMax < bound.xMin - EqualityTolerance) || (yMin > bound.yMax + EqualityTolerance) || (yMax < bound.yMin - EqualityTolerance) || (zMin > bound.zMax + EqualityTolerance) || (zMax < bound.zMin - EqualityTolerance))
@@ -133,10 +133,10 @@ namespace Net3dBool
         //-------------------------------------PRIVATES---------------------------------//
 
         /**
-     * Checks if one of the coordinates of a vertex exceed the ones found before 
-     * 
-     * @param vertex vertex to be tested
-     */
+        * Checks if one of the coordinates of a vertex exceed the ones found before 
+        * 
+        * @param vertex vertex to be tested
+        */
         private void CheckVertex(Vector3 vertex)
         {
             if (vertex.x > xMax)

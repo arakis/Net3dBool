@@ -62,14 +62,14 @@ namespace Net3dBool
         }
 
         /**
-     * Construct a solid based on data arrays. An exception may occur in the case of 
-     * abnormal arrays (indices making references to inexistent vertices, there are less
-     * colors than vertices...)
-     * 
-     * @param vertices array of points defining the solid vertices
-     * @param indices array of indices for a array of vertices
-     * @param colors array of colors defining the vertices colors 
-     */
+        * Construct a solid based on data arrays. An exception may occur in the case of 
+        * abnormal arrays (indices making references to inexistent vertices, there are less
+        * colors than vertices...)
+        * 
+        * @param vertices array of points defining the solid vertices
+        * @param indices array of indices for a array of vertices
+        * @param colors array of colors defining the vertices colors 
+        */
         public Solid(Vector3[] vertices, int[] indices)
             : this()
         {
@@ -90,10 +90,10 @@ namespace Net3dBool
         //---------------------------------------GETS-----------------------------------//
 
         /**
-     * Gets the solid vertices
-     * 
-     * @return solid vertices
-     */
+        * Gets the solid vertices
+        * 
+        * @return solid vertices
+        */
         public Vector3[] getVertices()
         {
             Vector3[] newVertices = new Vector3[vertices.Length];
@@ -105,9 +105,9 @@ namespace Net3dBool
         }
 
         /** Gets the solid indices for its vertices
-     * 
-     * @return solid indices for its vertices
-     */
+        * 
+        * @return solid indices for its vertices
+        */
         public int[] getIndices()
         {
             int[] newIndices = new int[indices.Length];
@@ -116,10 +116,10 @@ namespace Net3dBool
         }
 
         /**
-     * Gets if the solid is empty (without any vertex)
-     * 
-     * @return true if the solid is empty, false otherwise
-     */
+        * Gets if the solid is empty (without any vertex)
+        * 
+        * @return true if the solid is empty, false otherwise
+        */
         public bool isEmpty()
         {
             if (indices.Length == 0)
@@ -135,14 +135,14 @@ namespace Net3dBool
         //---------------------------------------SETS-----------------------------------//
 
         /**
-     * Sets the solid data. Each vertex may have a different color. An exception may 
-     * occur in the case of abnormal arrays (e.g., indices making references to  
-     * inexistent vertices, there are less colors than vertices...)
-     * 
-     * @param vertices array of points defining the solid vertices
-     * @param indices array of indices for a array of vertices
-     * @param colors array of colors defining the vertices colors 
-     */
+        * Sets the solid data. Each vertex may have a different color. An exception may 
+        * occur in the case of abnormal arrays (e.g., indices making references to  
+        * inexistent vertices, there are less colors than vertices...)
+        * 
+        * @param vertices array of points defining the solid vertices
+        * @param indices array of indices for a array of vertices
+        * @param colors array of colors defining the vertices colors 
+        */
         public void setData(Vector3[] vertices, int[] indices)
         {
             this.vertices = new Vector3[vertices.Length];
@@ -162,11 +162,11 @@ namespace Net3dBool
         //-------------------------GEOMETRICAL_TRANSFORMATIONS-------------------------//
 
         /**
-     * Applies a translation into a solid
-     * 
-     * @param dx translation on the x axis
-     * @param dy translation on the y axis
-     */
+        * Applies a translation into a solid
+        * 
+        * @param dx translation on the x axis
+        * @param dy translation on the y axis
+        */
         public void translate(double dx, double dy)
         {
             if (dx != 0 || dy != 0)
@@ -182,11 +182,11 @@ namespace Net3dBool
         }
 
         /**
-     * Applies a rotation into a solid
-     * 
-     * @param dx rotation on the x axis
-     * @param dy rotation on the y axis
-     */
+        * Applies a rotation into a solid
+        * 
+        * @param dx rotation on the x axis
+        * @param dy rotation on the y axis
+        */
         public void rotate(double dx, double dy)
         {
             double cosX = Math.Cos(dx);
@@ -234,10 +234,10 @@ namespace Net3dBool
         }
 
         /**
-     * Applies a zoom into a solid
-     * 
-     * @param dz translation on the z axis
-     */
+        * Applies a zoom into a solid
+        * 
+        * @param dz translation on the z axis
+        */
         public void zoom(double dz)
         {
             if (dz != 0)
@@ -252,12 +252,12 @@ namespace Net3dBool
         }
 
         /**
-     * Applies a scale changing into the solid
-     * 
-     * @param dx scale changing for the x axis 
-     * @param dy scale changing for the y axis
-     * @param dz scale changing for the z axis
-     */
+        * Applies a scale changing into the solid
+        * 
+        * @param dx scale changing for the x axis 
+        * @param dy scale changing for the y axis
+        * @param dz scale changing for the z axis
+        */
         public void scale(double dx, double dy, double dz)
         {
             for (int i = 0; i < vertices.Length; i++)
@@ -289,10 +289,10 @@ namespace Net3dBool
         }
 
         /**
-     * Gets the solid mean
-     * 
-     * @return point representing the mean
-     */
+        * Gets the solid mean
+        * 
+        * @return point representing the mean
+        */
         protected Vector3 getMean()
         {
             Vector3 mean = new Vector3();
