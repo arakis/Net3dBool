@@ -28,8 +28,10 @@ SIGGRAPH Proceedings, 1986, p.161.
 
 original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
 
-Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
-Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
+Ported from Java to C# by Sebastian Loncar, Web: http://www.loncar.de
+Project: https://github.com/Arakis/Net3dBool
+
+Optimized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
 Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
@@ -39,12 +41,12 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-	/// <summary>
-	/// Represents of a 3d face vertex.
-	/// </summary>
-	public class Vertex
+    /// <summary>
+    /// Represents of a 3d face vertex.
+    /// </summary>
+    public class Vertex
     {
-		public Vector3 Position;
+        public Vector3 Position;
         /** references to vertices conected to it by an edge  */
         private List<Vertex> adjacentVertices;
         /** vertex status relative to other object */
@@ -77,56 +79,56 @@ namespace Net3dBool
      */
         public Vertex(double x, double y, double z)
         {
-			this.Position.x = x;
-			this.Position.y = y;
-			this.Position.z = z;
+            this.Position.x = x;
+            this.Position.y = y;
+            this.Position.z = z;
 
             adjacentVertices = new List<Vertex>();
             status = Status.UNKNOWN;
         }
 
-		/// <summary>
-		/// Constructs a vertex with definite status
-		/// </summary>
-		/// <param name="position">vertex position</param>
-		/// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
-		public Vertex(Vector3 position, Status status)
+        /// <summary>
+        /// Constructs a vertex with definite status
+        /// </summary>
+        /// <param name="position">vertex position</param>
+        /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
+        public Vertex(Vector3 position, Status status)
         {
             Position.x = position.x;
-			Position.y = position.y;
-			Position.z = position.z;
+            Position.y = position.y;
+            Position.z = position.z;
 
             adjacentVertices = new List<Vertex>();
             this.status = status;
         }
 
-		/// <summary>
-		/// Constructs a vertex with a definite status
-		/// </summary>
-		/// <param name="x">coordinate on the x axis</param>
-		/// <param name="y">coordinate on the y axis</param>
-		/// <param name="z">coordinate on the z axis</param>
-		/// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
-		public Vertex(double x, double y, double z, Status status)
+        /// <summary>
+        /// Constructs a vertex with a definite status
+        /// </summary>
+        /// <param name="x">coordinate on the x axis</param>
+        /// <param name="y">coordinate on the y axis</param>
+        /// <param name="z">coordinate on the z axis</param>
+        /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
+        public Vertex(double x, double y, double z, Status status)
         {
-			this.Position = new Vector3(x, y, z);
+            this.Position = new Vector3(x, y, z);
 
             adjacentVertices = new List<Vertex>();
             this.status = status;
         }
 
-		/// <summary>
-		/// Default constructor
-		/// </summary>
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         private Vertex()
         {
-		}
+        }
 
-		/// <summary>
-		/// Clones the vertex object
-		/// </summary>
-		/// <returns>cloned vertex object</returns>
-		public Vertex Clone()
+        /// <summary>
+        /// Clones the vertex object
+        /// </summary>
+        /// <returns>cloned vertex object</returns>
+        public Vertex Clone()
         {
             Vertex clone = new Vertex();
             clone.Position = Position;
@@ -134,7 +136,7 @@ namespace Net3dBool
             clone.adjacentVertices = new List<Vertex>();
             for (int i = 0; i < adjacentVertices.Count; i++)
             {
-                clone.adjacentVertices.Add(adjacentVertices[i].Clone());                               
+                clone.adjacentVertices.Add(adjacentVertices[i].Clone());
             }
 
             return clone;
@@ -159,23 +161,23 @@ namespace Net3dBool
      */
         public bool Equals(Vertex vertex)
         {
-			return Position.Equals(vertex.Position, EqualityTolerance);
+            return Position.Equals(vertex.Position, EqualityTolerance);
         }
 
-		//--------------------------------------SETS------------------------------------//
+        //--------------------------------------SETS------------------------------------//
 
-		/**
+        /**
      * Sets the vertex status
      * 
      * @param status vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
      */
-		public void SetStatus(Status status)
-		{
-			if (status >= Status.UNKNOWN && status <= Status.BOUNDARY)
-			{
-				this.status = status;
-			}
-		}
+        public void SetStatus(Status status)
+        {
+            if (status >= Status.UNKNOWN && status <= Status.BOUNDARY)
+            {
+                this.status = status;
+            }
+        }
 
         //--------------------------------------GETS------------------------------------//
 
@@ -186,7 +188,7 @@ namespace Net3dBool
      */
         public Vector3 GetPosition()
         {
-			return Position;
+            return Position;
         }
 
         /**
@@ -199,7 +201,7 @@ namespace Net3dBool
             Vertex[] vertices = new Vertex[adjacentVertices.Count];
             for (int i = 0; i < adjacentVertices.Count; i++)
             {
-                vertices[i] = adjacentVertices[i]; 
+                vertices[i] = adjacentVertices[i];
             }
             return vertices;
         }
@@ -208,7 +210,7 @@ namespace Net3dBool
      * Gets the vertex status
      * 
      * @return vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE
-     */ 
+     */
         public Status GetStatus()
         {
             return status;
@@ -226,7 +228,7 @@ namespace Net3dBool
             if (!adjacentVertices.Contains(adjacentVertex))
             {
                 adjacentVertices.Add(adjacentVertex);
-            } 
+            }
         }
 
         /**

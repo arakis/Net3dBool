@@ -28,8 +28,10 @@ SIGGRAPH Proceedings, 1986, p.161.
 
 original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
 
-Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
-Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
+Ported from Java to C# by Sebastian Loncar, Web: http://www.loncar.de
+Project: https://github.com/Arakis/Net3dBool
+
+Optimized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
 Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
@@ -41,10 +43,10 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-	/// <summary>
-	/// Class representing a 3D solid.
-	/// </summary>
-	public class Solid
+    /// <summary>
+    /// Class representing a 3D solid.
+    /// </summary>
+    public class Solid
     {
         /** array of indices for the vertices from the 'vertices' attribute */
         protected int[] indices;
@@ -53,7 +55,7 @@ namespace Net3dBool
 
         //--------------------------------CONSTRUCTORS----------------------------------//
 
-        /** Constructs an empty solid. */           
+        /** Constructs an empty solid. */
         public Solid()
         {
             setInitialFeatures();
@@ -80,9 +82,9 @@ namespace Net3dBool
             vertices = new Vector3[0];
             indices = new int[0];
 
-//            setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
-//            setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-//            setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+            //            setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
+            //            setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+            //            setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         }
 
         //---------------------------------------GETS-----------------------------------//
@@ -91,7 +93,7 @@ namespace Net3dBool
      * Gets the solid vertices
      * 
      * @return solid vertices
-     */ 
+     */
         public Vector3[] getVertices()
         {
             Vector3[] newVertices = new Vector3[vertices.Length];
@@ -200,9 +202,9 @@ namespace Net3dBool
                 double newX, newY, newZ;
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    vertices[i].x -= mean.x; 
-                    vertices[i].y -= mean.y; 
-                    vertices[i].z -= mean.z; 
+                    vertices[i].x -= mean.x;
+                    vertices[i].y -= mean.y;
+                    vertices[i].z -= mean.z;
 
                     //x rotation
                     if (dx != 0)
@@ -222,8 +224,8 @@ namespace Net3dBool
                         vertices[i].z = newZ;
                     }
 
-                    vertices[i].x += mean.x; 
-                    vertices[i].y += mean.y; 
+                    vertices[i].x += mean.x;
+                    vertices[i].y += mean.y;
                     vertices[i].z += mean.z;
                 }
             }
@@ -273,17 +275,17 @@ namespace Net3dBool
         /** Creates a geometry based on the indexes and vertices set for the solid */
         protected void defineGeometry()
         {
-//            GeometryInfo gi = new GeometryInfo(GeometryInfo.TRIANGLE_ARRAY);
-//            gi.setCoordinateIndices(indices);
-//            gi.setCoordinates(vertices);
-//            NormalGenerator ng = new NormalGenerator();
-//            ng.generateNormals(gi);
-//
-//            gi.setColors(colors);
-//            gi.setColorIndices(indices);
-//            gi.recomputeIndices();
-//
-//            setGeometry(gi.getIndexedGeometryArray());
+            //            GeometryInfo gi = new GeometryInfo(GeometryInfo.TRIANGLE_ARRAY);
+            //            gi.setCoordinateIndices(indices);
+            //            gi.setCoordinates(vertices);
+            //            NormalGenerator ng = new NormalGenerator();
+            //            ng.generateNormals(gi);
+            //
+            //            gi.setColors(colors);
+            //            gi.setColorIndices(indices);
+            //            gi.recomputeIndices();
+            //
+            //            setGeometry(gi.getIndexedGeometryArray());
         }
 
         /**

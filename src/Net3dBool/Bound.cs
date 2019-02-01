@@ -28,8 +28,10 @@ SIGGRAPH Proceedings, 1986, p.161.
 
 original author: Danilo Balby Silva Castanheira (danbalby@yahoo.com)
 
-Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
-Optomized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
+Ported from Java to C# by Sebastian Loncar, Web: http://www.loncar.de
+Project: https://github.com/Arakis/Net3dBool
+
+Optimized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
 Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
@@ -39,10 +41,10 @@ using System.Collections.Generic;
 
 namespace Net3dBool
 {
-	/// <summary>
-	/// Representation of a bound - the extremes of a 3d component for each coordinate.
-	/// </summary>
-	public class Bound
+    /// <summary>
+    /// Representation of a bound - the extremes of a 3d component for each coordinate.
+    /// </summary>
+    public class Bound
     {
         /** maximum from the x coordinate */
         private double xMax;
@@ -57,8 +59,8 @@ namespace Net3dBool
         /** minimum from the z coordinate */
         private double zMin;
 
-		/** tolerance value to test equalities */
-		private readonly static double EqualityTolerance = 1e-10f;
+        /** tolerance value to test equalities */
+        private readonly static double EqualityTolerance = 1e-10f;
 
         //---------------------------------CONSTRUCTORS---------------------------------//
 
@@ -68,7 +70,7 @@ namespace Net3dBool
      * @param p1 point relative to the first vertex
      * @param p2 point relative to the second vertex
      * @param p3 point relative to the third vertex
-     */ 
+     */
         public Bound(Vector3 p1, Vector3 p2, Vector3 p3)
         {
             xMax = xMin = p1.x;
