@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="OpenTK" Version="1.1.2225.0" /> 
+    <PackageReference Include="OpenTK" Version="1.1.2225.0" /> 
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -55,7 +55,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="OpenTK.dll.config" />
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
