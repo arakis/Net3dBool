@@ -215,7 +215,7 @@ namespace Net3dBool
                 success = true;
                 closestDistance = Double.MaxValue;
                 //for each face from the other solid...
-                for (int faceIndex = 0; faceIndex < obj.GetNumFaces(); faceIndex++)
+                for (int faceIndex = 0; faceIndex < obj.NumFaces; faceIndex++)
                 {
                     Face face = obj.GetFace(faceIndex);
                     intersectionPoint = ray.ComputePlaneIntersection(face.GetPlane());

@@ -188,7 +188,7 @@ namespace Net3dBool
         {
             Face face;
             //for each face..
-            for (int i = 0; i < obj.GetNumFaces(); i++)
+            for (int i = 0; i < obj.NumFaces; i++)
             {
                 face = obj.GetFace(i);
                 //if the face status fits with the desired status...

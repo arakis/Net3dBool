@@ -56,7 +56,7 @@ namespace Net3dBool
         /// <summary>
         /// object representing the solid extremes
         /// </summary>
-        private Bound Bound;
+        private Bound _Bound;
         /// <summary>
         /// solid faces
         /// </summary>
@@ -96,7 +96,7 @@ namespace Net3dBool
             }
 
             //create bound
-            Bound = new Bound(verticesPoints);
+            _Bound = new Bound(verticesPoints);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Net3dBool
         {
             //calculate adjacency information
             Face face;
-            for (int i = 0; i < this.GetNumFaces(); i++)
+            for (int i = 0; i < this.NumFaces; i++)
             {
                 face = this.GetFace(i);
                 face.V1.AddAdjacentVertex(face.V2);
@@ -126,7 +126,7 @@ namespace Net3dBool
             }
 
             //for each face
-            for (int i = 0; i < GetNumFaces(); i++)
+            for (int i = 0; i < NumFaces; i++)
             {
                 face = GetFace(i);
 
@@ -170,7 +170,7 @@ namespace Net3dBool
             {
                 clone.Faces.Add(Faces[i].Clone());
             }
-            clone.Bound = Bound;
+            clone._Bound = _Bound;
 
             return clone;
         }
@@ -179,10 +179,7 @@ namespace Net3dBool
         /// Gets the solid bound
         /// </summary>
         /// <returns>solid bound</returns>
-        public Bound GetBound()
-        {
-            return Bound;
-        }
+        public Bound Bound => _Bound;
 
         /// <summary>
         /// Gets a face reference for a given position
@@ -192,23 +189,16 @@ namespace Net3dBool
         public Face GetFace(int index)
         {
             if (index < 0 || index >= Faces.Count)
-            {
                 return null;
-            }
             else
-            {
                 return Faces[index];
-            }
         }
 
         /// <summary>
         /// Gets the number of faces
         /// </summary>
         /// <returns>number of faces</returns>
-        public int GetNumFaces()
-        {
-            return Faces.Count;
-        }
+        public int NumFaces => Faces.Count;
 
         /// <summary>
         /// Inverts faces classified as INSIDE, making its normals point outside. Usually used into the second solid when the difference is applied.
@@ -216,7 +206,7 @@ namespace Net3dBool
         public void InvertInsideFaces()
         {
             Face face;
-            for (int i = 0; i < GetNumFaces(); i++)
+            for (int i = 0; i < NumFaces; i++)
             {
                 face = GetFace(i);
                 if (face.GetStatus() == Status.INSIDE)
@@ -238,22 +228,22 @@ namespace Net3dBool
             Segment segment2;
             double distFace1Vert1, distFace1Vert2, distFace1Vert3, distFace2Vert1, distFace2Vert2, distFace2Vert3;
             int signFace1Vert1, signFace1Vert2, signFace1Vert3, signFace2Vert1, signFace2Vert2, signFace2Vert3;
-            int numFacesBefore = GetNumFaces();
-            int numFacesStart = GetNumFaces();
+            int numFacesBefore = NumFaces;
+            int numFacesStart = NumFaces;
 
             //if the objects bounds overlap...
-            if (GetBound().Overlap(obj.GetBound()))
+            if (_Bound.Overlap(obj._Bound))
             {
                 //for each object1 face...
-                for (int i = 0; i < GetNumFaces(); i++)
+                for (int i = 0; i < NumFaces; i++)
                 {
                     //if object1 face bound and object2 bound overlap ...
                     face1 = GetFace(i);
 
-                    if (face1.GetBound().Overlap(obj.GetBound()))
+                    if (face1.GetBound().Overlap(obj._Bound))
                     {
                         //for each object2 face...
-                        for (int j = 0; j < obj.GetNumFaces(); j++)
+                        for (int j = 0; j < obj.NumFaces; j++)
                         {
                             //if object1 face bound and object2 face bound overlap...
                             face2 = obj.GetFace(j);
@@ -302,7 +292,7 @@ namespace Net3dBool
                                         if (segment1.Intersect(segment2))
                                         {
                                             //PART II - SUBDIVIDING NON-COPLANAR POLYGONS
-                                            int lastNumFaces = GetNumFaces();
+                                            int lastNumFaces = NumFaces;
                                             this.SplitFace(i, segment1, segment2);
 
                                             //prevent from infinite loop (with a loss of faces...)
@@ -316,12 +306,12 @@ namespace Net3dBool
                                             if (face1 != GetFace(i))
                                             {
                                                 //if the generated solid is equal the origin...
-                                                if (face1.Equals(GetFace(GetNumFaces() - 1)))
+                                                if (face1.Equals(GetFace(NumFaces - 1)))
                                                 {
                                                     //return it to its position and jump it
-                                                    if (i != (GetNumFaces() - 1))
+                                                    if (i != (NumFaces - 1))
                                                     {
-                                                        Faces.RemoveAt(GetNumFaces() - 1);
+                                                        Faces.RemoveAt(NumFaces - 1);
                                                         Faces.Insert(i, face1);
                                                     }
                                                     else
