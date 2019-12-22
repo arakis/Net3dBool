@@ -31,69 +31,70 @@ namespace Net3dBoolDemo
             location = new Vector3(1f, -5f, 2f);
             mouseDelta = new Vector2();
 
-            Mouse.Move += new EventHandler<MouseMoveEventArgs>(OnMouseMove);
+            MouseMove += new EventHandler<MouseMoveEventArgs>(OnMouseMove);
 
             CreateMesh();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            if (Keyboard[Key.W])
+            var keyboard = Keyboard.GetState();
+            if (keyboard[Key.W])
             {
                 location.X += (float)Math.Cos(facing) * 0.1f;
                 location.Y += (float)Math.Sin(facing) * 0.1f;
             }
 
-            if (Keyboard[Key.S])
+            if (keyboard[Key.S])
             {
                 location.X -= (float)Math.Cos(facing) * 0.1f;
                 location.Y -= (float)Math.Sin(facing) * 0.1f;
             }
 
-            if (Keyboard[Key.A])
+            if (keyboard[Key.A])
             {
                 location.X += (float)Math.Cos(facing + Math.PI / 2) * 0.1f;
                 location.Y += (float)Math.Sin(facing + Math.PI / 2) * 0.1f;
             }
 
-            if (Keyboard[Key.D])
+            if (keyboard[Key.D])
             {
                 location.X -= (float)Math.Cos(facing + Math.PI / 2) * 0.1f;
                 location.Y -= (float)Math.Sin(facing + Math.PI / 2) * 0.1f;
             }
 
-            if (Keyboard[Key.Left])
+            if (keyboard[Key.Left])
             {
                 //facing += 0.04f;
                 mouseDelta.X = -2;
             }
 
-            if (Keyboard[Key.Right])
+            if (keyboard[Key.Right])
             {
                 //facing -= 0.04f;
                 mouseDelta.X = 2;
 
             }
 
-            if (Keyboard[Key.Up])
+            if (keyboard[Key.Up])
             {
                 //pitch += 0.02f;
                 mouseDelta.Y = -1;
             }
 
-            if (Keyboard[Key.Down])
+            if (keyboard[Key.Down])
             {
                 //pitch -= 0.02f;
                 mouseDelta.Y = 1;
             }
 
-            if (Keyboard[Key.PageUp])
+            if (keyboard[Key.PageUp])
             {
                 //pitch += 0.02f;
                 upDownDelta = -3;
             }
 
-            if (Keyboard[Key.PageDown])
+            if (keyboard[Key.PageDown])
             {
                 //pitch -= 0.02f;
                 upDownDelta = 3;
@@ -119,7 +120,7 @@ namespace Net3dBoolDemo
             Vector3 lookatPoint = new Vector3((float)Math.Cos(facing), (float)Math.Sin(facing), (float)Math.Sin(pitch));
             cameraMatrix = Matrix4.LookAt(loc, loc + lookatPoint, up);
 
-            if (Keyboard[Key.Escape])
+            if (keyboard[Key.Escape])
                 Exit();
         }
 
@@ -160,7 +161,8 @@ namespace Net3dBoolDemo
 
             //GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.ShadeModel(ShadingModel.Smooth);
 
             GL.Light(LightName.Light1, LightParameter.Ambient, OpenTK.Graphics.Color4.Gray);
