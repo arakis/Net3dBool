@@ -93,7 +93,7 @@ namespace Net3dBool
             this.V1 = v1;
             this.V2 = v2;
             this.V3 = v3;
-            Center = (v1.Position + v2.Position + v3.Position) / 3.0;
+            Center = (v1._Position + v2._Position + v3._Position) / 3.0;
 
             Status = Status.UNKNOWN;
         }
@@ -141,9 +141,9 @@ namespace Net3dBool
         public double GetArea()
         {
             //area = (a * c * sen(B))/2
-            Vector3 p1 = V1.GetPosition();
-            Vector3 p2 = V2.GetPosition();
-            Vector3 p3 = V3.GetPosition();
+            Vector3 p1 = V1.Position;
+            Vector3 p2 = V2.Position;
+            Vector3 p3 = V3.Position;
             Vector3 xy = new Vector3(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
             Vector3 xz = new Vector3(p3.X - p1.X, p3.Y - p1.Y, p3.Z - p1.Z);
 
@@ -158,7 +158,7 @@ namespace Net3dBool
         {
             if (!CachedBounds)
             {
-                BoundCache = new Bound(V1.GetPosition(), V2.GetPosition(), V3.GetPosition());
+                BoundCache = new Bound(V1.Position, V2.Position, V3.Position);
                 CachedBounds = true;
             }
 
@@ -169,9 +169,9 @@ namespace Net3dBool
         {
             if (PlaneCache == null)
             {
-                Vector3 p1 = V1.GetPosition();
-                Vector3 p2 = V2.GetPosition();
-                Vector3 p3 = V3.GetPosition();
+                Vector3 p1 = V1.Position;
+                Vector3 p2 = V2.Position;
+                Vector3 p3 = V3.Position;
                 PlaneCache = new Plane(p1, p2, p3);
             }
 
@@ -307,9 +307,9 @@ namespace Net3dBool
         /// <returns>true if the face could be classified, false otherwise</returns>
         public bool SimpleClassify()
         {
-            Status status1 = V1.GetStatus();
-            Status status2 = V2.GetStatus();
-            Status status3 = V3.GetStatus();
+            Status status1 = V1.Status;
+            Status status2 = V2.Status;
+            Status status3 = V3.Status;
 
             if (status1 == Status.INSIDE || status1 == Status.OUTSIDE)
             {
@@ -491,25 +491,25 @@ namespace Net3dBool
             if (Math.Abs(normal.X) > EqualityTolerance)
             {
                 //tests on the x plane
-                result1 = LinePositionInX(point, V1.GetPosition(), V2.GetPosition());
-                result2 = LinePositionInX(point, V2.GetPosition(), V3.GetPosition());
-                result3 = LinePositionInX(point, V3.GetPosition(), V1.GetPosition());
+                result1 = LinePositionInX(point, V1.Position, V2.Position);
+                result2 = LinePositionInX(point, V2.Position, V3.Position);
+                result3 = LinePositionInX(point, V3.Position, V1.Position);
             }
 
             //if y is constant...
             else if (Math.Abs(normal.Y) > EqualityTolerance)
             {
                 //tests on the y plane
-                result1 = LinePositionInY(point, V1.GetPosition(), V2.GetPosition());
-                result2 = LinePositionInY(point, V2.GetPosition(), V3.GetPosition());
-                result3 = LinePositionInY(point, V3.GetPosition(), V1.GetPosition());
+                result1 = LinePositionInY(point, V1.Position, V2.Position);
+                result2 = LinePositionInY(point, V2.Position, V3.Position);
+                result3 = LinePositionInY(point, V3.Position, V1.Position);
             }
             else
             {
                 //tests on the z plane
-                result1 = LinePositionInZ(point, V1.GetPosition(), V2.GetPosition());
-                result2 = LinePositionInZ(point, V2.GetPosition(), V3.GetPosition());
-                result3 = LinePositionInZ(point, V3.GetPosition(), V1.GetPosition());
+                result1 = LinePositionInZ(point, V1.Position, V2.Position);
+                result2 = LinePositionInZ(point, V2.Position, V3.Position);
+                result3 = LinePositionInZ(point, V3.Position, V1.Position);
             }
 
             //if the point is up and down two lines...

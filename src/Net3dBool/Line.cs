@@ -70,8 +70,8 @@ namespace Net3dBool
                 //getting a line point, zero is set to a coordinate whose direction
                 //component isn't zero (line intersecting its origin plan)
                 StartPoint = new Vector3();
-                double d1 = -(normalFace1.X * face1.V1.Position.X + normalFace1.Y * face1.V1.Position.Y + normalFace1.Z * face1.V1.Position.Z);
-                double d2 = -(normalFace2.X * face2.V1.Position.X + normalFace2.Y * face2.V1.Position.Y + normalFace2.Z * face2.V1.Position.Z);
+                double d1 = -(normalFace1.X * face1.V1._Position.X + normalFace1.Y * face1.V1._Position.Y + normalFace1.Z * face1.V1._Position.Z);
+                double d2 = -(normalFace2.X * face2.V1._Position.X + normalFace2.Y * face2.V1._Position.Y + normalFace2.Z * face2.V1._Position.Z);
                 if (Math.Abs(Direction.X) > EqualityTolerance)
                 {
                     StartPoint.X = 0;

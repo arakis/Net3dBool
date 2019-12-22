@@ -137,8 +137,8 @@ namespace Net3dBoolDemo
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.ShadeModel(ShadingModel.Smooth);
 
-            GL.Light(LightName.Light1, LightParameter.Ambient, OpenTK.Graphics.Color4.Gray);
-            GL.Light(LightName.Light1, LightParameter.Diffuse, OpenTK.Graphics.Color4.White);
+            GL.Light(LightName.Light1, LightParameter.Ambient, Color4.Gray);
+            GL.Light(LightName.Light1, LightParameter.Diffuse, Color4.White);
             GL.Light(LightName.Light1, LightParameter.Position, (new Vector4(0f, 0f, 0f, 1f)));
             GL.Enable(EnableCap.Light1);
 

@@ -161,7 +161,7 @@ namespace Net3dBool
             Vector3[] verticesArray = new Vector3[vertices.Count];
             for (int i = 0; i < vertices.Count; i++)
             {
-                verticesArray[i] = vertices[i].GetPosition();
+                verticesArray[i] = vertices[i].Position;
             }
             int[] indicesArray = new int[indices.Count];
             for (int i = 0; i < indices.Count; i++)

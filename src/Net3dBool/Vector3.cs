@@ -151,7 +151,7 @@ namespace Net3dBool
         {
             get
             {
-                return System.Math.Sqrt(X * X + Y * Y + Z * Z);
+                return Math.Sqrt(X * X + Y * Y + Z * Z);
             }
         }
 
@@ -648,19 +648,19 @@ namespace Net3dBool
         {
             if (!Collinear(a, b, Zero))
             {
-                return Vector3.Cross(a, b);
+                return Cross(a, b);
             }
             else
             {
                 Vector3 zOne = new Vector3(0, 0, 100000);
                 if (!Collinear(a, b, zOne))
                 {
-                    return Vector3.Cross(a - zOne, b - zOne);
+                    return Cross(a - zOne, b - zOne);
                 }
                 else
                 {
                     Vector3 xOne = new Vector3(1000000, 0, 0);
-                    return Vector3.Cross(a - xOne, b - xOne);
+                    return Cross(a - xOne, b - xOne);
                 }
             }
         }
@@ -751,7 +751,7 @@ namespace Net3dBool
         /// <remarks>Note that the returned angle is never bigger than the constant Pi.</remarks>
         public static double CalculateAngle(Vector3 first, Vector3 second)
         {
-            return System.Math.Acos((Vector3.Dot(first, second)) / (first.Length * second.Length));
+            return Math.Acos((Dot(first, second)) / (first.Length * second.Length));
         }
 
         /// <summary>Calculates the angle (in radians) between two vectors.</summary>
@@ -762,8 +762,8 @@ namespace Net3dBool
         public static void CalculateAngle(ref Vector3 first, ref Vector3 second, out double result)
         {
             double temp;
-            Vector3.Dot(ref first, ref second, out temp);
-            result = System.Math.Acos(temp / (first.Length * second.Length));
+            Dot(ref first, ref second, out temp);
+            result = Math.Acos(temp / (first.Length * second.Length));
         }
 
         #endregion CalculateAngle

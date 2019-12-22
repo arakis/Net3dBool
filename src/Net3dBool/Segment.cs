@@ -309,8 +309,8 @@ namespace Net3dBool
             {
                 StartVertex = vertex;
                 StartType = VERTEX;
-                StartDist = Line.ComputePointToPointDistance(vertex.GetPosition());
-                StartPos = StartVertex.GetPosition();
+                StartDist = Line.ComputePointToPointDistance(vertex.Position);
+                StartPos = StartVertex.Position;
                 Index++;
                 return true;
             }
@@ -319,8 +319,8 @@ namespace Net3dBool
             {
                 EndVertex = vertex;
                 EndType = VERTEX;
-                EndDist = Line.ComputePointToPointDistance(vertex.GetPosition());
-                EndPos = EndVertex.GetPosition();
+                EndDist = Line.ComputePointToPointDistance(vertex.Position);
+                EndPos = EndVertex.Position;
                 Index++;
 
                 //defining middle based on the starting point
@@ -358,8 +358,8 @@ namespace Net3dBool
         */
         private bool SetEdge(Vertex vertex1, Vertex vertex2)
         {
-            Vector3 point1 = vertex1.GetPosition();
-            Vector3 point2 = vertex2.GetPosition();
+            Vector3 point1 = vertex1.Position;
+            Vector3 point2 = vertex2.Position;
             Vector3 edgeDirection = new Vector3(point2.X - point1.X, point2.Y - point1.Y, point2.Z - point1.Z);
             Line edgeLine = new Line(edgeDirection, point1);
 

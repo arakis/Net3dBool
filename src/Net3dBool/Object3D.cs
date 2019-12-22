@@ -137,15 +137,15 @@ namespace Net3dBool
                     face.RayTraceClassify(otherObject);
 
                     //mark the vertices
-                    if (face.V1.GetStatus() == Status.UNKNOWN)
+                    if (face.V1.Status == Status.UNKNOWN)
                     {
                         face.V1.Mark(face.GetStatus());
                     }
-                    if (face.V2.GetStatus() == Status.UNKNOWN)
+                    if (face.V2.Status == Status.UNKNOWN)
                     {
                         face.V2.Mark(face.GetStatus());
                     }
-                    if (face.V3.GetStatus() == Status.UNKNOWN)
+                    if (face.V3.Status == Status.UNKNOWN)
                     {
                         face.V3.Mark(face.GetStatus());
                     }
@@ -691,8 +691,8 @@ namespace Net3dBool
         private double ComputeDistance(Vertex vertex, Face face)
         {
             Vector3 normal = face.GetNormal();
-            double distToV1 = Vector3.Dot(normal, face.V1.Position);
-            double distToPositionMinusDistToV1 = Vector3.Dot(normal, vertex.Position) - distToV1;
+            double distToV1 = Vector3.Dot(normal, face.V1._Position);
+            double distToPositionMinusDistToV1 = Vector3.Dot(normal, vertex._Position) - distToV1;
             return distToPositionMinusDistToV1;
         }
 
@@ -862,29 +862,29 @@ namespace Net3dBool
                 //gets the vertex more lined with the intersection segment
                 int linedVertex;
                 Vector3 linedVertexPos;
-                Vector3 vertexVector = new Vector3(endPos.X - face.V1.Position.X, endPos.Y - face.V1.Position.Y, endPos.Z - face.V1.Position.Z);
+                Vector3 vertexVector = new Vector3(endPos.X - face.V1._Position.X, endPos.Y - face.V1._Position.Y, endPos.Z - face.V1._Position.Z);
                 vertexVector.Normalize();
                 double dot1 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
-                vertexVector = new Vector3(endPos.X - face.V2.Position.X, endPos.Y - face.V2.Position.Y, endPos.Z - face.V2.Position.Z);
+                vertexVector = new Vector3(endPos.X - face.V2._Position.X, endPos.Y - face.V2._Position.Y, endPos.Z - face.V2._Position.Z);
                 vertexVector.Normalize();
                 double dot2 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
-                vertexVector = new Vector3(endPos.X - face.V3.Position.X, endPos.Y - face.V3.Position.Y, endPos.Z - face.V3.Position.Z);
+                vertexVector = new Vector3(endPos.X - face.V3._Position.X, endPos.Y - face.V3._Position.Y, endPos.Z - face.V3._Position.Z);
                 vertexVector.Normalize();
                 double dot3 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
                 if (dot1 > dot2 && dot1 > dot3)
                 {
                     linedVertex = 1;
-                    linedVertexPos = face.V1.GetPosition();
+                    linedVertexPos = face.V1.Position;
                 }
                 else if (dot2 > dot3 && dot2 > dot1)
                 {
                     linedVertex = 2;
-                    linedVertexPos = face.V2.GetPosition();
+                    linedVertexPos = face.V2.Position;
                 }
                 else
                 {
                     linedVertex = 3;
-                    linedVertexPos = face.V3.GetPosition();
+                    linedVertexPos = face.V3.Position;
                 }
 
                 // Now find which of the intersection endpoints is nearest to that vertex.
