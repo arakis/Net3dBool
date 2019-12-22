@@ -120,17 +120,7 @@ namespace Net3dBool
         * 
         * @return true if the solid is empty, false otherwise
         */
-        public bool IsEmpty()
-        {
-            if (Indices.Length == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool IsEmpty => Indices.Length == 0;
 
         //---------------------------------------SETS-----------------------------------//
 

@@ -218,9 +218,7 @@ namespace Net3dBool
         public void AddAdjacentVertex(Vertex adjacentVertex)
         {
             if (!AdjacentVertices.Contains(adjacentVertex))
-            {
                 AdjacentVertices.Add(adjacentVertex);
-            }
         }
 
         /**
@@ -236,12 +234,8 @@ namespace Net3dBool
             //mark adjacent vertices
             Vertex[] adjacentVerts = GetAdjacentVertices();
             for (int i = 0; i < adjacentVerts.Length; i++)
-            {
                 if (adjacentVerts[i].Status == Status.UNKNOWN)
-                {
                     adjacentVerts[i].Mark(status);
-                }
-            }
         }
     }
 }

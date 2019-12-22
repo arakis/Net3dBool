@@ -709,37 +709,37 @@ namespace Net3dBool
             double startDist, endDist;
 
             Face face = GetFace(facePos);
-            Vertex startVertex = segment1.GetStartVertex();
-            Vertex endVertex = segment1.GetEndVertex();
+            Vertex startVertex = segment1.StartVertex;
+            Vertex endVertex = segment1.EndVertex;
 
             //starting point: deeper starting point
             if (segment2.StartDist > segment1.StartDist + EqualityTolerance)
             {
                 startDist = segment2.StartDist;
-                startType = segment1.GetIntermediateType();
-                startPos = segment2.GetStartPosition();
+                startType = segment1.IntermediateType;
+                startPos = segment2.StartPosition;
             }
             else
             {
                 startDist = segment1.StartDist;
-                startType = segment1.GetStartType();
-                startPos = segment1.GetStartPosition();
+                startType = segment1.StartType;
+                startPos = segment1.StartPosition;
             }
 
             //ending point: deepest ending point
-            if (segment2.GetEndDistance() < segment1.GetEndDistance() - EqualityTolerance)
+            if (segment2.EndDistance < segment1.EndDistance - EqualityTolerance)
             {
-                endDist = segment2.GetEndDistance();
-                endType = segment1.GetIntermediateType();
-                endPos = segment2.GetEndPosition();
+                endDist = segment2.EndDistance;
+                endType = segment1.IntermediateType;
+                endPos = segment2.EndPosition;
             }
             else
             {
-                endDist = segment1.GetEndDistance();
-                endType = segment1.GetEndType();
-                endPos = segment1.GetEndPosition();
+                endDist = segment1.EndDistance;
+                endType = segment1.EndType;
+                endPos = segment1.EndPosition;
             }
-            middleType = segment1.GetIntermediateType();
+            middleType = segment1.IntermediateType;
 
             //set vertex to BOUNDARY if it is start type
             if (startType == Segment.VERTEX)
