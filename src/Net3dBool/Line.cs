@@ -102,8 +102,8 @@ namespace Net3dBool
         /// <param name="point">beginning of the ray</param>
         public Line(Vector3 direction, Vector3 point)
         {
-            this.Direction = direction;
-            this.StartPoint = point;
+            Direction = direction;
+            StartPoint = point;
             direction.Normalize();
         }
 
@@ -245,12 +245,12 @@ namespace Net3dBool
 
         public void SetDirection(Vector3 direction)
         {
-            this.Direction = direction;
+            Direction = direction;
         }
 
         public void SetPoint(Vector3 point)
         {
-            this.StartPoint = point;
+            StartPoint = point;
         }
 
         public String toString()

@@ -25,7 +25,7 @@ namespace Net3dBoolDemo
         {
             base.OnLoad(e);
             VSync = VSyncMode.On;
-            this.Title = "Net3dBool Demo with OpenTK";
+            Title = "Net3dBool Demo with OpenTK";
 
             CameraMatrix = Matrix4.Identity;
             CameraLocation = new Vector3(1f, -5f, 2f);

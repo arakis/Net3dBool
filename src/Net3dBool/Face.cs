@@ -90,9 +90,9 @@ namespace Net3dBool
         /// <param name="v3">a face vertex</param>
         public Face(Vertex v1, Vertex v2, Vertex v3)
         {
-            this.V1 = v1;
-            this.V2 = v2;
-            this.V3 = v3;
+            V1 = v1;
+            V2 = v2;
+            V3 = v3;
             Center = (v1._Position + v2._Position + v3._Position) / 3.0;
 
             Status = Status.UNKNOWN;
@@ -313,17 +313,17 @@ namespace Net3dBool
 
             if (status1 == Status.INSIDE || status1 == Status.OUTSIDE)
             {
-                this.Status = status1;
+                Status = status1;
                 return true;
             }
             else if (status2 == Status.INSIDE || status2 == Status.OUTSIDE)
             {
-                this.Status = status2;
+                Status = status2;
                 return true;
             }
             else if (status3 == Status.INSIDE || status3 == Status.OUTSIDE)
             {
-                this.Status = status3;
+                Status = status3;
                 return true;
             }
             else

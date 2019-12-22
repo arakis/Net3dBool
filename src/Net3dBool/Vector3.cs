@@ -65,9 +65,9 @@ namespace Net3dBool
         /// <param name="z">The z component of the Vector3.</param>
         public Vector3(double x, double y, double z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Net3dBool
         /// </summary>
         public void Normalize()
         {
-            double scale = 1.0 / this.Length;
+            double scale = 1.0 / Length;
             X *= scale;
             Y *= scale;
             Z *= scale;
@@ -945,7 +945,7 @@ namespace Net3dBool
             if (!(obj is Vector3))
                 return false;
 
-            return this.Equals((Vector3)obj);
+            return Equals((Vector3)obj);
         }
 
         /// <summary>

@@ -43,8 +43,8 @@ namespace Net3dBool
                 throw new ArgumentException("All values of min must be less than all values in max.");
             }
 
-            this.MinXYZ = minXYZ;
-            this.MaxXYZ = maxXYZ;
+            MinXYZ = minXYZ;
+            MaxXYZ = maxXYZ;
         }
 
         public Vector3 Size
@@ -276,12 +276,12 @@ namespace Net3dBool
 
         public bool Contains(AxisAlignedBoundingBox bounds)
         {
-            if (this.MinXYZ.X <= bounds.MinXYZ.X
-                && this.MaxXYZ.X >= bounds.MaxXYZ.X
-                && this.MinXYZ.Y <= bounds.MinXYZ.Y
-                && this.MaxXYZ.Y >= bounds.MaxXYZ.Y
-                && this.MinXYZ.Z <= bounds.MinXYZ.Z
-                && this.MaxXYZ.Z >= bounds.MaxXYZ.Z)
+            if (MinXYZ.X <= bounds.MinXYZ.X
+                && MaxXYZ.X >= bounds.MaxXYZ.X
+                && MinXYZ.Y <= bounds.MinXYZ.Y
+                && MaxXYZ.Y >= bounds.MaxXYZ.Y
+                && MinXYZ.Z <= bounds.MinXYZ.Z
+                && MaxXYZ.Z >= bounds.MaxXYZ.Z)
             {
                 return true;
             }

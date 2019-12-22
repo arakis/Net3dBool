@@ -114,9 +114,9 @@ namespace Net3dBool
         {
             //calculate adjacency information
             Face face;
-            for (int i = 0; i < this.NumFaces; i++)
+            for (int i = 0; i < NumFaces; i++)
             {
-                face = this.GetFace(i);
+                face = GetFace(i);
                 face.V1.AddAdjacentVertex(face.V2);
                 face.V1.AddAdjacentVertex(face.V3);
                 face.V2.AddAdjacentVertex(face.V1);
@@ -293,7 +293,7 @@ namespace Net3dBool
                                         {
                                             //PART II - SUBDIVIDING NON-COPLANAR POLYGONS
                                             int lastNumFaces = NumFaces;
-                                            this.SplitFace(i, segment1, segment2);
+                                            SplitFace(i, segment1, segment2);
 
                                             //prevent from infinite loop (with a loss of faces...)
                                             //if(numFacesStart*20<getNumFaces())

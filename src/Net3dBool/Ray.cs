@@ -64,11 +64,11 @@ namespace Net3dBool
 
         public Ray(Vector3 origin, Vector3 directionNormal, double minDistanceToConsider = 0, double maxDistanceToConsider = double.PositiveInfinity, IntersectionType intersectionType = IntersectionType.FrontFace)
         {
-            this.Origin = origin;
-            this.DirectionNormal = directionNormal;
-            this.MinDistanceToConsider = minDistanceToConsider;
-            this.MaxDistanceToConsider = maxDistanceToConsider;
-            this.IntersectionType = intersectionType;
+            Origin = origin;
+            DirectionNormal = directionNormal;
+            MinDistanceToConsider = minDistanceToConsider;
+            MaxDistanceToConsider = maxDistanceToConsider;
+            IntersectionType = intersectionType;
             OneOverDirection = 1 / directionNormal;
 
             Sign[0] = (OneOverDirection.X < 0) ? RaySign.negative : RaySign.positive;

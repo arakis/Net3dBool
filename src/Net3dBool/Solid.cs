@@ -135,15 +135,15 @@ namespace Net3dBool
         */
         public void SetData(Vector3[] vertices, int[] indices)
         {
-            this.Vertices = new Vector3[vertices.Length];
-            this.Indices = new int[indices.Length];
+            Vertices = new Vector3[vertices.Length];
+            Indices = new int[indices.Length];
             if (indices.Length != 0)
             {
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    this.Vertices[i] = vertices[i];
+                    Vertices[i] = vertices[i];
                 }
-                Array.Copy(indices, 0, this.Indices, 0, indices.Length);
+                Array.Copy(indices, 0, Indices, 0, indices.Length);
 
                 DefineGeometry();
             }

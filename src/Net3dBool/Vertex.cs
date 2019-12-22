@@ -64,7 +64,7 @@ namespace Net3dBool
      */
         public Vertex(Vector3 position)
         {
-            this._Position = position;
+            _Position = position;
 
             AdjacentVertices = new List<Vertex>();
             _Status = Status.UNKNOWN;
@@ -79,9 +79,9 @@ namespace Net3dBool
         */
         public Vertex(double x, double y, double z)
         {
-            this._Position.X = x;
-            this._Position.Y = y;
-            this._Position.Z = z;
+            _Position.X = x;
+            _Position.Y = y;
+            _Position.Z = z;
 
             AdjacentVertices = new List<Vertex>();
             _Status = Status.UNKNOWN;
@@ -99,7 +99,7 @@ namespace Net3dBool
             _Position.Z = position.Z;
 
             AdjacentVertices = new List<Vertex>();
-            this._Status = status;
+            _Status = status;
         }
 
         /// <summary>
@@ -111,10 +111,10 @@ namespace Net3dBool
         /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
         public Vertex(double x, double y, double z, Status status)
         {
-            this._Position = new Vector3(x, y, z);
+            _Position = new Vector3(x, y, z);
 
             AdjacentVertices = new List<Vertex>();
-            this._Status = status;
+            _Status = status;
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace Net3dBool
         {
             if (status >= Status.UNKNOWN && status <= Status.BOUNDARY)
             {
-                this._Status = status;
+                _Status = status;
             }
         }
 
@@ -229,7 +229,7 @@ namespace Net3dBool
         public void Mark(Status status)
         {
             //mark vertex
-            this._Status = status;
+            _Status = status;
 
             //mark adjacent vertices
             Vertex[] adjacentVerts = GetAdjacentVertices();

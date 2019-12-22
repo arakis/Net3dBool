@@ -39,20 +39,20 @@ namespace Net3dBool
 
         public Plane(Vector3 planeNormal, double distanceFromOrigin)
         {
-            this.PlaneNormal = planeNormal.GetNormal();
-            this.DistanceToPlaneFromOrigin = distanceFromOrigin;
+            PlaneNormal = planeNormal.GetNormal();
+            DistanceToPlaneFromOrigin = distanceFromOrigin;
         }
 
         public Plane(Vector3 point0, Vector3 point1, Vector3 point2)
         {
-            this.PlaneNormal = Vector3.Cross((point1 - point0), (point2 - point0)).GetNormal();
-            this.DistanceToPlaneFromOrigin = Vector3.Dot(PlaneNormal, point0);
+            PlaneNormal = Vector3.Cross((point1 - point0), (point2 - point0)).GetNormal();
+            DistanceToPlaneFromOrigin = Vector3.Dot(PlaneNormal, point0);
         }
 
         public Plane(Vector3 planeNormal, Vector3 pointOnPlane)
         {
-            this.PlaneNormal = planeNormal.GetNormal();
-            this.DistanceToPlaneFromOrigin = Vector3.Dot(planeNormal, pointOnPlane);
+            PlaneNormal = planeNormal.GetNormal();
+            DistanceToPlaneFromOrigin = Vector3.Dot(planeNormal, pointOnPlane);
         }
 
         public double GetDistanceFromPlane(Vector3 positionToCheck)

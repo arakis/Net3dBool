@@ -96,7 +96,7 @@ namespace Net3dBool
         */
         public Segment(Line line, Face face, int sign1, int sign2, int sign3)
         {
-            this.Line = line;
+            Line = line;
             _Index = 0;
 
             //VERTEX is an end
