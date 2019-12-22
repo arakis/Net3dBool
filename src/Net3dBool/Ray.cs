@@ -48,58 +48,58 @@ namespace Net3dBool
     /// </summary>
     public class Ray
     {
-        public static double sameSurfaceOffset = .00001;
+        public static double SameSurfaceOffset = .00001;
 
-        public Vector3 origin;
-        public Vector3 directionNormal;
-        public double minDistanceToConsider;
-        public double maxDistanceToConsider;
-        public Vector3 oneOverDirection;
-        public bool isShadowRay;
-        public IntersectionType intersectionType;
+        public Vector3 Origin;
+        public Vector3 DirectionNormal;
+        public double MinDistanceToConsider;
+        public double MaxDistanceToConsider;
+        public Vector3 OneOverDirection;
+        public bool IsShadowRay;
+        public IntersectionType IntersectionType;
 
-        public enum Sign { negative = 1, positive = 0 };
+        public enum RaySign { negative = 1, positive = 0 };
 
-        public Sign[] sign = new Sign[3];
+        public RaySign[] Sign = new RaySign[3];
 
         public Ray(Vector3 origin, Vector3 directionNormal, double minDistanceToConsider = 0, double maxDistanceToConsider = double.PositiveInfinity, IntersectionType intersectionType = IntersectionType.FrontFace)
         {
-            this.origin = origin;
-            this.directionNormal = directionNormal;
-            this.minDistanceToConsider = minDistanceToConsider;
-            this.maxDistanceToConsider = maxDistanceToConsider;
-            this.intersectionType = intersectionType;
-            oneOverDirection = 1 / directionNormal;
+            this.Origin = origin;
+            this.DirectionNormal = directionNormal;
+            this.MinDistanceToConsider = minDistanceToConsider;
+            this.MaxDistanceToConsider = maxDistanceToConsider;
+            this.IntersectionType = intersectionType;
+            OneOverDirection = 1 / directionNormal;
 
-            sign[0] = (oneOverDirection.x < 0) ? Sign.negative : Sign.positive;
-            sign[1] = (oneOverDirection.y < 0) ? Sign.negative : Sign.positive;
-            sign[2] = (oneOverDirection.z < 0) ? Sign.negative : Sign.positive;
+            Sign[0] = (OneOverDirection.X < 0) ? RaySign.negative : RaySign.positive;
+            Sign[1] = (OneOverDirection.Y < 0) ? RaySign.negative : RaySign.positive;
+            Sign[2] = (OneOverDirection.Z < 0) ? RaySign.negative : RaySign.positive;
         }
 
         public Ray(Ray rayToCopy)
         {
-            origin = rayToCopy.origin;
-            directionNormal = rayToCopy.directionNormal;
-            minDistanceToConsider = rayToCopy.minDistanceToConsider;
-            maxDistanceToConsider = rayToCopy.maxDistanceToConsider;
-            oneOverDirection = rayToCopy.oneOverDirection;
-            isShadowRay = rayToCopy.isShadowRay;
-            intersectionType = rayToCopy.intersectionType;
-            sign[0] = rayToCopy.sign[0];
-            sign[1] = rayToCopy.sign[1];
-            sign[2] = rayToCopy.sign[2];
+            Origin = rayToCopy.Origin;
+            DirectionNormal = rayToCopy.DirectionNormal;
+            MinDistanceToConsider = rayToCopy.MinDistanceToConsider;
+            MaxDistanceToConsider = rayToCopy.MaxDistanceToConsider;
+            OneOverDirection = rayToCopy.OneOverDirection;
+            IsShadowRay = rayToCopy.IsShadowRay;
+            IntersectionType = rayToCopy.IntersectionType;
+            Sign[0] = rayToCopy.Sign[0];
+            Sign[1] = rayToCopy.Sign[1];
+            Sign[2] = rayToCopy.Sign[2];
         }
 
         public bool Intersection(AxisAlignedBoundingBox bounds)
         {
             Ray ray = this;
             // we calculate distance to the intersection with the x planes of the box
-            double minDistFound = (bounds[(int)ray.sign[0]].x - ray.origin.x) * ray.oneOverDirection.x;
-            double maxDistFound = (bounds[1 - (int)ray.sign[0]].x - ray.origin.x) * ray.oneOverDirection.x;
+            double minDistFound = (bounds[(int)ray.Sign[0]].X - ray.Origin.X) * ray.OneOverDirection.X;
+            double maxDistFound = (bounds[1 - (int)ray.Sign[0]].X - ray.Origin.X) * ray.OneOverDirection.X;
 
             // now find the distance to the y planes of the box
-            double minDistToY = (bounds[(int)ray.sign[1]].y - ray.origin.y) * ray.oneOverDirection.y;
-            double maxDistToY = (bounds[1 - (int)ray.sign[1]].y - ray.origin.y) * ray.oneOverDirection.y;
+            double minDistToY = (bounds[(int)ray.Sign[1]].Y - ray.Origin.Y) * ray.OneOverDirection.Y;
+            double maxDistToY = (bounds[1 - (int)ray.Sign[1]].Y - ray.Origin.Y) * ray.OneOverDirection.Y;
 
             if ((minDistFound > maxDistToY) || (minDistToY > maxDistFound))
             {
@@ -117,8 +117,8 @@ namespace Net3dBool
             }
 
             // and finaly the z planes
-            double minDistToZ = (bounds[(int)ray.sign[2]].z - ray.origin.z) * ray.oneOverDirection.z;
-            double maxDistToZ = (bounds[1 - (int)ray.sign[2]].z - ray.origin.z) * ray.oneOverDirection.z;
+            double minDistToZ = (bounds[(int)ray.Sign[2]].Z - ray.Origin.Z) * ray.OneOverDirection.Z;
+            double maxDistToZ = (bounds[1 - (int)ray.Sign[2]].Z - ray.Origin.Z) * ray.OneOverDirection.Z;
 
             if ((minDistFound > maxDistToZ) || (minDistToZ > maxDistFound))
             {
@@ -135,7 +135,7 @@ namespace Net3dBool
                 maxDistFound = maxDistToZ;
             }
 
-            bool withinDistanceToConsider = (minDistFound < ray.maxDistanceToConsider) && (maxDistFound > ray.minDistanceToConsider);
+            bool withinDistanceToConsider = (minDistFound < ray.MaxDistanceToConsider) && (maxDistFound > ray.MinDistanceToConsider);
             return withinDistanceToConsider;
         }
     }

@@ -47,21 +47,21 @@ namespace Net3dBool
     public class Face //: IPrimitive
     {
         /** first vertex */
-        public Vertex v1;
+        public Vertex V1;
         /** second vertex */
-        public Vertex v2;
+        public Vertex V2;
         /** third vertex */
-        public Vertex v3;
+        public Vertex V3;
 
-        private Vector3 center;
+        private Vector3 Center;
 
         /** face status relative to a solid  */
         private readonly static double EqualityTolerance = 1e-10f;
         private enum Side { UP, DOWN, ON, NONE };
-        private Bound boundCache;
-        private bool cachedBounds = false;
-        private Plane planeCache;
-        private Status status;
+        private Bound BoundCache;
+        private bool CachedBounds = false;
+        private Plane PlaneCache;
+        private Status Status;
 
         /** face status if it is still unknown */
         /** face status if it is inside a solid */
@@ -90,12 +90,12 @@ namespace Net3dBool
         /// <param name="v3">a face vertex</param>
         public Face(Vertex v1, Vertex v2, Vertex v3)
         {
-            this.v1 = v1;
-            this.v2 = v2;
-            this.v3 = v3;
-            center = (v1.Position + v2.Position + v3.Position) / 3.0;
+            this.V1 = v1;
+            this.V2 = v2;
+            this.V3 = v3;
+            Center = (v1.Position + v2.Position + v3.Position) / 3.0;
 
-            status = Status.UNKNOWN;
+            Status = Status.UNKNOWN;
         }
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace Net3dBool
         public Face Clone()
         {
             Face clone = new Face();
-            clone.v1 = v1.Clone();
-            clone.v2 = v2.Clone();
-            clone.v3 = v3.Clone();
-            clone.center = center;
-            clone.status = status;
+            clone.V1 = V1.Clone();
+            clone.V2 = V2.Clone();
+            clone.V3 = V3.Clone();
+            clone.Center = Center;
+            clone.Status = Status;
             return clone;
         }
 
@@ -121,9 +121,9 @@ namespace Net3dBool
 
         public bool Equals(Face face)
         {
-            bool cond1 = v1.Equals(face.v1) && v2.Equals(face.v2) && v3.Equals(face.v3);
-            bool cond2 = v1.Equals(face.v2) && v2.Equals(face.v3) && v3.Equals(face.v1);
-            bool cond3 = v1.Equals(face.v3) && v2.Equals(face.v1) && v3.Equals(face.v2);
+            bool cond1 = V1.Equals(face.V1) && V2.Equals(face.V2) && V3.Equals(face.V3);
+            bool cond2 = V1.Equals(face.V2) && V2.Equals(face.V3) && V3.Equals(face.V1);
+            bool cond3 = V1.Equals(face.V3) && V2.Equals(face.V1) && V3.Equals(face.V2);
 
             return cond1 || cond2 || cond3;
         }
@@ -135,17 +135,17 @@ namespace Net3dBool
 
         public Vector3 GetCenter()
         {
-            return center;
+            return Center;
         }
 
         public double GetArea()
         {
             //area = (a * c * sen(B))/2
-            Vector3 p1 = v1.GetPosition();
-            Vector3 p2 = v2.GetPosition();
-            Vector3 p3 = v3.GetPosition();
-            Vector3 xy = new Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
-            Vector3 xz = new Vector3(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+            Vector3 p1 = V1.GetPosition();
+            Vector3 p2 = V2.GetPosition();
+            Vector3 p3 = V3.GetPosition();
+            Vector3 xy = new Vector3(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            Vector3 xz = new Vector3(p3.X - p1.X, p3.Y - p1.Y, p3.Z - p1.Z);
 
             double a = (p1 - p2).Length;
             double c = (p1 - p3).Length;
@@ -156,43 +156,43 @@ namespace Net3dBool
 
         public Bound GetBound()
         {
-            if (!cachedBounds)
+            if (!CachedBounds)
             {
-                boundCache = new Bound(v1.GetPosition(), v2.GetPosition(), v3.GetPosition());
-                cachedBounds = true;
+                BoundCache = new Bound(V1.GetPosition(), V2.GetPosition(), V3.GetPosition());
+                CachedBounds = true;
             }
 
-            return boundCache;
+            return BoundCache;
         }
 
         public Plane GetPlane()
         {
-            if (planeCache == null)
+            if (PlaneCache == null)
             {
-                Vector3 p1 = v1.GetPosition();
-                Vector3 p2 = v2.GetPosition();
-                Vector3 p3 = v3.GetPosition();
-                planeCache = new Plane(p1, p2, p3);
+                Vector3 p1 = V1.GetPosition();
+                Vector3 p2 = V2.GetPosition();
+                Vector3 p3 = V3.GetPosition();
+                PlaneCache = new Plane(p1, p2, p3);
             }
 
-            return planeCache;
+            return PlaneCache;
         }
 
         public Vector3 GetNormal()
         {
-            return GetPlane().planeNormal;
+            return GetPlane().PlaneNormal;
         }
 
         public Status GetStatus()
         {
-            return status;
+            return Status;
         }
 
         public void Invert()
         {
-            Vertex vertexTemp = v2;
-            v2 = v1;
-            v1 = vertexTemp;
+            Vertex vertexTemp = V2;
+            V2 = V1;
+            V1 = vertexTemp;
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace Net3dBool
         public void RayTraceClassify(Object3D obj)
         {
             //creating a ray starting at the face baricenter going to the normal direction
-            Line ray = new Line(GetNormal(), center);
+            Line ray = new Line(GetNormal(), Center);
 
             bool success;
             double distance;
@@ -221,7 +221,7 @@ namespace Net3dBool
                     intersectionPoint = ray.ComputePlaneIntersection(face.GetPlane());
 
                     //if ray intersects the plane...
-                    if (intersectionPoint.x != double.PositiveInfinity)
+                    if (intersectionPoint.X != double.PositiveInfinity)
                     {
                         double dotProduct = Vector3.Dot(face.GetNormal(), ray.Direction);
                         distance = ray.ComputePointToPointDistance(intersectionPoint);
@@ -270,7 +270,7 @@ namespace Net3dBool
             if (closestFace == null)
             {
                 //none face found: outside face
-                status = Status.OUTSIDE;
+                Status = Status.OUTSIDE;
             }
             else //face found: test dot product
             {
@@ -281,22 +281,22 @@ namespace Net3dBool
                 {
                     if (dotProduct > EqualityTolerance)
                     {
-                        status = Status.SAME;
+                        Status = Status.SAME;
                     }
                     else if (dotProduct < -EqualityTolerance)
                     {
-                        status = Status.OPPOSITE;
+                        Status = Status.OPPOSITE;
                     }
                 }
                 else if (dotProduct > EqualityTolerance)
                 {
                     //dot product > 0 (same direction): inside face
-                    status = Status.INSIDE;
+                    Status = Status.INSIDE;
                 }
                 else if (dotProduct < -EqualityTolerance)
                 {
                     //dot product < 0 (opposite direction): outside face
-                    status = Status.OUTSIDE;
+                    Status = Status.OUTSIDE;
                 }
             }
         }
@@ -307,23 +307,23 @@ namespace Net3dBool
         /// <returns>true if the face could be classified, false otherwise</returns>
         public bool SimpleClassify()
         {
-            Status status1 = v1.GetStatus();
-            Status status2 = v2.GetStatus();
-            Status status3 = v3.GetStatus();
+            Status status1 = V1.GetStatus();
+            Status status2 = V2.GetStatus();
+            Status status3 = V3.GetStatus();
 
             if (status1 == Status.INSIDE || status1 == Status.OUTSIDE)
             {
-                this.status = status1;
+                this.Status = status1;
                 return true;
             }
             else if (status2 == Status.INSIDE || status2 == Status.OUTSIDE)
             {
-                this.status = status2;
+                this.Status = status2;
                 return true;
             }
             else if (status3 == Status.INSIDE || status3 == Status.OUTSIDE)
             {
-                this.status = status3;
+                this.Status = status3;
                 return true;
             }
             else
@@ -334,7 +334,7 @@ namespace Net3dBool
 
         public override string ToString()
         {
-            return v1.toString() + "\n" + v2.toString() + "\n" + v3.toString();
+            return V1.ToString() + "\n" + V2.ToString() + "\n" + V3.ToString();
         }
 
         /**
@@ -383,16 +383,16 @@ namespace Net3dBool
         private static Side LinePositionInX(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
         {
             double a, b, z;
-            if ((Math.Abs(pointLine1.y - pointLine2.y) > EqualityTolerance) && (((point.y >= pointLine1.y) && (point.y <= pointLine2.y)) || ((point.y <= pointLine1.y) && (point.y >= pointLine2.y))))
+            if ((Math.Abs(pointLine1.Y - pointLine2.Y) > EqualityTolerance) && (((point.Y >= pointLine1.Y) && (point.Y <= pointLine2.Y)) || ((point.Y <= pointLine1.Y) && (point.Y >= pointLine2.Y))))
             {
-                a = (pointLine2.z - pointLine1.z) / (pointLine2.y - pointLine1.y);
-                b = pointLine1.z - a * pointLine1.y;
-                z = a * point.y + b;
-                if (z > point.z + EqualityTolerance)
+                a = (pointLine2.Z - pointLine1.Z) / (pointLine2.Y - pointLine1.Y);
+                b = pointLine1.Z - a * pointLine1.Y;
+                z = a * point.Y + b;
+                if (z > point.Z + EqualityTolerance)
                 {
                     return Side.UP;
                 }
-                else if (z < point.z - EqualityTolerance)
+                else if (z < point.Z - EqualityTolerance)
                 {
                     return Side.DOWN;
                 }
@@ -417,16 +417,16 @@ namespace Net3dBool
         private static Side LinePositionInY(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
         {
             double a, b, z;
-            if ((Math.Abs(pointLine1.x - pointLine2.x) > EqualityTolerance) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
+            if ((Math.Abs(pointLine1.X - pointLine2.X) > EqualityTolerance) && (((point.X >= pointLine1.X) && (point.X <= pointLine2.X)) || ((point.X <= pointLine1.X) && (point.X >= pointLine2.X))))
             {
-                a = (pointLine2.z - pointLine1.z) / (pointLine2.x - pointLine1.x);
-                b = pointLine1.z - a * pointLine1.x;
-                z = a * point.x + b;
-                if (z > point.z + EqualityTolerance)
+                a = (pointLine2.Z - pointLine1.Z) / (pointLine2.X - pointLine1.X);
+                b = pointLine1.Z - a * pointLine1.X;
+                z = a * point.X + b;
+                if (z > point.Z + EqualityTolerance)
                 {
                     return Side.UP;
                 }
-                else if (z < point.z - EqualityTolerance)
+                else if (z < point.Z - EqualityTolerance)
                 {
                     return Side.DOWN;
                 }
@@ -451,16 +451,16 @@ namespace Net3dBool
         private static Side LinePositionInZ(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
         {
             double a, b, y;
-            if ((Math.Abs(pointLine1.x - pointLine2.x) > EqualityTolerance) && (((point.x >= pointLine1.x) && (point.x <= pointLine2.x)) || ((point.x <= pointLine1.x) && (point.x >= pointLine2.x))))
+            if ((Math.Abs(pointLine1.X - pointLine2.X) > EqualityTolerance) && (((point.X >= pointLine1.X) && (point.X <= pointLine2.X)) || ((point.X <= pointLine1.X) && (point.X >= pointLine2.X))))
             {
-                a = (pointLine2.y - pointLine1.y) / (pointLine2.x - pointLine1.x);
-                b = pointLine1.y - a * pointLine1.x;
-                y = a * point.x + b;
-                if (y > point.y + EqualityTolerance)
+                a = (pointLine2.Y - pointLine1.Y) / (pointLine2.X - pointLine1.X);
+                b = pointLine1.Y - a * pointLine1.X;
+                y = a * point.X + b;
+                if (y > point.Y + EqualityTolerance)
                 {
                     return Side.UP;
                 }
-                else if (y < point.y - EqualityTolerance)
+                else if (y < point.Y - EqualityTolerance)
                 {
                     return Side.DOWN;
                 }
@@ -488,28 +488,28 @@ namespace Net3dBool
             Vector3 normal = GetNormal();
 
             //if x is constant...
-            if (Math.Abs(normal.x) > EqualityTolerance)
+            if (Math.Abs(normal.X) > EqualityTolerance)
             {
                 //tests on the x plane
-                result1 = LinePositionInX(point, v1.GetPosition(), v2.GetPosition());
-                result2 = LinePositionInX(point, v2.GetPosition(), v3.GetPosition());
-                result3 = LinePositionInX(point, v3.GetPosition(), v1.GetPosition());
+                result1 = LinePositionInX(point, V1.GetPosition(), V2.GetPosition());
+                result2 = LinePositionInX(point, V2.GetPosition(), V3.GetPosition());
+                result3 = LinePositionInX(point, V3.GetPosition(), V1.GetPosition());
             }
 
             //if y is constant...
-            else if (Math.Abs(normal.y) > EqualityTolerance)
+            else if (Math.Abs(normal.Y) > EqualityTolerance)
             {
                 //tests on the y plane
-                result1 = LinePositionInY(point, v1.GetPosition(), v2.GetPosition());
-                result2 = LinePositionInY(point, v2.GetPosition(), v3.GetPosition());
-                result3 = LinePositionInY(point, v3.GetPosition(), v1.GetPosition());
+                result1 = LinePositionInY(point, V1.GetPosition(), V2.GetPosition());
+                result2 = LinePositionInY(point, V2.GetPosition(), V3.GetPosition());
+                result3 = LinePositionInY(point, V3.GetPosition(), V1.GetPosition());
             }
             else
             {
                 //tests on the z plane
-                result1 = LinePositionInZ(point, v1.GetPosition(), v2.GetPosition());
-                result2 = LinePositionInZ(point, v2.GetPosition(), v3.GetPosition());
-                result3 = LinePositionInZ(point, v3.GetPosition(), v1.GetPosition());
+                result1 = LinePositionInZ(point, V1.GetPosition(), V2.GetPosition());
+                result2 = LinePositionInZ(point, V2.GetPosition(), V3.GetPosition());
+                result3 = LinePositionInZ(point, V3.GetPosition(), V1.GetPosition());
             }
 
             //if the point is up and down two lines...

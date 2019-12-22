@@ -48,9 +48,9 @@ namespace Net3dBool
     {
         public Vector3 Position;
         /** references to vertices conected to it by an edge  */
-        private List<Vertex> adjacentVertices;
+        private List<Vertex> AdjacentVertices;
         /** vertex status relative to other object */
-        private Status status;
+        private Status Status;
 
         /** tolerance value to test equalities */
         private readonly static double EqualityTolerance = 1e-5f;
@@ -66,8 +66,8 @@ namespace Net3dBool
         {
             this.Position = position;
 
-            adjacentVertices = new List<Vertex>();
-            status = Status.UNKNOWN;
+            AdjacentVertices = new List<Vertex>();
+            Status = Status.UNKNOWN;
         }
 
         /**
@@ -79,12 +79,12 @@ namespace Net3dBool
         */
         public Vertex(double x, double y, double z)
         {
-            this.Position.x = x;
-            this.Position.y = y;
-            this.Position.z = z;
+            this.Position.X = x;
+            this.Position.Y = y;
+            this.Position.Z = z;
 
-            adjacentVertices = new List<Vertex>();
-            status = Status.UNKNOWN;
+            AdjacentVertices = new List<Vertex>();
+            Status = Status.UNKNOWN;
         }
 
         /// <summary>
@@ -94,12 +94,12 @@ namespace Net3dBool
         /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
         public Vertex(Vector3 position, Status status)
         {
-            Position.x = position.x;
-            Position.y = position.y;
-            Position.z = position.z;
+            Position.X = position.X;
+            Position.Y = position.Y;
+            Position.Z = position.Z;
 
-            adjacentVertices = new List<Vertex>();
-            this.status = status;
+            AdjacentVertices = new List<Vertex>();
+            this.Status = status;
         }
 
         /// <summary>
@@ -113,8 +113,8 @@ namespace Net3dBool
         {
             this.Position = new Vector3(x, y, z);
 
-            adjacentVertices = new List<Vertex>();
-            this.status = status;
+            AdjacentVertices = new List<Vertex>();
+            this.Status = status;
         }
 
         /// <summary>
@@ -132,11 +132,11 @@ namespace Net3dBool
         {
             Vertex clone = new Vertex();
             clone.Position = Position;
-            clone.status = status;
-            clone.adjacentVertices = new List<Vertex>();
-            for (int i = 0; i < adjacentVertices.Count; i++)
+            clone.Status = Status;
+            clone.AdjacentVertices = new List<Vertex>();
+            for (int i = 0; i < AdjacentVertices.Count; i++)
             {
-                clone.adjacentVertices.Add(adjacentVertices[i].Clone());
+                clone.AdjacentVertices.Add(AdjacentVertices[i].Clone());
             }
 
             return clone;
@@ -147,9 +147,9 @@ namespace Net3dBool
         * 
         * @return the string definition
         */
-        public String toString()
+        public override string ToString()
         {
-            return "(" + Position.x + ", " + Position.y + ", " + Position.z + ")";
+            return "(" + Position.X + ", " + Position.Y + ", " + Position.Z + ")";
         }
 
         /**
@@ -175,7 +175,7 @@ namespace Net3dBool
         {
             if (status >= Status.UNKNOWN && status <= Status.BOUNDARY)
             {
-                this.status = status;
+                this.Status = status;
             }
         }
 
@@ -198,10 +198,10 @@ namespace Net3dBool
         */
         public Vertex[] GetAdjacentVertices()
         {
-            Vertex[] vertices = new Vertex[adjacentVertices.Count];
-            for (int i = 0; i < adjacentVertices.Count; i++)
+            Vertex[] vertices = new Vertex[AdjacentVertices.Count];
+            for (int i = 0; i < AdjacentVertices.Count; i++)
             {
-                vertices[i] = adjacentVertices[i];
+                vertices[i] = AdjacentVertices[i];
             }
             return vertices;
         }
@@ -213,7 +213,7 @@ namespace Net3dBool
         */
         public Status GetStatus()
         {
-            return status;
+            return Status;
         }
 
         //----------------------------------OTHERS--------------------------------------//
@@ -225,9 +225,9 @@ namespace Net3dBool
         */
         public void AddAdjacentVertex(Vertex adjacentVertex)
         {
-            if (!adjacentVertices.Contains(adjacentVertex))
+            if (!AdjacentVertices.Contains(adjacentVertex))
             {
-                adjacentVertices.Add(adjacentVertex);
+                AdjacentVertices.Add(adjacentVertex);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Net3dBool
         public void Mark(Status status)
         {
             //mark vertex
-            this.status = status;
+            this.Status = status;
 
             //mark adjacent vertices
             Vertex[] adjacentVerts = GetAdjacentVertices();

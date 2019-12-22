@@ -33,37 +33,38 @@ namespace Net3dBool
 {
     public class Plane
     {
-        public double distanceToPlaneFromOrigin;
-        public Vector3 planeNormal;
+        public double DistanceToPlaneFromOrigin;
+        public Vector3 PlaneNormal;
         private const double TreatAsZero = .000000001;
+
         public Plane(Vector3 planeNormal, double distanceFromOrigin)
         {
-            this.planeNormal = planeNormal.GetNormal();
-            this.distanceToPlaneFromOrigin = distanceFromOrigin;
+            this.PlaneNormal = planeNormal.GetNormal();
+            this.DistanceToPlaneFromOrigin = distanceFromOrigin;
         }
 
         public Plane(Vector3 point0, Vector3 point1, Vector3 point2)
         {
-            this.planeNormal = Vector3.Cross((point1 - point0), (point2 - point0)).GetNormal();
-            this.distanceToPlaneFromOrigin = Vector3.Dot(planeNormal, point0);
+            this.PlaneNormal = Vector3.Cross((point1 - point0), (point2 - point0)).GetNormal();
+            this.DistanceToPlaneFromOrigin = Vector3.Dot(PlaneNormal, point0);
         }
 
         public Plane(Vector3 planeNormal, Vector3 pointOnPlane)
         {
-            this.planeNormal = planeNormal.GetNormal();
-            this.distanceToPlaneFromOrigin = Vector3.Dot(planeNormal, pointOnPlane);
+            this.PlaneNormal = planeNormal.GetNormal();
+            this.DistanceToPlaneFromOrigin = Vector3.Dot(planeNormal, pointOnPlane);
         }
 
         public double GetDistanceFromPlane(Vector3 positionToCheck)
         {
-            double distanceToPointFromOrigin = Vector3.Dot(positionToCheck, planeNormal);
-            return distanceToPointFromOrigin - distanceToPlaneFromOrigin;
+            double distanceToPointFromOrigin = Vector3.Dot(positionToCheck, PlaneNormal);
+            return distanceToPointFromOrigin - DistanceToPlaneFromOrigin;
         }
 
         public double GetDistanceToIntersection(Ray ray, out bool inFront)
         {
             inFront = false;
-            double normalDotRayDirection = Vector3.Dot(planeNormal, ray.directionNormal);
+            double normalDotRayDirection = Vector3.Dot(PlaneNormal, ray.DirectionNormal);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return double.PositiveInfinity;
@@ -74,19 +75,19 @@ namespace Net3dBool
                 inFront = true;
             }
 
-            return (distanceToPlaneFromOrigin - Vector3.Dot(planeNormal, ray.origin)) / normalDotRayDirection;
+            return (DistanceToPlaneFromOrigin - Vector3.Dot(PlaneNormal, ray.Origin)) / normalDotRayDirection;
         }
 
         public double GetDistanceToIntersection(Vector3 pointOnLine, Vector3 lineDirection)
         {
-            double normalDotRayDirection = Vector3.Dot(planeNormal, lineDirection);
+            double normalDotRayDirection = Vector3.Dot(PlaneNormal, lineDirection);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return double.PositiveInfinity;
             }
 
-            double planeNormalDotPointOnLine = Vector3.Dot(planeNormal, pointOnLine);
-            return (distanceToPlaneFromOrigin - planeNormalDotPointOnLine) / normalDotRayDirection;
+            double planeNormalDotPointOnLine = Vector3.Dot(PlaneNormal, pointOnLine);
+            return (DistanceToPlaneFromOrigin - planeNormalDotPointOnLine) / normalDotRayDirection;
         }
 
         public bool RayHitPlane(Ray ray, out double distanceToHit, out bool hitFrontOfPlane)
@@ -94,7 +95,7 @@ namespace Net3dBool
             distanceToHit = double.PositiveInfinity;
             hitFrontOfPlane = false;
 
-            double normalDotRayDirection = Vector3.Dot(planeNormal, ray.directionNormal);
+            double normalDotRayDirection = Vector3.Dot(PlaneNormal, ray.DirectionNormal);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return false;
@@ -105,9 +106,9 @@ namespace Net3dBool
                 hitFrontOfPlane = true;
             }
 
-            double distanceToRayOriginFromOrigin = Vector3.Dot(planeNormal, ray.origin);
+            double distanceToRayOriginFromOrigin = Vector3.Dot(PlaneNormal, ray.Origin);
 
-            double distanceToPlaneFromRayOrigin = distanceToPlaneFromOrigin - distanceToRayOriginFromOrigin;
+            double distanceToPlaneFromRayOrigin = DistanceToPlaneFromOrigin - distanceToRayOriginFromOrigin;
 
             bool originInFrontOfPlane = distanceToPlaneFromRayOrigin < 0;
 
@@ -123,14 +124,14 @@ namespace Net3dBool
 
         public bool LineHitPlane(Vector3 start, Vector3 end, out Vector3 intersectionPosition)
         {
-            double distanceToStartFromOrigin = Vector3.Dot(planeNormal, start);
+            double distanceToStartFromOrigin = Vector3.Dot(PlaneNormal, start);
             if (distanceToStartFromOrigin == 0)
             {
                 intersectionPosition = start;
                 return true;
             }
 
-            double distanceToEndFromOrigin = Vector3.Dot(planeNormal, end);
+            double distanceToEndFromOrigin = Vector3.Dot(PlaneNormal, end);
             if (distanceToEndFromOrigin == 0)
             {
                 intersectionPosition = end;
@@ -142,8 +143,8 @@ namespace Net3dBool
             {
                 Vector3 direction = (end - start).GetNormal();
 
-                double startDistanceFromPlane = distanceToStartFromOrigin - distanceToPlaneFromOrigin;
-                double endDistanceFromPlane = distanceToEndFromOrigin - distanceToPlaneFromOrigin;
+                double startDistanceFromPlane = distanceToStartFromOrigin - DistanceToPlaneFromOrigin;
+                double endDistanceFromPlane = distanceToEndFromOrigin - DistanceToPlaneFromOrigin;
                 double lengthAlongPlanNormal = endDistanceFromPlane - startDistanceFromPlane;
 
                 double ratioToPlanFromStart = startDistanceFromPlane / lengthAlongPlanNormal;

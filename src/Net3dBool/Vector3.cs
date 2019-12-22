@@ -41,17 +41,17 @@ namespace Net3dBool
         /// <summary>
         /// The X component of the Vector3.
         /// </summary>
-        public double x;
+        public double X;
 
         /// <summary>
         /// The Y component of the Vector3.
         /// </summary>
-        public double y;
+        public double Y;
 
         /// <summary>
         /// The Z component of the Vector3.
         /// </summary>
-        public double z;
+        public double Z;
 
         #endregion Fields
 
@@ -65,9 +65,9 @@ namespace Net3dBool
         /// <param name="z">The z component of the Vector3.</param>
         public Vector3(double x, double y, double z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
 
         /// <summary>
@@ -76,16 +76,16 @@ namespace Net3dBool
         /// <param name="v">The Vector3d to copy components from.</param>
         public Vector3(Vector3 v)
         {
-            x = v.x;
-            y = v.y;
-            z = v.z;
+            X = v.X;
+            Y = v.Y;
+            Z = v.Z;
         }
 
         public Vector3(double[] doubleArray)
         {
-            x = doubleArray[0];
-            y = doubleArray[1];
-            z = doubleArray[2];
+            X = doubleArray[0];
+            Y = doubleArray[1];
+            Z = doubleArray[2];
         }
 
         #endregion Constructors
@@ -99,13 +99,13 @@ namespace Net3dBool
                 switch (index)
                 {
                     case 0:
-                        return x;
+                        return X;
 
                     case 1:
-                        return y;
+                        return Y;
 
                     case 2:
-                        return z;
+                        return Z;
 
                     default:
                         return 0;
@@ -117,15 +117,15 @@ namespace Net3dBool
                 switch (index)
                 {
                     case 0:
-                        x = value;
+                        X = value;
                         break;
 
                     case 1:
-                        y = value;
+                        Y = value;
                         break;
 
                     case 2:
-                        z = value;
+                        Z = value;
                         break;
 
                     default:
@@ -151,7 +151,7 @@ namespace Net3dBool
         {
             get
             {
-                return System.Math.Sqrt(x * x + y * y + z * z);
+                return System.Math.Sqrt(X * X + Y * Y + Z * Z);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Net3dBool
         {
             get
             {
-                return x * x + y * y + z * z;
+                return X * X + Y * Y + Z * Z;
             }
         }
 
@@ -197,9 +197,9 @@ namespace Net3dBool
         public void Normalize()
         {
             double scale = 1.0 / this.Length;
-            x *= scale;
-            y *= scale;
-            z *= scale;
+            X *= scale;
+            Y *= scale;
+            Z *= scale;
         }
 
         #endregion public void Normalize()
@@ -208,7 +208,7 @@ namespace Net3dBool
 
         public double[] ToArray()
         {
-            return new double[] { x, y, z };
+            return new double[] { X, Y, Z };
         }
 
         #endregion public double[] ToArray()
@@ -283,7 +283,7 @@ namespace Net3dBool
         /// <param name="result">Result of operation.</param>
         public static void Add(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
-            result = new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+            result = new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
 
         #endregion Add
@@ -310,7 +310,7 @@ namespace Net3dBool
         /// <param name="result">Result of subtraction</param>
         public static void Subtract(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
-            result = new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+            result = new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
 
         #endregion Subtract
@@ -337,7 +337,7 @@ namespace Net3dBool
         /// <param name="result">Result of the operation.</param>
         public static void Multiply(ref Vector3 vector, double scale, out Vector3 result)
         {
-            result = new Vector3(vector.x * scale, vector.y * scale, vector.z * scale);
+            result = new Vector3(vector.X * scale, vector.Y * scale, vector.Z * scale);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Net3dBool
         /// <param name="result">Result of the operation.</param>
         public static void Multiply(ref Vector3 vector, ref Vector3 scale, out Vector3 result)
         {
-            result = new Vector3(vector.x * scale.x, vector.y * scale.y, vector.z * scale.z);
+            result = new Vector3(vector.X * scale.X, vector.Y * scale.Y, vector.Z * scale.Z);
         }
 
         #endregion Multiply
@@ -410,7 +410,7 @@ namespace Net3dBool
         /// <param name="result">Result of the operation.</param>
         public static void Divide(ref Vector3 vector, ref Vector3 scale, out Vector3 result)
         {
-            result = new Vector3(vector.x / scale.x, vector.y / scale.y, vector.z / scale.z);
+            result = new Vector3(vector.X / scale.X, vector.Y / scale.Y, vector.Z / scale.Z);
         }
 
         #endregion Divide
@@ -425,9 +425,9 @@ namespace Net3dBool
         /// <returns>The component-wise minimum</returns>
         public static Vector3 ComponentMin(Vector3 a, Vector3 b)
         {
-            a.x = a.x < b.x ? a.x : b.x;
-            a.y = a.y < b.y ? a.y : b.y;
-            a.z = a.z < b.z ? a.z : b.z;
+            a.X = a.X < b.X ? a.X : b.X;
+            a.Y = a.Y < b.Y ? a.Y : b.Y;
+            a.Z = a.Z < b.Z ? a.Z : b.Z;
             return a;
         }
 
@@ -439,9 +439,9 @@ namespace Net3dBool
         /// <param name="result">The component-wise minimum</param>
         public static void ComponentMin(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
-            result.x = a.x < b.x ? a.x : b.x;
-            result.y = a.y < b.y ? a.y : b.y;
-            result.z = a.z < b.z ? a.z : b.z;
+            result.X = a.X < b.X ? a.X : b.X;
+            result.Y = a.Y < b.Y ? a.Y : b.Y;
+            result.Z = a.Z < b.Z ? a.Z : b.Z;
         }
 
         #endregion ComponentMin
@@ -456,9 +456,9 @@ namespace Net3dBool
         /// <returns>The component-wise maximum</returns>
         public static Vector3 ComponentMax(Vector3 a, Vector3 b)
         {
-            a.x = a.x > b.x ? a.x : b.x;
-            a.y = a.y > b.y ? a.y : b.y;
-            a.z = a.z > b.z ? a.z : b.z;
+            a.X = a.X > b.X ? a.X : b.X;
+            a.Y = a.Y > b.Y ? a.Y : b.Y;
+            a.Z = a.Z > b.Z ? a.Z : b.Z;
             return a;
         }
 
@@ -470,9 +470,9 @@ namespace Net3dBool
         /// <param name="result">The component-wise maximum</param>
         public static void ComponentMax(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
-            result.x = a.x > b.x ? a.x : b.x;
-            result.y = a.y > b.y ? a.y : b.y;
-            result.z = a.z > b.z ? a.z : b.z;
+            result.X = a.X > b.X ? a.X : b.X;
+            result.Y = a.Y > b.Y ? a.Y : b.Y;
+            result.Z = a.Z > b.Z ? a.Z : b.Z;
         }
 
         #endregion ComponentMax
@@ -518,9 +518,9 @@ namespace Net3dBool
         /// <returns>The clamped vector</returns>
         public static Vector3 Clamp(Vector3 vec, Vector3 min, Vector3 max)
         {
-            vec.x = vec.x < min.x ? min.x : vec.x > max.x ? max.x : vec.x;
-            vec.y = vec.y < min.y ? min.y : vec.y > max.y ? max.y : vec.y;
-            vec.z = vec.z < min.z ? min.z : vec.z > max.z ? max.z : vec.z;
+            vec.X = vec.X < min.X ? min.X : vec.X > max.X ? max.X : vec.X;
+            vec.Y = vec.Y < min.Y ? min.Y : vec.Y > max.Y ? max.Y : vec.Y;
+            vec.Z = vec.Z < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
             return vec;
         }
 
@@ -533,9 +533,9 @@ namespace Net3dBool
         /// <param name="result">The clamped vector</param>
         public static void Clamp(ref Vector3 vec, ref Vector3 min, ref Vector3 max, out Vector3 result)
         {
-            result.x = vec.x < min.x ? min.x : vec.x > max.x ? max.x : vec.x;
-            result.y = vec.y < min.y ? min.y : vec.y > max.y ? max.y : vec.y;
-            result.z = vec.z < min.z ? min.z : vec.z > max.z ? max.z : vec.z;
+            result.X = vec.X < min.X ? min.X : vec.X > max.X ? max.X : vec.X;
+            result.Y = vec.Y < min.Y ? min.Y : vec.Y > max.Y ? max.Y : vec.Y;
+            result.Z = vec.Z < min.Z ? min.Z : vec.Z > max.Z ? max.Z : vec.Z;
         }
 
         #endregion Clamp
@@ -550,9 +550,9 @@ namespace Net3dBool
         public static Vector3 Normalize(Vector3 vec)
         {
             double scale = 1.0 / vec.Length;
-            vec.x *= scale;
-            vec.y *= scale;
-            vec.z *= scale;
+            vec.X *= scale;
+            vec.Y *= scale;
+            vec.Z *= scale;
             return vec;
         }
 
@@ -564,9 +564,9 @@ namespace Net3dBool
         public static void Normalize(ref Vector3 vec, out Vector3 result)
         {
             double scale = 1.0 / vec.Length;
-            result.x = vec.x * scale;
-            result.y = vec.y * scale;
-            result.z = vec.z * scale;
+            result.X = vec.X * scale;
+            result.Y = vec.Y * scale;
+            result.Z = vec.Z * scale;
         }
 
         #endregion Normalize
@@ -581,7 +581,7 @@ namespace Net3dBool
         /// <returns>The dot product of the two inputs</returns>
         public static double Dot(Vector3 left, Vector3 right)
         {
-            return left.x * right.x + left.y * right.y + left.z * right.z;
+            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
 
         /// <summary>
@@ -592,7 +592,7 @@ namespace Net3dBool
         /// <param name="result">The dot product of the two inputs</param>
         public static void Dot(ref Vector3 left, ref Vector3 right, out double result)
         {
-            result = left.x * right.x + left.y * right.y + left.z * right.z;
+            result = left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
 
         #endregion Dot
@@ -621,9 +621,9 @@ namespace Net3dBool
         /// <param name="result">The cross product of the two inputs</param>
         public static void Cross(ref Vector3 left, ref Vector3 right, out Vector3 result)
         {
-            result = new Vector3(left.y * right.z - left.z * right.y,
-                left.z * right.x - left.x * right.z,
-                left.x * right.y - left.y * right.x);
+            result = new Vector3(left.Y * right.Z - left.Z * right.Y,
+                left.Z * right.X - left.X * right.Z,
+                left.X * right.Y - left.Y * right.X);
         }
 
         #endregion Cross
@@ -678,9 +678,9 @@ namespace Net3dBool
         /// <returns>a when blend=0, b when blend=1, and a linear combination otherwise</returns>
         public static Vector3 Lerp(Vector3 a, Vector3 b, double blend)
         {
-            a.x = blend * (b.x - a.x) + a.x;
-            a.y = blend * (b.y - a.y) + a.y;
-            a.z = blend * (b.z - a.z) + a.z;
+            a.X = blend * (b.X - a.X) + a.X;
+            a.Y = blend * (b.Y - a.Y) + a.Y;
+            a.Z = blend * (b.Z - a.Z) + a.Z;
             return a;
         }
 
@@ -693,9 +693,9 @@ namespace Net3dBool
         /// <param name="result">a when blend=0, b when blend=1, and a linear combination otherwise</param>
         public static void Lerp(ref Vector3 a, ref Vector3 b, double blend, out Vector3 result)
         {
-            result.x = blend * (b.x - a.x) + a.x;
-            result.y = blend * (b.y - a.y) + a.y;
-            result.z = blend * (b.z - a.z) + a.z;
+            result.X = blend * (b.X - a.X) + a.X;
+            result.Y = blend * (b.Y - a.Y) + a.Y;
+            result.Z = blend * (b.Z - a.Z) + a.Z;
         }
 
         #endregion Lerp
@@ -780,9 +780,9 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator +(Vector3 left, Vector3 right)
         {
-            left.x += right.x;
-            left.y += right.y;
-            left.z += right.z;
+            left.X += right.X;
+            left.Y += right.Y;
+            left.Z += right.Z;
             return left;
         }
 
@@ -794,9 +794,9 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator -(Vector3 left, Vector3 right)
         {
-            left.x -= right.x;
-            left.y -= right.y;
-            left.z -= right.z;
+            left.X -= right.X;
+            left.Y -= right.Y;
+            left.Z -= right.Z;
             return left;
         }
 
@@ -807,9 +807,9 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator -(Vector3 vec)
         {
-            vec.x = -vec.x;
-            vec.y = -vec.y;
-            vec.z = -vec.z;
+            vec.X = -vec.X;
+            vec.Y = -vec.Y;
+            vec.Z = -vec.Z;
             return vec;
         }
 
@@ -821,9 +821,9 @@ namespace Net3dBool
         /// <returns></returns>
         public static Vector3 operator *(Vector3 vecA, Vector3 vecB)
         {
-            vecA.x *= vecB.x;
-            vecA.y *= vecB.y;
-            vecA.z *= vecB.z;
+            vecA.X *= vecB.X;
+            vecA.Y *= vecB.Y;
+            vecA.Z *= vecB.Z;
             return vecA;
         }
 
@@ -835,9 +835,9 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator *(Vector3 vec, double scale)
         {
-            vec.x *= scale;
-            vec.y *= scale;
-            vec.z *= scale;
+            vec.X *= scale;
+            vec.Y *= scale;
+            vec.Z *= scale;
             return vec;
         }
 
@@ -849,9 +849,9 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator *(double scale, Vector3 vec)
         {
-            vec.x *= scale;
-            vec.y *= scale;
-            vec.z *= scale;
+            vec.X *= scale;
+            vec.Y *= scale;
+            vec.Z *= scale;
             return vec;
         }
 
@@ -863,7 +863,7 @@ namespace Net3dBool
         /// <returns>The result of the calculation.</returns>
         public static Vector3 operator /(double numerator, Vector3 vec)
         {
-            return new Vector3((numerator / vec.x), (numerator / vec.y), (numerator / vec.z));
+            return new Vector3((numerator / vec.X), (numerator / vec.Y), (numerator / vec.Z));
         }
 
         /// <summary>
@@ -875,9 +875,9 @@ namespace Net3dBool
         public static Vector3 operator /(Vector3 vec, double scale)
         {
             double mult = 1 / scale;
-            vec.x *= mult;
-            vec.y *= mult;
-            vec.z *= mult;
+            vec.X *= mult;
+            vec.Y *= mult;
+            vec.Z *= mult;
             return vec;
         }
 
@@ -915,7 +915,7 @@ namespace Net3dBool
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("[{0}, {1}, {2}]", x, y, z);
+            return String.Format("[{0}, {1}, {2}]", X, Y, Z);
         }
 
         #endregion public override string ToString()
@@ -928,7 +928,7 @@ namespace Net3dBool
         /// <returns>A System.Int32 containing the unique hashcode for this instance.</returns>
         public override int GetHashCode()
         {
-            return new { x, y, z }.GetHashCode();
+            return new { X, Y, Z }.GetHashCode();
         }
 
         #endregion public override int GetHashCode()
@@ -956,9 +956,9 @@ namespace Net3dBool
         /// <returns>True if the instances are equal; false otherwise.</returns>
         public bool Equals(Vector3 OtherVector, double ErrorValue)
         {
-            if ((x < OtherVector.x + ErrorValue && x > OtherVector.x - ErrorValue) &&
-                (y < OtherVector.y + ErrorValue && y > OtherVector.y - ErrorValue) &&
-                (z < OtherVector.z + ErrorValue && z > OtherVector.z - ErrorValue))
+            if ((X < OtherVector.X + ErrorValue && X > OtherVector.X - ErrorValue) &&
+                (Y < OtherVector.Y + ErrorValue && Y > OtherVector.Y - ErrorValue) &&
+                (Z < OtherVector.Z + ErrorValue && Z > OtherVector.Z - ErrorValue))
             {
                 return true;
             }
@@ -980,21 +980,21 @@ namespace Net3dBool
         public bool Equals(Vector3 other)
         {
             return
-                x == other.x &&
-                y == other.y &&
-                z == other.z;
+                X == other.X &&
+                Y == other.Y &&
+                Z == other.Z;
         }
 
         #endregion IEquatable<Vector3> Members
 
         public static double ComponentMax(Vector3 vector3)
         {
-            return Math.Max(vector3.x, Math.Max(vector3.y, vector3.z));
+            return Math.Max(vector3.X, Math.Max(vector3.Y, vector3.Z));
         }
 
         public static double ComponentMin(Vector3 vector3)
         {
-            return Math.Min(vector3.x, Math.Min(vector3.y, vector3.z));
+            return Math.Min(vector3.X, Math.Min(vector3.Y, vector3.Z));
         }
     }
 }

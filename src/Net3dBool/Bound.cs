@@ -47,17 +47,17 @@ namespace Net3dBool
     public class Bound
     {
         /** maximum from the x coordinate */
-        private double xMax;
+        private double XMax;
         /** minimum from the x coordinate */
-        private double xMin;
+        private double XMin;
         /** maximum from the y coordinate */
-        private double yMax;
+        private double YMax;
         /** minimum from the y coordinate */
-        private double yMin;
+        private double YMin;
         /** maximum from the z coordinate */
-        private double zMax;
+        private double ZMax;
         /** minimum from the z coordinate */
-        private double zMin;
+        private double ZMin;
 
         /** tolerance value to test equalities */
         private readonly static double EqualityTolerance = 1e-10f;
@@ -73,9 +73,9 @@ namespace Net3dBool
         */
         public Bound(Vector3 p1, Vector3 p2, Vector3 p3)
         {
-            xMax = xMin = p1.x;
-            yMax = yMin = p1.y;
-            zMax = zMin = p1.z;
+            XMax = XMin = p1.X;
+            YMax = YMin = p1.Y;
+            ZMax = ZMin = p1.Z;
 
             CheckVertex(p2);
             CheckVertex(p3);
@@ -88,9 +88,9 @@ namespace Net3dBool
         */
         public Bound(Vector3[] vertices)
         {
-            xMax = xMin = vertices[0].x;
-            yMax = yMin = vertices[0].y;
-            zMax = zMin = vertices[0].z;
+            XMax = XMin = vertices[0].X;
+            YMax = YMin = vertices[0].Y;
+            ZMax = ZMin = vertices[0].Z;
 
             for (int i = 1; i < vertices.Length; i++)
             {
@@ -107,7 +107,7 @@ namespace Net3dBool
         */
         public String toString()
         {
-            return "x: " + xMin + " .. " + xMax + "\ny: " + yMin + " .. " + yMax + "\nz: " + zMin + " .. " + zMax;
+            return "x: " + XMin + " .. " + XMax + "\ny: " + YMin + " .. " + YMax + "\nz: " + ZMin + " .. " + ZMax;
         }
 
         //--------------------------------------OTHERS----------------------------------//
@@ -120,7 +120,7 @@ namespace Net3dBool
         */
         public bool Overlap(Bound bound)
         {
-            if ((xMin > bound.xMax + EqualityTolerance) || (xMax < bound.xMin - EqualityTolerance) || (yMin > bound.yMax + EqualityTolerance) || (yMax < bound.yMin - EqualityTolerance) || (zMin > bound.zMax + EqualityTolerance) || (zMax < bound.zMin - EqualityTolerance))
+            if ((XMin > bound.XMax + EqualityTolerance) || (XMax < bound.XMin - EqualityTolerance) || (YMin > bound.YMax + EqualityTolerance) || (YMax < bound.YMin - EqualityTolerance) || (ZMin > bound.ZMax + EqualityTolerance) || (ZMax < bound.ZMin - EqualityTolerance))
             {
                 return false;
             }
@@ -139,31 +139,31 @@ namespace Net3dBool
         */
         private void CheckVertex(Vector3 vertex)
         {
-            if (vertex.x > xMax)
+            if (vertex.X > XMax)
             {
-                xMax = vertex.x;
+                XMax = vertex.X;
             }
-            else if (vertex.x < xMin)
+            else if (vertex.X < XMin)
             {
-                xMin = vertex.x;
-            }
-
-            if (vertex.y > yMax)
-            {
-                yMax = vertex.y;
-            }
-            else if (vertex.y < yMin)
-            {
-                yMin = vertex.y;
+                XMin = vertex.X;
             }
 
-            if (vertex.z > zMax)
+            if (vertex.Y > YMax)
             {
-                zMax = vertex.z;
+                YMax = vertex.Y;
             }
-            else if (vertex.z < zMin)
+            else if (vertex.Y < YMin)
             {
-                zMin = vertex.z;
+                YMin = vertex.Y;
+            }
+
+            if (vertex.Z > ZMax)
+            {
+                ZMax = vertex.Z;
+            }
+            else if (vertex.Z < ZMin)
+            {
+                ZMin = vertex.Z;
             }
         }
     }

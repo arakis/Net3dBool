@@ -48,8 +48,8 @@ namespace Net3dBool
     public class BooleanModeller
     {
         /** solid where boolean operations will be applied */
-        private Object3D object1;
-        private Object3D object2;
+        private Object3D Object1;
+        private Object3D Object2;
 
         //--------------------------------CONSTRUCTORS----------------------------------//
 
@@ -64,16 +64,16 @@ namespace Net3dBool
         public BooleanModeller(Solid solid1, Solid solid2)
         {
             //representation to apply boolean operations
-            object1 = new Object3D(solid1);
-            object2 = new Object3D(solid2);
+            Object1 = new Object3D(solid1);
+            Object2 = new Object3D(solid2);
 
             //split the faces so that none of them intercepts each other
-            object1.SplitFaces(object2);
-            object2.SplitFaces(object1);
+            Object1.SplitFaces(Object2);
+            Object2.SplitFaces(Object1);
 
             //classify faces as being inside or outside the other solid
-            object1.ClassifyFaces(object2);
-            object2.ClassifyFaces(object1);
+            Object1.ClassifyFaces(Object2);
+            Object2.ClassifyFaces(Object1);
         }
 
         private BooleanModeller()
@@ -91,8 +91,8 @@ namespace Net3dBool
         public BooleanModeller Clone()
         {
             BooleanModeller clone = new BooleanModeller();
-            clone.object1 = object1.Clone();
-            clone.object2 = object2.Clone();
+            clone.Object1 = Object1.Clone();
+            clone.Object2 = Object2.Clone();
             return clone;
         }
 
@@ -106,9 +106,9 @@ namespace Net3dBool
 
         public Solid GetDifference()
         {
-            object2.InvertInsideFaces();
+            Object2.InvertInsideFaces();
             Solid result = ComposeSolid(Status.OUTSIDE, Status.OPPOSITE, Status.INSIDE);
-            object2.InvertInsideFaces();
+            Object2.InvertInsideFaces();
 
             return result;
         }
@@ -154,8 +154,8 @@ namespace Net3dBool
             var indices = new List<int>();
 
             //group the elements of the two solids whose faces fit with the desired status
-            GroupObjectComponents(object1, vertices, indices, faceStatus1, faceStatus2);
-            GroupObjectComponents(object2, vertices, indices, faceStatus3, faceStatus3);
+            GroupObjectComponents(Object1, vertices, indices, faceStatus1, faceStatus2);
+            GroupObjectComponents(Object2, vertices, indices, faceStatus3, faceStatus3);
 
             //turn the arrayLists to arrays
             Vector3[] verticesArray = new Vector3[vertices.Count];
@@ -195,7 +195,7 @@ namespace Net3dBool
                 if (face.GetStatus() == faceStatus1 || face.GetStatus() == faceStatus2)
                 {
                     //adds the face elements into the arrays
-                    Vertex[] faceVerts = { face.v1, face.v2, face.v3 };
+                    Vertex[] faceVerts = { face.V1, face.V2, face.V3 };
                     for (int j = 0; j < faceVerts.Length; j++)
                     {
                         if (vertices.Contains(faceVerts[j]))

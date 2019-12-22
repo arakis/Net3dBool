@@ -33,25 +33,25 @@ namespace Net3dBool
 {
     public class AxisAlignedBoundingBox
     {
-        public Vector3 minXYZ;
-        public Vector3 maxXYZ;
+        public Vector3 MinXYZ;
+        public Vector3 MaxXYZ;
 
         public AxisAlignedBoundingBox(Vector3 minXYZ, Vector3 maxXYZ)
         {
-            if (maxXYZ.x < minXYZ.x || maxXYZ.y < minXYZ.y || maxXYZ.z < minXYZ.z)
+            if (maxXYZ.X < minXYZ.X || maxXYZ.Y < minXYZ.Y || maxXYZ.Z < minXYZ.Z)
             {
                 throw new ArgumentException("All values of min must be less than all values in max.");
             }
 
-            this.minXYZ = minXYZ;
-            this.maxXYZ = maxXYZ;
+            this.MinXYZ = minXYZ;
+            this.MaxXYZ = maxXYZ;
         }
 
         public Vector3 Size
         {
             get
             {
-                return maxXYZ - minXYZ;
+                return MaxXYZ - MinXYZ;
             }
         }
 
@@ -59,7 +59,7 @@ namespace Net3dBool
         {
             get
             {
-                return maxXYZ.x - minXYZ.x;
+                return MaxXYZ.X - MinXYZ.X;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Net3dBool
         {
             get
             {
-                return maxXYZ.y - minXYZ.y;
+                return MaxXYZ.Y - MinXYZ.Y;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Net3dBool
         {
             get
             {
-                return maxXYZ.z - minXYZ.z;
+                return MaxXYZ.Z - MinXYZ.Z;
             }
         }
 
@@ -88,16 +88,16 @@ namespace Net3dBool
             switch (quadrantIndex)
             {
                 case 0:
-                    return new Vector3(maxXYZ.x, maxXYZ.y, minXYZ.z);
+                    return new Vector3(MaxXYZ.X, MaxXYZ.Y, MinXYZ.Z);
 
                 case 1:
-                    return new Vector3(minXYZ.x, maxXYZ.y, minXYZ.z);
+                    return new Vector3(MinXYZ.X, MaxXYZ.Y, MinXYZ.Z);
 
                 case 2:
-                    return new Vector3(minXYZ.x, minXYZ.y, minXYZ.z);
+                    return new Vector3(MinXYZ.X, MinXYZ.Y, MinXYZ.Z);
 
                 case 3:
-                    return new Vector3(maxXYZ.x, minXYZ.y, minXYZ.z);
+                    return new Vector3(MaxXYZ.X, MinXYZ.Y, MinXYZ.Z);
             }
 
             return Vector3.Zero;
@@ -107,7 +107,7 @@ namespace Net3dBool
         {
             get
             {
-                return (minXYZ + maxXYZ) / 2;
+                return (MinXYZ + MaxXYZ) / 2;
             }
         }
 
@@ -124,12 +124,12 @@ namespace Net3dBool
 
         public Vector3 GetCenter()
         {
-            return (minXYZ + maxXYZ) * .5;
+            return (MinXYZ + MaxXYZ) * .5;
         }
 
         public double GetCenterX()
         {
-            return (minXYZ.x + maxXYZ.x) * .5;
+            return (MinXYZ.X + MaxXYZ.X) * .5;
         }
 
         private double volumeCache = 0;
@@ -138,25 +138,25 @@ namespace Net3dBool
         {
             if (volumeCache == 0)
             {
-                volumeCache = (maxXYZ.x - minXYZ.x) * (maxXYZ.y - minXYZ.y) * (maxXYZ.z - minXYZ.z);
+                volumeCache = (MaxXYZ.X - MinXYZ.X) * (MaxXYZ.Y - MinXYZ.Y) * (MaxXYZ.Z - MinXYZ.Z);
             }
 
             return volumeCache;
         }
 
-        private double surfaceAreaCache = 0;
+        private double SurfaceAreaCache = 0;
 
         public double GetSurfaceArea()
         {
-            if (surfaceAreaCache == 0)
+            if (SurfaceAreaCache == 0)
             {
-                double frontAndBack = (maxXYZ.x - minXYZ.x) * (maxXYZ.z - minXYZ.z) * 2;
-                double leftAndRight = (maxXYZ.y - minXYZ.y) * (maxXYZ.z - minXYZ.z) * 2;
-                double topAndBottom = (maxXYZ.x - minXYZ.x) * (maxXYZ.y - minXYZ.y) * 2;
-                surfaceAreaCache = frontAndBack + leftAndRight + topAndBottom;
+                double frontAndBack = (MaxXYZ.X - MinXYZ.X) * (MaxXYZ.Z - MinXYZ.Z) * 2;
+                double leftAndRight = (MaxXYZ.Y - MinXYZ.Y) * (MaxXYZ.Z - MinXYZ.Z) * 2;
+                double topAndBottom = (MaxXYZ.X - MinXYZ.X) * (MaxXYZ.Y - MinXYZ.Y) * 2;
+                SurfaceAreaCache = frontAndBack + leftAndRight + topAndBottom;
             }
 
-            return surfaceAreaCache;
+            return SurfaceAreaCache;
         }
 
         public Vector3 this[int index]
@@ -165,11 +165,11 @@ namespace Net3dBool
             {
                 if (index == 0)
                 {
-                    return minXYZ;
+                    return MinXYZ;
                 }
                 else if (index == 1)
                 {
-                    return maxXYZ;
+                    return MaxXYZ;
                 }
                 else
                 {
@@ -202,14 +202,14 @@ namespace Net3dBool
         public static AxisAlignedBoundingBox Union(AxisAlignedBoundingBox boundsA, AxisAlignedBoundingBox boundsB)
         {
             Vector3 minXYZ = Vector3.Zero;
-            minXYZ.x = Math.Min(boundsA.minXYZ.x, boundsB.minXYZ.x);
-            minXYZ.y = Math.Min(boundsA.minXYZ.y, boundsB.minXYZ.y);
-            minXYZ.z = Math.Min(boundsA.minXYZ.z, boundsB.minXYZ.z);
+            minXYZ.X = Math.Min(boundsA.MinXYZ.X, boundsB.MinXYZ.X);
+            minXYZ.Y = Math.Min(boundsA.MinXYZ.Y, boundsB.MinXYZ.Y);
+            minXYZ.Z = Math.Min(boundsA.MinXYZ.Z, boundsB.MinXYZ.Z);
 
             Vector3 maxXYZ = Vector3.Zero;
-            maxXYZ.x = Math.Max(boundsA.maxXYZ.x, boundsB.maxXYZ.x);
-            maxXYZ.y = Math.Max(boundsA.maxXYZ.y, boundsB.maxXYZ.y);
-            maxXYZ.z = Math.Max(boundsA.maxXYZ.z, boundsB.maxXYZ.z);
+            maxXYZ.X = Math.Max(boundsA.MaxXYZ.X, boundsB.MaxXYZ.X);
+            maxXYZ.Y = Math.Max(boundsA.MaxXYZ.Y, boundsB.MaxXYZ.Y);
+            maxXYZ.Z = Math.Max(boundsA.MaxXYZ.Z, boundsB.MaxXYZ.Z);
 
             return new AxisAlignedBoundingBox(minXYZ, maxXYZ);
         }
@@ -217,14 +217,14 @@ namespace Net3dBool
         public static AxisAlignedBoundingBox Intersection(AxisAlignedBoundingBox boundsA, AxisAlignedBoundingBox boundsB)
         {
             Vector3 minXYZ = Vector3.Zero;
-            minXYZ.x = Math.Max(boundsA.minXYZ.x, boundsB.minXYZ.x);
-            minXYZ.y = Math.Max(boundsA.minXYZ.y, boundsB.minXYZ.y);
-            minXYZ.z = Math.Max(boundsA.minXYZ.z, boundsB.minXYZ.z);
+            minXYZ.X = Math.Max(boundsA.MinXYZ.X, boundsB.MinXYZ.X);
+            minXYZ.Y = Math.Max(boundsA.MinXYZ.Y, boundsB.MinXYZ.Y);
+            minXYZ.Z = Math.Max(boundsA.MinXYZ.Z, boundsB.MinXYZ.Z);
 
             Vector3 maxXYZ = Vector3.Zero;
-            maxXYZ.x = Math.Max(minXYZ.x, Math.Min(boundsA.maxXYZ.x, boundsB.maxXYZ.x));
-            maxXYZ.y = Math.Max(minXYZ.y, Math.Min(boundsA.maxXYZ.y, boundsB.maxXYZ.y));
-            maxXYZ.z = Math.Max(minXYZ.z, Math.Min(boundsA.maxXYZ.z, boundsB.maxXYZ.z));
+            maxXYZ.X = Math.Max(minXYZ.X, Math.Min(boundsA.MaxXYZ.X, boundsB.MaxXYZ.X));
+            maxXYZ.Y = Math.Max(minXYZ.Y, Math.Min(boundsA.MaxXYZ.Y, boundsB.MaxXYZ.Y));
+            maxXYZ.Z = Math.Max(minXYZ.Z, Math.Min(boundsA.MaxXYZ.Z, boundsB.MaxXYZ.Z));
 
             return new AxisAlignedBoundingBox(minXYZ, maxXYZ);
         }
@@ -232,56 +232,56 @@ namespace Net3dBool
         public static AxisAlignedBoundingBox Union(AxisAlignedBoundingBox bounds, Vector3 vertex)
         {
             Vector3 minXYZ = Vector3.Zero;
-            minXYZ.x = Math.Min(bounds.minXYZ.x, vertex.x);
-            minXYZ.y = Math.Min(bounds.minXYZ.y, vertex.y);
-            minXYZ.z = Math.Min(bounds.minXYZ.z, vertex.z);
+            minXYZ.X = Math.Min(bounds.MinXYZ.X, vertex.X);
+            minXYZ.Y = Math.Min(bounds.MinXYZ.Y, vertex.Y);
+            minXYZ.Z = Math.Min(bounds.MinXYZ.Z, vertex.Z);
 
             Vector3 maxXYZ = Vector3.Zero;
-            maxXYZ.x = Math.Max(bounds.maxXYZ.x, vertex.x);
-            maxXYZ.y = Math.Max(bounds.maxXYZ.y, vertex.y);
-            maxXYZ.z = Math.Max(bounds.maxXYZ.z, vertex.z);
+            maxXYZ.X = Math.Max(bounds.MaxXYZ.X, vertex.X);
+            maxXYZ.Y = Math.Max(bounds.MaxXYZ.Y, vertex.Y);
+            maxXYZ.Z = Math.Max(bounds.MaxXYZ.Z, vertex.Z);
 
             return new AxisAlignedBoundingBox(minXYZ, maxXYZ);
         }
 
         public void Clamp(ref Vector3 positionToClamp)
         {
-            if (positionToClamp.x < minXYZ.x)
+            if (positionToClamp.X < MinXYZ.X)
             {
-                positionToClamp.x = minXYZ.x;
+                positionToClamp.X = MinXYZ.X;
             }
-            else if (positionToClamp.x > maxXYZ.x)
+            else if (positionToClamp.X > MaxXYZ.X)
             {
-                positionToClamp.x = maxXYZ.x;
-            }
-
-            if (positionToClamp.y < minXYZ.y)
-            {
-                positionToClamp.y = minXYZ.y;
-            }
-            else if (positionToClamp.y > maxXYZ.y)
-            {
-                positionToClamp.y = maxXYZ.y;
+                positionToClamp.X = MaxXYZ.X;
             }
 
-            if (positionToClamp.z < minXYZ.z)
+            if (positionToClamp.Y < MinXYZ.Y)
             {
-                positionToClamp.z = minXYZ.z;
+                positionToClamp.Y = MinXYZ.Y;
             }
-            else if (positionToClamp.z > maxXYZ.z)
+            else if (positionToClamp.Y > MaxXYZ.Y)
             {
-                positionToClamp.z = maxXYZ.z;
+                positionToClamp.Y = MaxXYZ.Y;
+            }
+
+            if (positionToClamp.Z < MinXYZ.Z)
+            {
+                positionToClamp.Z = MinXYZ.Z;
+            }
+            else if (positionToClamp.Z > MaxXYZ.Z)
+            {
+                positionToClamp.Z = MaxXYZ.Z;
             }
         }
 
         public bool Contains(AxisAlignedBoundingBox bounds)
         {
-            if (this.minXYZ.x <= bounds.minXYZ.x
-                && this.maxXYZ.x >= bounds.maxXYZ.x
-                && this.minXYZ.y <= bounds.minXYZ.y
-                && this.maxXYZ.y >= bounds.maxXYZ.y
-                && this.minXYZ.z <= bounds.minXYZ.z
-                && this.maxXYZ.z >= bounds.maxXYZ.z)
+            if (this.MinXYZ.X <= bounds.MinXYZ.X
+                && this.MaxXYZ.X >= bounds.MaxXYZ.X
+                && this.MinXYZ.Y <= bounds.MinXYZ.Y
+                && this.MaxXYZ.Y >= bounds.MaxXYZ.Y
+                && this.MinXYZ.Z <= bounds.MinXYZ.Z
+                && this.MaxXYZ.Z >= bounds.MaxXYZ.Z)
             {
                 return true;
             }
@@ -291,7 +291,7 @@ namespace Net3dBool
 
         public override string ToString()
         {
-            return string.Format("min {0} - max {1}", minXYZ, maxXYZ);
+            return string.Format("min {0} - max {1}", MinXYZ, MaxXYZ);
         }
     }
 }

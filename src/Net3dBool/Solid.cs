@@ -49,16 +49,16 @@ namespace Net3dBool
     public class Solid
     {
         /** array of indices for the vertices from the 'vertices' attribute */
-        protected int[] indices;
+        protected int[] Indices;
         /** array of points defining the solid's vertices */
-        protected Vector3[] vertices;
+        protected Vector3[] Vertices;
 
         //--------------------------------CONSTRUCTORS----------------------------------//
 
         /** Constructs an empty solid. */
         public Solid()
         {
-            setInitialFeatures();
+            SetInitialFeatures();
         }
 
         /**
@@ -73,14 +73,14 @@ namespace Net3dBool
         public Solid(Vector3[] vertices, int[] indices)
             : this()
         {
-            setData(vertices, indices);
+            SetData(vertices, indices);
         }
 
         /** Sets the initial features common to all constructors */
-        protected void setInitialFeatures()
+        protected void SetInitialFeatures()
         {
-            vertices = new Vector3[0];
-            indices = new int[0];
+            Vertices = new Vector3[0];
+            Indices = new int[0];
 
             //            setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
             //            setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
@@ -94,12 +94,12 @@ namespace Net3dBool
         * 
         * @return solid vertices
         */
-        public Vector3[] getVertices()
+        public Vector3[] GetVertices()
         {
-            Vector3[] newVertices = new Vector3[vertices.Length];
+            Vector3[] newVertices = new Vector3[Vertices.Length];
             for (int i = 0; i < newVertices.Length; i++)
             {
-                newVertices[i] = vertices[i];
+                newVertices[i] = Vertices[i];
             }
             return newVertices;
         }
@@ -108,10 +108,10 @@ namespace Net3dBool
         * 
         * @return solid indices for its vertices
         */
-        public int[] getIndices()
+        public int[] GetIndices()
         {
-            int[] newIndices = new int[indices.Length];
-            Array.Copy(indices, 0, newIndices, 0, indices.Length);
+            int[] newIndices = new int[Indices.Length];
+            Array.Copy(Indices, 0, newIndices, 0, Indices.Length);
             return newIndices;
         }
 
@@ -120,9 +120,9 @@ namespace Net3dBool
         * 
         * @return true if the solid is empty, false otherwise
         */
-        public bool isEmpty()
+        public bool IsEmpty()
         {
-            if (indices.Length == 0)
+            if (Indices.Length == 0)
             {
                 return true;
             }
@@ -143,19 +143,19 @@ namespace Net3dBool
         * @param indices array of indices for a array of vertices
         * @param colors array of colors defining the vertices colors 
         */
-        public void setData(Vector3[] vertices, int[] indices)
+        public void SetData(Vector3[] vertices, int[] indices)
         {
-            this.vertices = new Vector3[vertices.Length];
-            this.indices = new int[indices.Length];
+            this.Vertices = new Vector3[vertices.Length];
+            this.Indices = new int[indices.Length];
             if (indices.Length != 0)
             {
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    this.vertices[i] = vertices[i];
+                    this.Vertices[i] = vertices[i];
                 }
-                Array.Copy(indices, 0, this.indices, 0, indices.Length);
+                Array.Copy(indices, 0, this.Indices, 0, indices.Length);
 
-                defineGeometry();
+                DefineGeometry();
             }
         }
 
@@ -167,17 +167,17 @@ namespace Net3dBool
         * @param dx translation on the x axis
         * @param dy translation on the y axis
         */
-        public void translate(double dx, double dy)
+        public void Translate(double dx, double dy)
         {
             if (dx != 0 || dy != 0)
             {
-                for (int i = 0; i < vertices.Length; i++)
+                for (int i = 0; i < Vertices.Length; i++)
                 {
-                    vertices[i].x += dx;
-                    vertices[i].y += dy;
+                    Vertices[i].X += dx;
+                    Vertices[i].Y += dy;
                 }
 
-                defineGeometry();
+                DefineGeometry();
             }
         }
 
@@ -187,7 +187,7 @@ namespace Net3dBool
         * @param dx rotation on the x axis
         * @param dy rotation on the y axis
         */
-        public void rotate(double dx, double dy)
+        public void Rotate(double dx, double dy)
         {
             double cosX = Math.Cos(dx);
             double cosY = Math.Cos(dy);
@@ -197,40 +197,40 @@ namespace Net3dBool
             if (dx != 0 || dy != 0)
             {
                 //get mean
-                Vector3 mean = getMean();
+                Vector3 mean = GetMean();
 
                 double newX, newY, newZ;
-                for (int i = 0; i < vertices.Length; i++)
+                for (int i = 0; i < Vertices.Length; i++)
                 {
-                    vertices[i].x -= mean.x;
-                    vertices[i].y -= mean.y;
-                    vertices[i].z -= mean.z;
+                    Vertices[i].X -= mean.X;
+                    Vertices[i].Y -= mean.Y;
+                    Vertices[i].Z -= mean.Z;
 
                     //x rotation
                     if (dx != 0)
                     {
-                        newY = vertices[i].y * cosX - vertices[i].z * sinX;
-                        newZ = vertices[i].y * sinX + vertices[i].z * cosX;
-                        vertices[i].y = newY;
-                        vertices[i].z = newZ;
+                        newY = Vertices[i].Y * cosX - Vertices[i].Z * sinX;
+                        newZ = Vertices[i].Y * sinX + Vertices[i].Z * cosX;
+                        Vertices[i].Y = newY;
+                        Vertices[i].Z = newZ;
                     }
 
                     //y rotation
                     if (dy != 0)
                     {
-                        newX = vertices[i].x * cosY + vertices[i].z * sinY;
-                        newZ = -vertices[i].x * sinY + vertices[i].z * cosY;
-                        vertices[i].x = newX;
-                        vertices[i].z = newZ;
+                        newX = Vertices[i].X * cosY + Vertices[i].Z * sinY;
+                        newZ = -Vertices[i].X * sinY + Vertices[i].Z * cosY;
+                        Vertices[i].X = newX;
+                        Vertices[i].Z = newZ;
                     }
 
-                    vertices[i].x += mean.x;
-                    vertices[i].y += mean.y;
-                    vertices[i].z += mean.z;
+                    Vertices[i].X += mean.X;
+                    Vertices[i].Y += mean.Y;
+                    Vertices[i].Z += mean.Z;
                 }
             }
 
-            defineGeometry();
+            DefineGeometry();
         }
 
         /**
@@ -238,16 +238,16 @@ namespace Net3dBool
         * 
         * @param dz translation on the z axis
         */
-        public void zoom(double dz)
+        public void Zoom(double dz)
         {
             if (dz != 0)
             {
-                for (int i = 0; i < vertices.Length; i++)
+                for (int i = 0; i < Vertices.Length; i++)
                 {
-                    vertices[i].z += dz;
+                    Vertices[i].Z += dz;
                 }
 
-                defineGeometry();
+                DefineGeometry();
             }
         }
 
@@ -258,22 +258,22 @@ namespace Net3dBool
         * @param dy scale changing for the y axis
         * @param dz scale changing for the z axis
         */
-        public void scale(double dx, double dy, double dz)
+        public void Scale(double dx, double dy, double dz)
         {
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < Vertices.Length; i++)
             {
-                vertices[i].x *= dx;
-                vertices[i].y *= dy;
-                vertices[i].z *= dz;
+                Vertices[i].X *= dx;
+                Vertices[i].Y *= dy;
+                Vertices[i].Z *= dz;
             }
 
-            defineGeometry();
+            DefineGeometry();
         }
 
         //-----------------------------------PRIVATES--------------------------------//
 
         /** Creates a geometry based on the indexes and vertices set for the solid */
-        protected void defineGeometry()
+        protected void DefineGeometry()
         {
             //            GeometryInfo gi = new GeometryInfo(GeometryInfo.TRIANGLE_ARRAY);
             //            gi.setCoordinateIndices(indices);
@@ -293,18 +293,18 @@ namespace Net3dBool
         * 
         * @return point representing the mean
         */
-        protected Vector3 getMean()
+        protected Vector3 GetMean()
         {
             Vector3 mean = new Vector3();
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < Vertices.Length; i++)
             {
-                mean.x += vertices[i].x;
-                mean.y += vertices[i].y;
-                mean.z += vertices[i].z;
+                mean.X += Vertices[i].X;
+                mean.Y += Vertices[i].Y;
+                mean.Z += Vertices[i].Z;
             }
-            mean.x /= vertices.Length;
-            mean.y /= vertices.Length;
-            mean.z /= vertices.Length;
+            mean.X /= Vertices.Length;
+            mean.Y /= Vertices.Length;
+            mean.Z /= Vertices.Length;
 
             return mean;
         }

@@ -6,10 +6,10 @@ namespace Net3dBoolDemo
     {
         public static void Main(string[] args)
         {
-            var game = new TDemoWindow();
+            var demo = new TDemoWindow();
 
             // Run the game at 60 updates per second
-            game.Run(60.0);
+            demo.Run(60.0);
         }
     }
 }

@@ -47,31 +47,31 @@ namespace Net3dBool
     public class Segment
     {
         /** line resulting from the two planes intersection */
-        private Line line;
+        private Line Line;
         /** shows how many ends were already defined */
-        private int index;
+        private int Index;
 
         /** distance from the segment starting point to the point defining the plane */
         public double StartDist { get; private set; }
         /** distance from the segment ending point to the point defining the plane */
-        private double endDist;
+        private double EndDist;
 
         /** starting point status relative to the face */
-        private int startType;
+        private int StartType;
         /** intermediate status relative to the face */
-        private int middleType;
+        private int MiddleType;
         /** ending point status relative to the face */
-        private int endType;
+        private int EndType;
 
         /** nearest vertex from the starting point */
-        private Vertex startVertex;
+        private Vertex StartVertex;
         /** nearest vertex from the ending point */
-        private Vertex endVertex;
+        private Vertex EndVertex;
 
         /** start of the intersection point */
-        private Vector3 startPos;
+        private Vector3 StartPos;
         /** end of the intersection point */
-        private Vector3 endPos;
+        private Vector3 EndPos;
 
         /** define as vertex one of the segment ends */
         public static int VERTEX = 1;
@@ -96,39 +96,39 @@ namespace Net3dBool
         */
         public Segment(Line line, Face face, int sign1, int sign2, int sign3)
         {
-            this.line = line;
-            index = 0;
+            this.Line = line;
+            Index = 0;
 
             //VERTEX is an end
             if (sign1 == 0)
             {
-                SetVertex(face.v1);
+                SetVertex(face.V1);
                 //other vertices on the same side - VERTEX-VERTEX VERTEX
                 if (sign2 == sign3)
                 {
-                    SetVertex(face.v1);
+                    SetVertex(face.V1);
                 }
             }
 
             //VERTEX is an end
             if (sign2 == 0)
             {
-                SetVertex(face.v2);
+                SetVertex(face.V2);
                 //other vertices on the same side - VERTEX-VERTEX VERTEX
                 if (sign1 == sign3)
                 {
-                    SetVertex(face.v2);
+                    SetVertex(face.V2);
                 }
             }
 
             //VERTEX is an end
             if (sign3 == 0)
             {
-                SetVertex(face.v3);
+                SetVertex(face.V3);
                 //other vertices on the same side - VERTEX-VERTEX VERTEX
                 if (sign1 == sign2)
                 {
-                    SetVertex(face.v3);
+                    SetVertex(face.V3);
                 }
             }
 
@@ -138,17 +138,17 @@ namespace Net3dBool
                 //EDGE is an end
                 if ((sign1 == 1 && sign2 == -1) || (sign1 == -1 && sign2 == 1))
                 {
-                    SetEdge(face.v1, face.v2);
+                    SetEdge(face.V1, face.V2);
                 }
                 //EDGE is an end
                 if ((sign2 == 1 && sign3 == -1) || (sign2 == -1 && sign3 == 1))
                 {
-                    SetEdge(face.v2, face.v3);
+                    SetEdge(face.V2, face.V3);
                 }
                 //EDGE is an end
                 if ((sign3 == 1 && sign1 == -1) || (sign3 == -1 && sign1 == 1))
                 {
-                    SetEdge(face.v3, face.v1);
+                    SetEdge(face.V3, face.V1);
                 }
             }
         }
@@ -167,17 +167,17 @@ namespace Net3dBool
         public Segment Clone()
         {
             Segment clone = new Segment();
-            clone.line = line;
-            clone.index = index;
+            clone.Line = Line;
+            clone.Index = Index;
             clone.StartDist = StartDist;
-            clone.endDist = endDist;
-            clone.StartDist = startType;
-            clone.middleType = middleType;
-            clone.endType = endType;
-            clone.startVertex = startVertex;
-            clone.endVertex = endVertex;
-            clone.startPos = startPos;
-            clone.endPos = endPos;
+            clone.EndDist = EndDist;
+            clone.StartDist = StartType;
+            clone.MiddleType = MiddleType;
+            clone.EndType = EndType;
+            clone.StartVertex = StartVertex;
+            clone.EndVertex = EndVertex;
+            clone.StartPos = StartPos;
+            clone.EndPos = EndPos;
 
             return clone;
         }
@@ -191,7 +191,7 @@ namespace Net3dBool
         */
         public Vertex GetStartVertex()
         {
-            return startVertex;
+            return StartVertex;
         }
 
         /**
@@ -201,7 +201,7 @@ namespace Net3dBool
         */
         public Vertex GetEndVertex()
         {
-            return endVertex;
+            return EndVertex;
         }
 
         /**
@@ -211,7 +211,7 @@ namespace Net3dBool
         */
         public double GetEndDistance()
         {
-            return endDist;
+            return EndDist;
         }
 
         /**
@@ -221,7 +221,7 @@ namespace Net3dBool
         */
         public int GetStartType()
         {
-            return startType;
+            return StartType;
         }
 
         /**
@@ -231,7 +231,7 @@ namespace Net3dBool
         */
         public int GetIntermediateType()
         {
-            return middleType;
+            return MiddleType;
         }
 
         /**
@@ -241,7 +241,7 @@ namespace Net3dBool
         */
         public int GetEndType()
         {
-            return endType;
+            return EndType;
         }
 
         /**
@@ -251,7 +251,7 @@ namespace Net3dBool
         */
         public int GetNumEndsSet()
         {
-            return index;
+            return Index;
         }
 
         /**
@@ -261,7 +261,7 @@ namespace Net3dBool
         */
         public Vector3 GetStartPosition()
         {
-            return startPos;
+            return StartPos;
         }
 
         /**
@@ -271,7 +271,7 @@ namespace Net3dBool
         */
         public Vector3 GetEndPosition()
         {
-            return endPos;
+            return EndPos;
         }
 
         //------------------------------------OTHERS------------------------------------//
@@ -284,7 +284,7 @@ namespace Net3dBool
         */
         public bool Intersect(Segment segment)
         {
-            if (endDist < segment.StartDist + TOL || segment.endDist < StartDist + TOL)
+            if (EndDist < segment.StartDist + TOL || segment.EndDist < StartDist + TOL)
             {
                 return false;
             }
@@ -305,38 +305,38 @@ namespace Net3dBool
         private bool SetVertex(Vertex vertex)
         {
             //none end were defined - define starting point as VERTEX
-            if (index == 0)
+            if (Index == 0)
             {
-                startVertex = vertex;
-                startType = VERTEX;
-                StartDist = line.ComputePointToPointDistance(vertex.GetPosition());
-                startPos = startVertex.GetPosition();
-                index++;
+                StartVertex = vertex;
+                StartType = VERTEX;
+                StartDist = Line.ComputePointToPointDistance(vertex.GetPosition());
+                StartPos = StartVertex.GetPosition();
+                Index++;
                 return true;
             }
             //starting point were defined - define ending point as VERTEX
-            if (index == 1)
+            if (Index == 1)
             {
-                endVertex = vertex;
-                endType = VERTEX;
-                endDist = line.ComputePointToPointDistance(vertex.GetPosition());
-                endPos = endVertex.GetPosition();
-                index++;
+                EndVertex = vertex;
+                EndType = VERTEX;
+                EndDist = Line.ComputePointToPointDistance(vertex.GetPosition());
+                EndPos = EndVertex.GetPosition();
+                Index++;
 
                 //defining middle based on the starting point
                 //VERTEX-VERTEX-VERTEX
-                if (startVertex.Equals(endVertex))
+                if (StartVertex.Equals(EndVertex))
                 {
-                    middleType = VERTEX;
+                    MiddleType = VERTEX;
                 }
                 //VERTEX-EDGE-VERTEX
-                else if (startType == VERTEX)
+                else if (StartType == VERTEX)
                 {
-                    middleType = EDGE;
+                    MiddleType = EDGE;
                 }
 
                 //the ending point distance should be smaller than  starting point distance 
-                if (StartDist > endDist)
+                if (StartDist > EndDist)
                 {
                     SwapEnds();
                 }
@@ -360,30 +360,30 @@ namespace Net3dBool
         {
             Vector3 point1 = vertex1.GetPosition();
             Vector3 point2 = vertex2.GetPosition();
-            Vector3 edgeDirection = new Vector3(point2.x - point1.x, point2.y - point1.y, point2.z - point1.z);
+            Vector3 edgeDirection = new Vector3(point2.X - point1.X, point2.Y - point1.Y, point2.Z - point1.Z);
             Line edgeLine = new Line(edgeDirection, point1);
 
-            if (index == 0)
+            if (Index == 0)
             {
-                startVertex = vertex1;
-                startType = EDGE;
-                startPos = line.ComputeLineIntersection(edgeLine);
-                StartDist = line.ComputePointToPointDistance(startPos);
-                middleType = FACE;
-                index++;
+                StartVertex = vertex1;
+                StartType = EDGE;
+                StartPos = Line.ComputeLineIntersection(edgeLine);
+                StartDist = Line.ComputePointToPointDistance(StartPos);
+                MiddleType = FACE;
+                Index++;
                 return true;
             }
-            else if (index == 1)
+            else if (Index == 1)
             {
-                endVertex = vertex1;
-                endType = EDGE;
-                endPos = line.ComputeLineIntersection(edgeLine);
-                endDist = line.ComputePointToPointDistance(endPos);
-                middleType = FACE;
-                index++;
+                EndVertex = vertex1;
+                EndType = EDGE;
+                EndPos = Line.ComputeLineIntersection(edgeLine);
+                EndDist = Line.ComputePointToPointDistance(EndPos);
+                MiddleType = FACE;
+                Index++;
 
                 //the ending point distance should be smaller than  starting point distance 
-                if (StartDist > endDist)
+                if (StartDist > EndDist)
                 {
                     SwapEnds();
                 }
@@ -400,20 +400,20 @@ namespace Net3dBool
         private void SwapEnds()
         {
             double distTemp = StartDist;
-            StartDist = endDist;
-            endDist = distTemp;
+            StartDist = EndDist;
+            EndDist = distTemp;
 
-            int typeTemp = startType;
-            startType = endType;
-            endType = typeTemp;
+            int typeTemp = StartType;
+            StartType = EndType;
+            EndType = typeTemp;
 
-            Vertex vertexTemp = startVertex;
-            startVertex = endVertex;
-            endVertex = vertexTemp;
+            Vertex vertexTemp = StartVertex;
+            StartVertex = EndVertex;
+            EndVertex = vertexTemp;
 
-            Vector3 posTemp = startPos;
-            startPos = endPos;
-            endPos = posTemp;
+            Vector3 posTemp = StartPos;
+            StartPos = EndPos;
+            EndPos = posTemp;
         }
     }
 }

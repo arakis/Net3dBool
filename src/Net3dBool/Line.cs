@@ -48,8 +48,8 @@ namespace Net3dBool
         /// tolerance value to test equalities
         /// </summary>
         private readonly static double EqualityTolerance = 1e-10f;
-        private static Random rnd = new Random();
-        private Vector3 startPoint;
+        private static Random Rnd = new Random();
+        private Vector3 StartPoint;
 
         /// <summary>
         /// Constructor for a line.The line created is the intersection between two planes
@@ -69,26 +69,26 @@ namespace Net3dBool
             {
                 //getting a line point, zero is set to a coordinate whose direction
                 //component isn't zero (line intersecting its origin plan)
-                startPoint = new Vector3();
-                double d1 = -(normalFace1.x * face1.v1.Position.x + normalFace1.y * face1.v1.Position.y + normalFace1.z * face1.v1.Position.z);
-                double d2 = -(normalFace2.x * face2.v1.Position.x + normalFace2.y * face2.v1.Position.y + normalFace2.z * face2.v1.Position.z);
-                if (Math.Abs(Direction.x) > EqualityTolerance)
+                StartPoint = new Vector3();
+                double d1 = -(normalFace1.X * face1.V1.Position.X + normalFace1.Y * face1.V1.Position.Y + normalFace1.Z * face1.V1.Position.Z);
+                double d2 = -(normalFace2.X * face2.V1.Position.X + normalFace2.Y * face2.V1.Position.Y + normalFace2.Z * face2.V1.Position.Z);
+                if (Math.Abs(Direction.X) > EqualityTolerance)
                 {
-                    startPoint.x = 0;
-                    startPoint.y = (d2 * normalFace1.z - d1 * normalFace2.z) / Direction.x;
-                    startPoint.z = (d1 * normalFace2.y - d2 * normalFace1.y) / Direction.x;
+                    StartPoint.X = 0;
+                    StartPoint.Y = (d2 * normalFace1.Z - d1 * normalFace2.Z) / Direction.X;
+                    StartPoint.Z = (d1 * normalFace2.Y - d2 * normalFace1.Y) / Direction.X;
                 }
-                else if (Math.Abs(Direction.y) > EqualityTolerance)
+                else if (Math.Abs(Direction.Y) > EqualityTolerance)
                 {
-                    startPoint.x = (d1 * normalFace2.z - d2 * normalFace1.z) / Direction.y;
-                    startPoint.y = 0;
-                    startPoint.z = (d2 * normalFace1.x - d1 * normalFace2.x) / Direction.y;
+                    StartPoint.X = (d1 * normalFace2.Z - d2 * normalFace1.Z) / Direction.Y;
+                    StartPoint.Y = 0;
+                    StartPoint.Z = (d2 * normalFace1.X - d1 * normalFace2.X) / Direction.Y;
                 }
                 else
                 {
-                    startPoint.x = (d2 * normalFace1.y - d1 * normalFace2.y) / Direction.z;
-                    startPoint.y = (d1 * normalFace2.x - d2 * normalFace1.x) / Direction.z;
-                    startPoint.z = 0;
+                    StartPoint.X = (d2 * normalFace1.Y - d1 * normalFace2.Y) / Direction.Z;
+                    StartPoint.Y = (d1 * normalFace2.X - d2 * normalFace1.X) / Direction.Z;
+                    StartPoint.Z = 0;
                 }
             }
 
@@ -103,7 +103,7 @@ namespace Net3dBool
         public Line(Vector3 direction, Vector3 point)
         {
             this.Direction = direction;
-            this.startPoint = point;
+            this.StartPoint = point;
             direction.Normalize();
         }
 
@@ -120,7 +120,7 @@ namespace Net3dBool
         {
             Line clone = new Line();
             clone.Direction = Direction;
-            clone.startPoint = startPoint;
+            clone.StartPoint = StartPoint;
             return clone;
         }
 
@@ -139,17 +139,17 @@ namespace Net3dBool
             Vector3 lineDirection = otherLine.Direction;
 
             double t;
-            if (Math.Abs(Direction.y * lineDirection.x - Direction.x * lineDirection.y) > EqualityTolerance)
+            if (Math.Abs(Direction.Y * lineDirection.X - Direction.X * lineDirection.Y) > EqualityTolerance)
             {
-                t = (-startPoint.y * lineDirection.x + linePoint.y * lineDirection.x + lineDirection.y * startPoint.x - lineDirection.y * linePoint.x) / (Direction.y * lineDirection.x - Direction.x * lineDirection.y);
+                t = (-StartPoint.Y * lineDirection.X + linePoint.Y * lineDirection.X + lineDirection.Y * StartPoint.X - lineDirection.Y * linePoint.X) / (Direction.Y * lineDirection.X - Direction.X * lineDirection.Y);
             }
-            else if (Math.Abs(-Direction.x * lineDirection.z + Direction.z * lineDirection.x) > EqualityTolerance)
+            else if (Math.Abs(-Direction.X * lineDirection.Z + Direction.Z * lineDirection.X) > EqualityTolerance)
             {
-                t = -(-lineDirection.z * startPoint.x + lineDirection.z * linePoint.x + lineDirection.x * startPoint.z - lineDirection.x * linePoint.z) / (-Direction.x * lineDirection.z + Direction.z * lineDirection.x);
+                t = -(-lineDirection.Z * StartPoint.X + lineDirection.Z * linePoint.X + lineDirection.X * StartPoint.Z - lineDirection.X * linePoint.Z) / (-Direction.X * lineDirection.Z + Direction.Z * lineDirection.X);
             }
-            else if (Math.Abs(-Direction.z * lineDirection.y + Direction.y * lineDirection.z) > EqualityTolerance)
+            else if (Math.Abs(-Direction.Z * lineDirection.Y + Direction.Y * lineDirection.Z) > EqualityTolerance)
             {
-                t = (startPoint.z * lineDirection.y - linePoint.z * lineDirection.y - lineDirection.z * startPoint.y + lineDirection.z * linePoint.y) / (-Direction.z * lineDirection.y + Direction.y * lineDirection.z);
+                t = (StartPoint.Z * lineDirection.Y - linePoint.Z * lineDirection.Y - lineDirection.Z * StartPoint.Y + lineDirection.Z * linePoint.Y) / (-Direction.Z * lineDirection.Y + Direction.Y * lineDirection.Z);
             }
             else
             {
@@ -160,9 +160,9 @@ namespace Net3dBool
 #endif
             }
 
-            double x = startPoint.x + Direction.x * t;
-            double y = startPoint.y + Direction.y * t;
-            double z = startPoint.z + Direction.z * t;
+            double x = StartPoint.X + Direction.X * t;
+            double y = StartPoint.Y + Direction.Y * t;
+            double z = StartPoint.Z + Direction.Z * t;
 
             return new Vector3(x, y, z);
         }
@@ -175,10 +175,10 @@ namespace Net3dBool
         /// <returns>intersection point.If they don't intersect, return null</returns>
         public Vector3 ComputePlaneIntersection(Plane plane)
         {
-            double distanceToStartFromOrigin = Vector3.Dot(plane.planeNormal, startPoint);
+            double distanceToStartFromOrigin = Vector3.Dot(plane.PlaneNormal, StartPoint);
 
-            double distanceFromPlane = distanceToStartFromOrigin - plane.distanceToPlaneFromOrigin;
-            double denominator = Vector3.Dot(plane.planeNormal, Direction);
+            double distanceFromPlane = distanceToStartFromOrigin - plane.DistanceToPlaneFromOrigin;
+            double denominator = Vector3.Dot(plane.PlaneNormal, Direction);
 
             if (Math.Abs(denominator) < EqualityTolerance)
             {
@@ -186,7 +186,7 @@ namespace Net3dBool
                 if (Math.Abs(distanceFromPlane) < EqualityTolerance)
                 {
                     //if line is contained in the plane...
-                    return startPoint;
+                    return StartPoint;
                 }
                 else
                 {
@@ -197,9 +197,9 @@ namespace Net3dBool
             {
                 double t = -distanceFromPlane / denominator;
                 Vector3 resultPoint = new Vector3();
-                resultPoint.x = startPoint.x + t * Direction.x;
-                resultPoint.y = startPoint.y + t * Direction.y;
-                resultPoint.z = startPoint.z + t * Direction.z;
+                resultPoint.X = StartPoint.X + t * Direction.X;
+                resultPoint.Y = StartPoint.Y + t * Direction.Y;
+                resultPoint.Z = StartPoint.Z + t * Direction.Z;
 
                 return resultPoint;
             }
@@ -212,8 +212,8 @@ namespace Net3dBool
         /// <returns>points distance. If the point submitted is behind the direction, the distance is negative</returns>
         public double ComputePointToPointDistance(Vector3 otherPoint)
         {
-            double distance = (otherPoint - startPoint).Length;
-            Vector3 vec = new Vector3(otherPoint.x - startPoint.x, otherPoint.y - startPoint.y, otherPoint.z - startPoint.z);
+            double distance = (otherPoint - StartPoint).Length;
+            Vector3 vec = new Vector3(otherPoint.X - StartPoint.X, otherPoint.Y - StartPoint.Y, otherPoint.Z - StartPoint.Z);
             vec.Normalize();
             if (Vector3.Dot(vec, Direction) < 0)
             {
@@ -227,7 +227,7 @@ namespace Net3dBool
 
         public Vector3 GetPoint()
         {
-            return startPoint;
+            return StartPoint;
         }
 
         /// <summary>
@@ -236,9 +236,9 @@ namespace Net3dBool
         public void PerturbDirection()
         {
             Vector3 perturbedDirection = Direction;
-            perturbedDirection.x += 1e-5 * Random();
-            perturbedDirection.y += 1e-5 * Random();
-            perturbedDirection.z += 1e-5 * Random();
+            perturbedDirection.X += 1e-5 * Random();
+            perturbedDirection.Y += 1e-5 * Random();
+            perturbedDirection.Z += 1e-5 * Random();
 
             Direction = perturbedDirection;
         }
@@ -250,17 +250,17 @@ namespace Net3dBool
 
         public void SetPoint(Vector3 point)
         {
-            this.startPoint = point;
+            this.StartPoint = point;
         }
 
         public String toString()
         {
-            return "Direction: " + Direction.ToString() + "\nPoint: " + startPoint.ToString();
+            return "Direction: " + Direction.ToString() + "\nPoint: " + StartPoint.ToString();
         }
 
         private static double Random()
         {
-            return rnd.NextDouble();
+            return Rnd.NextDouble();
         }
     }
 }

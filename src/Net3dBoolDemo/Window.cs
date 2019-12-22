@@ -9,17 +9,17 @@ using OpenTK.Input;
 namespace Net3dBoolDemo
 {
 
-    public class TGameWindow : GameWindow
+    public abstract class ExtendedGameWindow : GameWindow
     {
 
-        public static Matrix4 cameraMatrix;
-        private float[] mouseSpeed = new float[3];
-        private Vector2 mouseDelta;
-        private float upDownDelta;
-        private Vector3 location;
-        private Vector3 up = Vector3.UnitZ;
-        private float pitch = -0.3f;
-        private float facing = (float)Math.PI / 2 + 0.15f;
+        public static Matrix4 CameraMatrix;
+        private float[] MouseSpeed = new float[3];
+        private Vector2 MouseDelta;
+        private float UpDownDelta;
+        private Vector3 CameraLocation;
+        private Vector3 Up = Vector3.UnitZ;
+        private float Pitch = -0.3f;
+        private float Facing = (float)Math.PI / 2 + 0.15f;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -27,9 +27,9 @@ namespace Net3dBoolDemo
             VSync = VSyncMode.On;
             this.Title = "Net3dBool Demo with OpenTK";
 
-            cameraMatrix = Matrix4.Identity;
-            location = new Vector3(1f, -5f, 2f);
-            mouseDelta = new Vector2();
+            CameraMatrix = Matrix4.Identity;
+            CameraLocation = new Vector3(1f, -5f, 2f);
+            MouseDelta = new Vector2();
 
             MouseMove += new EventHandler<MouseMoveEventArgs>(OnMouseMove);
 
@@ -38,97 +38,74 @@ namespace Net3dBoolDemo
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            var keyboard = Keyboard.GetState();
-            if (keyboard[Key.W])
+            var kbState = Keyboard.GetState();
+            if (kbState[Key.W])
             {
-                location.X += (float)Math.Cos(facing) * 0.1f;
-                location.Y += (float)Math.Sin(facing) * 0.1f;
+                CameraLocation.X += (float)Math.Cos(Facing) * 0.1f;
+                CameraLocation.Y += (float)Math.Sin(Facing) * 0.1f;
             }
 
-            if (keyboard[Key.S])
+            if (kbState[Key.S])
             {
-                location.X -= (float)Math.Cos(facing) * 0.1f;
-                location.Y -= (float)Math.Sin(facing) * 0.1f;
+                CameraLocation.X -= (float)Math.Cos(Facing) * 0.1f;
+                CameraLocation.Y -= (float)Math.Sin(Facing) * 0.1f;
             }
 
-            if (keyboard[Key.A])
+            if (kbState[Key.A])
             {
-                location.X += (float)Math.Cos(facing + Math.PI / 2) * 0.1f;
-                location.Y += (float)Math.Sin(facing + Math.PI / 2) * 0.1f;
+                CameraLocation.X += (float)Math.Cos(Facing + Math.PI / 2) * 0.1f;
+                CameraLocation.Y += (float)Math.Sin(Facing + Math.PI / 2) * 0.1f;
             }
 
-            if (keyboard[Key.D])
+            if (kbState[Key.D])
             {
-                location.X -= (float)Math.Cos(facing + Math.PI / 2) * 0.1f;
-                location.Y -= (float)Math.Sin(facing + Math.PI / 2) * 0.1f;
+                CameraLocation.X -= (float)Math.Cos(Facing + Math.PI / 2) * 0.1f;
+                CameraLocation.Y -= (float)Math.Sin(Facing + Math.PI / 2) * 0.1f;
             }
 
-            if (keyboard[Key.Left])
-            {
-                //facing += 0.04f;
-                mouseDelta.X = -2;
-            }
+            if (kbState[Key.Left])
+                MouseDelta.X = -2;
 
-            if (keyboard[Key.Right])
-            {
-                //facing -= 0.04f;
-                mouseDelta.X = 2;
+            if (kbState[Key.Right])
+                MouseDelta.X = 2;
 
-            }
+            if (kbState[Key.Up])
+                MouseDelta.Y = -1;
 
-            if (keyboard[Key.Up])
-            {
-                //pitch += 0.02f;
-                mouseDelta.Y = -1;
-            }
+            if (kbState[Key.Down])
+                MouseDelta.Y = 1;
 
-            if (keyboard[Key.Down])
-            {
-                //pitch -= 0.02f;
-                mouseDelta.Y = 1;
-            }
+            if (kbState[Key.PageUp])
+                UpDownDelta = -3;
 
-            if (keyboard[Key.PageUp])
-            {
-                //pitch += 0.02f;
-                upDownDelta = -3;
-            }
+            if (kbState[Key.PageDown])
+                UpDownDelta = 3;
 
-            if (keyboard[Key.PageDown])
-            {
-                //pitch -= 0.02f;
-                upDownDelta = 3;
-            }
+            MouseSpeed[0] *= 0.9f;
+            MouseSpeed[1] *= 0.9f;
+            MouseSpeed[2] *= 0.9f;
+            MouseSpeed[0] -= MouseDelta.X / 1000f;
+            MouseSpeed[1] -= MouseDelta.Y / 1000f;
+            MouseSpeed[2] -= UpDownDelta / 1000f;
+            MouseDelta = new Vector2();
+            UpDownDelta = 0;
 
-            //mouseSpeed[0] *= 0.9f;
-            //mouseSpeed[1] *= 0.9f;
-            mouseSpeed[0] *= 0.9f;
-            mouseSpeed[1] *= 0.9f;
-            mouseSpeed[2] *= 0.9f;
-            mouseSpeed[0] -= mouseDelta.X / 1000f;
-            mouseSpeed[1] -= mouseDelta.Y / 1000f;
-            mouseSpeed[2] -= upDownDelta / 1000f;
-            //mouseSpeed[2] -= mouseDelta.Y / 1000f;
-            mouseDelta = new Vector2();
-            upDownDelta = 0;
+            Facing += MouseSpeed[0] * 2;
+            Pitch += MouseSpeed[1] * 2;
+            CameraLocation.Z += MouseSpeed[2] * 2;
 
-            facing += mouseSpeed[0] * 2;
-            pitch += mouseSpeed[1] * 2;
-            location.Z += mouseSpeed[2] * 2;
+            var loc = new Vector3(CameraLocation.X, CameraLocation.Y, CameraLocation.Z);
+            Vector3 lookatPoint = new Vector3((float)Math.Cos(Facing), (float)Math.Sin(Facing), (float)Math.Sin(Pitch));
+            CameraMatrix = Matrix4.LookAt(loc, loc + lookatPoint, Up);
 
-            var loc = new Vector3(location.X, location.Y, location.Z);
-            Vector3 lookatPoint = new Vector3((float)Math.Cos(facing), (float)Math.Sin(facing), (float)Math.Sin(pitch));
-            cameraMatrix = Matrix4.LookAt(loc, loc + lookatPoint, up);
-
-            if (keyboard[Key.Escape])
+            if (kbState[Key.Escape])
                 Exit();
         }
 
         void OnMouseMove(object sender, MouseMoveEventArgs e)
         {
-            //mouseDelta = new Vector2(e.XDelta, e.YDelta);
             if (e.Mouse.LeftButton == ButtonState.Pressed)
-                mouseDelta = new Vector2(e.XDelta, e.YDelta);
+                MouseDelta = new Vector2(e.XDelta, e.YDelta);
         }
 
         protected override void OnResize(EventArgs e)
@@ -146,22 +123,17 @@ namespace Net3dBoolDemo
         {
             base.OnRenderFrame(e);
 
-            //            GL.PolygonMode(MaterialFace.Front, PolygonMode.Line);
-            //            GL.PolygonMode(MaterialFace.Back, PolygonMode.Point);
-
             GL.Enable(EnableCap.CullFace);
 
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
             GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref cameraMatrix);
+            GL.LoadMatrix(ref CameraMatrix);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-            //GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
-            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.ShadeModel(ShadingModel.Smooth);
 
@@ -176,14 +148,9 @@ namespace Net3dBoolDemo
             SwapBuffers();
         }
 
-        public virtual void CreateMesh()
-        {
-        }
+        public abstract void CreateMesh();
 
-        public virtual void RenderMesh()
-        {
-
-        }
+        public abstract void RenderMesh();
 
         public void RenderLines()
         {
@@ -213,16 +180,6 @@ namespace Net3dBoolDemo
             GL.End();
 
             return;
-            var min = -0.01f;
-            GL.Begin(PrimitiveType.Quads);
-
-            GL.Color4(0, 0, 0.5, 0.35);
-            GL.Vertex3(-dist, -dist, min);
-            GL.Vertex3(-dist, dist, min);
-            GL.Vertex3(dist, dist, min);
-            GL.Vertex3(dist, -dist, min);
-            GL.End();
-
         }
 
     }
