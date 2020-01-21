@@ -408,7 +408,6 @@ namespace Net3dBool
             Vertex vertex1 = AddVertex(newPos1, Status.BOUNDARY);
             Vertex vertex2 = AddVertex(newPos2, Status.BOUNDARY);
 
-            double cont = 0;
             if (linedVertex == 1)
             {
                 AddFace(face.V2, face.V3, vertex1);
