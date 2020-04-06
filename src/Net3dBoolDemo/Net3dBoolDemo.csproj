@@ -2,13 +2,13 @@
   <PropertyGroup>
     <RootNamespace>Net3dBoolDemo</RootNamespace>
     <AssemblyName>Net3dBoolDemo</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="OpenTK" Version="3.1.0" />
+    <PackageReference Include="OpenTK" Version="4.0.0-pre4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Net3dBool\Net3dBool.csproj" />

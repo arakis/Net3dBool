@@ -2,6 +2,6 @@
   <PropertyGroup>
     <RootNamespace>Net3dBool</RootNamespace>
     <AssemblyName>Net3dBool</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 </Project>

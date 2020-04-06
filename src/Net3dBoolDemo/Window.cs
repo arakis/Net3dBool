@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Drawing;
 
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
+using OpenToolkit;
+using OpenToolkit.Graphics;
+using OpenToolkit.Graphics.OpenGL;
+using OpenToolkit.Input;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Common.Input;
+using OpenToolkit.Windowing.Desktop;
 
 namespace Net3dBoolDemo
 {
@@ -21,9 +25,14 @@ namespace Net3dBoolDemo
         private float Pitch = -0.3f;
         private float Facing = (float)Math.PI / 2 + 0.15f;
 
-        protected override void OnLoad(EventArgs e)
+        public ExtendedGameWindow() : base(GameWindowSettings.Default, NativeWindowSettings.Default)
         {
-            base.OnLoad(e);
+        }
+
+        protected override void OnLoad()
+        {
+            GL.LoadBindings(new OpenToolkit.Windowing.GraphicsLibraryFramework.GLFWBindingsContext());
+
             VSync = VSyncMode.On;
             Title = "Net3dBool Demo with OpenTK";
 
@@ -31,14 +40,14 @@ namespace Net3dBoolDemo
             CameraLocation = new Vector3(1f, -5f, 2f);
             MouseDelta = new Vector2();
 
-            MouseMove += new EventHandler<MouseMoveEventArgs>(OnMouseMove);
+            MouseMove += OnMouseMove;
 
             CreateMesh();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            var kbState = Keyboard.GetState();
+            var kbState = KeyboardState;
             if (kbState[Key.W])
             {
                 CameraLocation.X += (float)Math.Cos(Facing) * 0.1f;
@@ -99,22 +108,25 @@ namespace Net3dBoolDemo
             CameraMatrix = Matrix4.LookAt(loc, loc + lookatPoint, Up);
 
             if (kbState[Key.Escape])
-                Exit();
+            {
+                Close();
+                Environment.Exit(0);
+            }
         }
 
         void OnMouseMove(object sender, MouseMoveEventArgs e)
         {
-            if (e.Mouse.LeftButton == ButtonState.Pressed)
-                MouseDelta = new Vector2(e.XDelta, e.YDelta);
+            if (MouseState[MouseButton.Left])
+                MouseDelta = new Vector2(e.DeltaX, e.DeltaY);
         }
 
-        protected override void OnResize(EventArgs e)
+        protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
-            GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
+            GL.Viewport(ClientRectangle.Min.X, ClientRectangle.Min.Y, ClientRectangle.Size.X, ClientRectangle.Size.Y);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 0.1f, 150.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Size.X / (float)Size.Y, 0.1f, 150.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }

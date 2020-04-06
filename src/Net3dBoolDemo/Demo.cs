@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
 
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
+using OpenToolkit;
+using OpenToolkit.Graphics;
+using OpenToolkit.Graphics.OpenGL;
+using OpenToolkit.Input;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBoolDemo
 {
