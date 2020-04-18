@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-
 using OpenToolkit;
 using OpenToolkit.Graphics;
 using OpenToolkit.Graphics.OpenGL;
