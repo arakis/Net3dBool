@@ -9,7 +9,7 @@ using OpenToolkit.Mathematics;
 namespace Net3dBoolDemo
 {
 
-    public class TDemoWindow : ExtendedGameWindow
+    public class Demo : Window
     {
 
         public Net3dBool.Solid Mesh;

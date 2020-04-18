@@ -7,7 +7,7 @@ namespace Net3dBoolDemo
     {
         public static void Main(string[] args)
         {
-            var demo = new TDemoWindow();
+            var demo = new Demo();
 
             // Run the game at 60 updates per second
             demo.Run();

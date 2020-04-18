@@ -12,7 +12,7 @@ using OpenToolkit.Windowing.Desktop;
 namespace Net3dBoolDemo
 {
 
-    public abstract class ExtendedGameWindow : GameWindow
+    public abstract class Window : GameWindow
     {
 
         public static Matrix4 CameraMatrix;
@@ -24,7 +24,7 @@ namespace Net3dBoolDemo
         private float Pitch = -0.3f;
         private float Facing = (float)Math.PI / 2 + 0.15f;
 
-        public ExtendedGameWindow() : base(GameWindowSettings.Default, new NativeWindowSettings { APIVersion = new Version(3, 0), Profile = ContextProfile.Any })
+        public Window() : base(GameWindowSettings.Default, new NativeWindowSettings { APIVersion = new Version(3, 0), Profile = ContextProfile.Any })
         {
         }
 
