@@ -39,7 +39,7 @@ namespace Net3dBoolDemo
             CameraLocation = new Vector3(1f, -5f, 2f);
             MouseDelta = new Vector2();
 
-            MouseMove += OnMouseMove;
+            MouseMove += ProcessMouseMove;
 
             CreateMesh();
         }
@@ -113,7 +113,7 @@ namespace Net3dBoolDemo
             }
         }
 
-        void OnMouseMove(object sender, MouseMoveEventArgs e)
+        private void ProcessMouseMove(MouseMoveEventArgs e)
         {
             if (MouseState[MouseButton.Left])
                 MouseDelta = new Vector2(e.DeltaX, e.DeltaY);
