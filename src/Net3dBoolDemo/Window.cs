@@ -24,7 +24,7 @@ namespace Net3dBoolDemo
         private float Pitch = -0.3f;
         private float Facing = (float)Math.PI / 2 + 0.15f;
 
-        public ExtendedGameWindow() : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public ExtendedGameWindow() : base(GameWindowSettings.Default, new NativeWindowSettings { APIVersion = new Version(3, 0), Profile = ContextProfile.Any })
         {
         }
 
@@ -46,6 +46,8 @@ namespace Net3dBoolDemo
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            GL.Viewport(0, 0, Size.X, Size.Y);
+
             var kbState = KeyboardState;
             if (kbState[Key.W])
             {
