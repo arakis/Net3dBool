@@ -16,9 +16,9 @@ namespace Net3dBoolDemo
     {
 
         public static Matrix4 CameraMatrix;
-        private float[] MouseSpeed = new float[3];
-        private Vector2 MouseDelta;
-        private float UpDownDelta;
+        private float[] _MouseSpeed = new float[3];
+        private Vector2 _MouseDelta;
+        private float _UpDownDelta;
         private Vector3 CameraLocation;
         private Vector3 Up = Vector3.UnitZ;
         private float Pitch = -0.3f;
@@ -37,7 +37,7 @@ namespace Net3dBoolDemo
 
             CameraMatrix = Matrix4.Identity;
             CameraLocation = new Vector3(1f, -5f, 2f);
-            MouseDelta = new Vector2();
+            _MouseDelta = new Vector2();
 
             MouseMove += ProcessMouseMove;
 
@@ -74,35 +74,35 @@ namespace Net3dBoolDemo
             }
 
             if (kbState[Key.Left])
-                MouseDelta.X = -2;
+                _MouseDelta.X = -2;
 
             if (kbState[Key.Right])
-                MouseDelta.X = 2;
+                _MouseDelta.X = 2;
 
             if (kbState[Key.Up])
-                MouseDelta.Y = -1;
+                _MouseDelta.Y = -1;
 
             if (kbState[Key.Down])
-                MouseDelta.Y = 1;
+                _MouseDelta.Y = 1;
 
             if (kbState[Key.PageUp])
-                UpDownDelta = -3;
+                _UpDownDelta = -3;
 
             if (kbState[Key.PageDown])
-                UpDownDelta = 3;
+                _UpDownDelta = 3;
 
-            MouseSpeed[0] *= 0.9f;
-            MouseSpeed[1] *= 0.9f;
-            MouseSpeed[2] *= 0.9f;
-            MouseSpeed[0] -= MouseDelta.X / 1000f;
-            MouseSpeed[1] -= MouseDelta.Y / 1000f;
-            MouseSpeed[2] -= UpDownDelta / 1000f;
-            MouseDelta = new Vector2();
-            UpDownDelta = 0;
+            _MouseSpeed[0] *= 0.9f;
+            _MouseSpeed[1] *= 0.9f;
+            _MouseSpeed[2] *= 0.9f;
+            _MouseSpeed[0] -= _MouseDelta.X / 1000f;
+            _MouseSpeed[1] -= _MouseDelta.Y / 1000f;
+            _MouseSpeed[2] -= _UpDownDelta / 1000f;
+            _MouseDelta = new Vector2();
+            _UpDownDelta = 0;
 
-            Facing += MouseSpeed[0] * 2;
-            Pitch += MouseSpeed[1] * 2;
-            CameraLocation.Z += MouseSpeed[2] * 2;
+            Facing += _MouseSpeed[0] * 2;
+            Pitch += _MouseSpeed[1] * 2;
+            CameraLocation.Z += _MouseSpeed[2] * 2;
 
             var loc = new Vector3(CameraLocation.X, CameraLocation.Y, CameraLocation.Z);
             Vector3 lookatPoint = new Vector3((float)Math.Cos(Facing), (float)Math.Sin(Facing), (float)Math.Sin(Pitch));
@@ -118,7 +118,7 @@ namespace Net3dBoolDemo
         private void ProcessMouseMove(MouseMoveEventArgs e)
         {
             if (MouseState[MouseButton.Left])
-                MouseDelta = new Vector2(e.DeltaX, e.DeltaY);
+                _MouseDelta = new Vector2(e.DeltaX, e.DeltaY);
         }
 
         protected override void OnResize(ResizeEventArgs e)
