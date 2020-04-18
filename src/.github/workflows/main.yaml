@@ -1,0 +1,18 @@
+name: Tests
+# This workflow is triggered on pushes to the repository.
+on: [push]
+
+jobs:
+  build-unix:
+    name: Linux Test
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: recursive
+          lfs: true
+      - uses: actions/setup-dotnet@v1.4.0
+        with:
+          dotnet-version: "3.1.100" # SDK Version to use.
+      - name: Build
+        run: dotnet build src
