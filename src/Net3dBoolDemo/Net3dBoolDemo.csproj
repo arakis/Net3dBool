@@ -8,7 +8,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="OpenTK" Version="4.0.0-pre9" />
+    <PackageReference Include="OpenTK" Version="4.0.0-pre9.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Net3dBool\Net3dBool.csproj" />
