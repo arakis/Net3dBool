@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -47,7 +48,7 @@ namespace Net3dBool
         /** array of indices for the vertices from the 'vertices' attribute */
         protected int[] Indices;
         /** array of points defining the solid's vertices */
-        protected Vector3[] Vertices;
+        protected Vector3d[] Vertices;
 
         //--------------------------------CONSTRUCTORS----------------------------------//
 
@@ -66,7 +67,7 @@ namespace Net3dBool
         * @param indices array of indices for a array of vertices
         * @param colors array of colors defining the vertices colors 
         */
-        public Solid(Vector3[] vertices, int[] indices)
+        public Solid(Vector3d[] vertices, int[] indices)
             : this()
         {
             SetData(vertices, indices);
@@ -75,7 +76,7 @@ namespace Net3dBool
         /** Sets the initial features common to all constructors */
         protected void SetInitialFeatures()
         {
-            Vertices = new Vector3[0];
+            Vertices = new Vector3d[0];
             Indices = new int[0];
 
             //            setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
@@ -90,9 +91,9 @@ namespace Net3dBool
         * 
         * @return solid vertices
         */
-        public Vector3[] GetVertices()
+        public Vector3d[] GetVertices()
         {
-            Vector3[] newVertices = new Vector3[Vertices.Length];
+            Vector3d[] newVertices = new Vector3d[Vertices.Length];
             for (int i = 0; i < newVertices.Length; i++)
             {
                 newVertices[i] = Vertices[i];
@@ -129,9 +130,9 @@ namespace Net3dBool
         * @param indices array of indices for a array of vertices
         * @param colors array of colors defining the vertices colors 
         */
-        public void SetData(Vector3[] vertices, int[] indices)
+        public void SetData(Vector3d[] vertices, int[] indices)
         {
-            Vertices = new Vector3[vertices.Length];
+            Vertices = new Vector3d[vertices.Length];
             Indices = new int[indices.Length];
             if (indices.Length != 0)
             {
@@ -183,7 +184,7 @@ namespace Net3dBool
             if (dx != 0 || dy != 0)
             {
                 //get mean
-                Vector3 mean = GetMean();
+                Vector3d mean = GetMean();
 
                 double newX, newY, newZ;
                 for (int i = 0; i < Vertices.Length; i++)
@@ -279,9 +280,9 @@ namespace Net3dBool
         * 
         * @return point representing the mean
         */
-        protected Vector3 GetMean()
+        protected Vector3d GetMean()
         {
-            Vector3 mean = new Vector3();
+            Vector3d mean = new Vector3d();
             for (int i = 0; i < Vertices.Length; i++)
             {
                 mean.X += Vertices[i].X;

@@ -35,6 +35,8 @@ Optimized and refactored by: Lars Brubaker (larsbrubaker@matterhackers.com)
 Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
+using OpenToolkit.Mathematics;
+
 namespace Net3dBool
 {
     /// <summary>
@@ -65,9 +67,9 @@ namespace Net3dBool
         private Vertex _EndVertex;
 
         /** start of the intersection point */
-        private Vector3 _StartPos;
+        private Vector3d _StartPos;
         /** end of the intersection point */
-        private Vector3 _EndPos;
+        private Vector3d _EndPos;
 
         /** define as vertex one of the segment ends */
         public static int VERTEX = 1;
@@ -234,14 +236,14 @@ namespace Net3dBool
         * 
         * @return start position
         */
-        public Vector3 StartPosition => _StartPos;
+        public Vector3d StartPosition => _StartPos;
 
         /**
         * Gets the ending position
         * 
         * @return ending position
         */
-        public Vector3 EndPosition => _EndPos;
+        public Vector3d EndPosition => _EndPos;
 
         //------------------------------------OTHERS------------------------------------//
 
@@ -327,9 +329,9 @@ namespace Net3dBool
         */
         private bool SetEdge(Vertex vertex1, Vertex vertex2)
         {
-            Vector3 point1 = vertex1.Position;
-            Vector3 point2 = vertex2.Position;
-            Vector3 edgeDirection = new Vector3(point2.X - point1.X, point2.Y - point1.Y, point2.Z - point1.Z);
+            Vector3d point1 = vertex1.Position;
+            Vector3d point2 = vertex2.Position;
+            Vector3d edgeDirection = new Vector3d(point2.X - point1.X, point2.Y - point1.Y, point2.Z - point1.Z);
             Line edgeLine = new Line(edgeDirection, point1);
 
             if (_Index == 0)
@@ -380,7 +382,7 @@ namespace Net3dBool
             _StartVertex = _EndVertex;
             _EndVertex = vertexTemp;
 
-            Vector3 posTemp = _StartPos;
+            Vector3d posTemp = _StartPos;
             _StartPos = _EndPos;
             _EndPos = posTemp;
         }

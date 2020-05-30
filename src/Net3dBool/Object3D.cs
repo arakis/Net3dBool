@@ -37,6 +37,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 
 using System;
 using System.Collections.Generic;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -73,7 +74,7 @@ namespace Net3dBool
         public Object3D(Solid solid)
         {
             Vertex v1, v2, v3, vertex;
-            Vector3[] verticesPoints = solid.GetVertices();
+            Vector3d[] verticesPoints = solid.GetVertices();
             int[] indices = solid.GetIndices();
             var verticesTemp = new List<Vertex>();
 
@@ -370,7 +371,7 @@ namespace Net3dBool
         /// <param name="pos">vertex position</param>
         /// <param name="status">vertex status</param>
         /// <returns>The vertex inserted (if a similar vertex already exists, this is returned).</returns>
-        private Vertex AddVertex(Vector3 pos, Status status)
+        private Vertex AddVertex(Vector3d pos, Status status)
         {
             int i;
             //if already there is an equal vertex, it is not inserted
@@ -400,7 +401,7 @@ namespace Net3dBool
         /// <param name="newPos1">new vertex position</param>
         /// <param name="newPos2">new vertex position</param>
         /// <param name="linedVertex">linedVertex what vertex is more lined with the interersection found</param>
-        private void BreakFaceInFive(int facePos, Vector3 newPos1, Vector3 newPos2, int linedVertex)
+        private void BreakFaceInFive(int facePos, Vector3d newPos1, Vector3d newPos2, int linedVertex)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -441,7 +442,7 @@ namespace Net3dBool
         /// <param name="newPos1">new vertex position</param>
         /// <param name="newPos2">new vertex position</param>
         /// <param name="endVertex">vertex used for the split</param>
-        private void BreakFaceInFour(int facePos, Vector3 newPos1, Vector3 newPos2, Vertex endVertex)
+        private void BreakFaceInFour(int facePos, Vector3d newPos1, Vector3d newPos2, Vertex endVertex)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -479,7 +480,7 @@ namespace Net3dBool
         /// <param name="newPos1">new vertex position</param>
         /// <param name="newPos2">new vertex position</param>
         /// <param name="splitEdge">edge that will be split</param>
-        private void BreakFaceInThree(int facePos, Vector3 newPos1, Vector3 newPos2, int splitEdge)
+        private void BreakFaceInThree(int facePos, Vector3d newPos1, Vector3d newPos2, int splitEdge)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -513,7 +514,7 @@ namespace Net3dBool
         /// <param name="facePos">face position on the faces array</param>
         /// <param name="newPos">new vertex position</param>
         /// <param name="endVertex">vertex used for the split</param>
-        private void BreakFaceInThree(int facePos, Vector3 newPos, Vertex endVertex)
+        private void BreakFaceInThree(int facePos, Vector3d newPos, Vertex endVertex)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -548,7 +549,7 @@ namespace Net3dBool
         /// <param name="newPos2">new vertex position</param>
         /// <param name="startVertex">vertex used for the new faces creation</param>
         /// <param name="endVertex">vertex used for the new faces creation</param>
-        private void BreakFaceInThree(int facePos, Vector3 newPos1, Vector3 newPos2, Vertex startVertex, Vertex endVertex)
+        private void BreakFaceInThree(int facePos, Vector3d newPos1, Vector3d newPos2, Vertex startVertex, Vertex endVertex)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -599,7 +600,7 @@ namespace Net3dBool
         /// </summary>
         /// <param name="facePos">face position on the faces array</param>
         /// <param name="newPos">new vertex position</param>
-        private void BreakFaceInThree(int facePos, Vector3 newPos)
+        private void BreakFaceInThree(int facePos, Vector3d newPos)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -617,7 +618,7 @@ namespace Net3dBool
         /// <param name="facePos">face position on the faces array</param>
         /// <param name="newPos">new vertex position</param>
         /// <param name="splitEdge">edge that will be split</param>
-        private void BreakFaceInTwo(int facePos, Vector3 newPos, int splitEdge)
+        private void BreakFaceInTwo(int facePos, Vector3d newPos, int splitEdge)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -647,7 +648,7 @@ namespace Net3dBool
         /// <param name="facePos">face position on the faces array</param>
         /// <param name="newPos">new vertex position</param>
         /// <param name="endVertex">vertex used for splitting</param>
-        private void BreakFaceInTwo(int facePos, Vector3 newPos, Vertex endVertex)
+        private void BreakFaceInTwo(int facePos, Vector3d newPos, Vertex endVertex)
         {
             Face face = Faces[facePos];
             Faces.RemoveAt(facePos);
@@ -679,9 +680,9 @@ namespace Net3dBool
         /// <returns>the closest distance from the vertex to the plane</returns>
         private double ComputeDistance(Vertex vertex, Face face)
         {
-            Vector3 normal = face.GetNormal();
-            double distToV1 = Vector3.Dot(normal, face.V1._Position);
-            double distToPositionMinusDistToV1 = Vector3.Dot(normal, vertex._Position) - distToV1;
+            Vector3d normal = face.GetNormal();
+            double distToV1 = Vector3d.Dot(normal, face.V1._Position);
+            double distToPositionMinusDistToV1 = Vector3d.Dot(normal, vertex._Position) - distToV1;
             return distToPositionMinusDistToV1;
         }
 
@@ -693,7 +694,7 @@ namespace Net3dBool
         /// <param name="segment2">segment representing the intersection of other face with the plane of the current face plane</param>
         private void SplitFace(int facePos, Segment segment1, Segment segment2)
         {
-            Vector3 startPos, endPos;
+            Vector3d startPos, endPos;
             int startType, endType, middleType;
             double startDist, endDist;
 
@@ -839,7 +840,7 @@ namespace Net3dBool
             //FACE-FACE-FACE
             else if (startType == Segment.FACE && endType == Segment.FACE)
             {
-                Vector3 segmentVector = new Vector3(startPos.X - endPos.X, startPos.Y - endPos.Y, startPos.Z - endPos.Z);
+                Vector3d segmentVector = new Vector3d(startPos.X - endPos.X, startPos.Y - endPos.Y, startPos.Z - endPos.Z);
 
                 //if the intersection segment is a point only...
                 if (Math.Abs(segmentVector.X) < EqualityTolerance && Math.Abs(segmentVector.Y) < EqualityTolerance && Math.Abs(segmentVector.Z) < EqualityTolerance)
@@ -850,16 +851,16 @@ namespace Net3dBool
 
                 //gets the vertex more lined with the intersection segment
                 int linedVertex;
-                Vector3 linedVertexPos;
-                Vector3 vertexVector = new Vector3(endPos.X - face.V1._Position.X, endPos.Y - face.V1._Position.Y, endPos.Z - face.V1._Position.Z);
+                Vector3d linedVertexPos;
+                Vector3d vertexVector = new Vector3d(endPos.X - face.V1._Position.X, endPos.Y - face.V1._Position.Y, endPos.Z - face.V1._Position.Z);
                 vertexVector.Normalize();
-                double dot1 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
-                vertexVector = new Vector3(endPos.X - face.V2._Position.X, endPos.Y - face.V2._Position.Y, endPos.Z - face.V2._Position.Z);
+                double dot1 = Math.Abs(Vector3d.Dot(segmentVector, vertexVector));
+                vertexVector = new Vector3d(endPos.X - face.V2._Position.X, endPos.Y - face.V2._Position.Y, endPos.Z - face.V2._Position.Z);
                 vertexVector.Normalize();
-                double dot2 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
-                vertexVector = new Vector3(endPos.X - face.V3._Position.X, endPos.Y - face.V3._Position.Y, endPos.Z - face.V3._Position.Z);
+                double dot2 = Math.Abs(Vector3d.Dot(segmentVector, vertexVector));
+                vertexVector = new Vector3d(endPos.X - face.V3._Position.X, endPos.Y - face.V3._Position.Y, endPos.Z - face.V3._Position.Z);
                 vertexVector.Normalize();
-                double dot3 = Math.Abs(Vector3.Dot(segmentVector, vertexVector));
+                double dot3 = Math.Abs(Vector3d.Dot(segmentVector, vertexVector));
                 if (dot1 > dot2 && dot1 > dot3)
                 {
                     linedVertex = 1;

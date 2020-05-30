@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -49,7 +50,7 @@ namespace Net3dBool
         /// </summary>
         private readonly static double EqualityTolerance = 1e-10f;
         private static Random Rnd = new Random();
-        private Vector3 StartPoint;
+        private Vector3d StartPoint;
 
         /// <summary>
         /// Constructor for a line.The line created is the intersection between two planes
@@ -58,18 +59,18 @@ namespace Net3dBool
         /// <param name="face2">face representing one of the planes</param>
         public Line(Face face1, Face face2)
         {
-            Vector3 normalFace1 = face1.GetNormal();
-            Vector3 normalFace2 = face2.GetNormal();
+            Vector3d normalFace1 = face1.GetNormal();
+            Vector3d normalFace2 = face2.GetNormal();
 
             //direction: cross product of the faces normals
-            Direction = Vector3.Cross(normalFace1, normalFace2);
+            Direction = Vector3d.Cross(normalFace1, normalFace2);
 
             //if direction lenght is not zero (the planes aren't parallel )...
             if (!(Direction.Length < EqualityTolerance))
             {
                 //getting a line point, zero is set to a coordinate whose direction
                 //component isn't zero (line intersecting its origin plan)
-                StartPoint = new Vector3();
+                StartPoint = new Vector3d();
                 double d1 = -(normalFace1.X * face1.V1._Position.X + normalFace1.Y * face1.V1._Position.Y + normalFace1.Z * face1.V1._Position.Z);
                 double d2 = -(normalFace2.X * face2.V1._Position.X + normalFace2.Y * face2.V1._Position.Y + normalFace2.Z * face2.V1._Position.Z);
                 if (Math.Abs(Direction.X) > EqualityTolerance)
@@ -100,7 +101,7 @@ namespace Net3dBool
         /// </summary>
         /// <param name="direction">direction ray</param>
         /// <param name="point">beginning of the ray</param>
-        public Line(Vector3 direction, Vector3 point)
+        public Line(Vector3d direction, Vector3d point)
         {
             Direction = direction;
             StartPoint = point;
@@ -114,7 +115,7 @@ namespace Net3dBool
         /// <summary>
         /// line direction
         /// </summary>
-        public Vector3 Direction { get; private set; }
+        public Vector3d Direction { get; private set; }
 
         public Line Clone()
         {
@@ -129,14 +130,14 @@ namespace Net3dBool
         /// </summary>
         /// <param name="otherLine">the other line to apply the intersection. The lines are supposed to intersect</param>
         /// <returns>point resulting from the intersection. If the point coundn't be obtained, return null</returns>
-        public Vector3 ComputeLineIntersection(Line otherLine)
+        public Vector3d ComputeLineIntersection(Line otherLine)
         {
             //x = x1 + a1*t = x2 + b1*s
             //y = y1 + a2*t = y2 + b2*s
             //z = z1 + a3*t = z2 + b3*s
 
-            Vector3 linePoint = otherLine.GetPoint();
-            Vector3 lineDirection = otherLine.Direction;
+            Vector3d linePoint = otherLine.GetPoint();
+            Vector3d lineDirection = otherLine.Direction;
 
             double t;
             if (Math.Abs(Direction.Y * lineDirection.X - Direction.X * lineDirection.Y) > EqualityTolerance)
@@ -164,7 +165,7 @@ namespace Net3dBool
             double y = StartPoint.Y + Direction.Y * t;
             double z = StartPoint.Z + Direction.Z * t;
 
-            return new Vector3(x, y, z);
+            return new Vector3d(x, y, z);
         }
 
         /// <summary>
@@ -173,12 +174,12 @@ namespace Net3dBool
         /// <param name="normal">the plane normal</param>
         /// <param name="planePoint">a plane point.</param>
         /// <returns>intersection point.If they don't intersect, return null</returns>
-        public Vector3 ComputePlaneIntersection(Plane plane)
+        public Vector3d ComputePlaneIntersection(Plane plane)
         {
-            double distanceToStartFromOrigin = Vector3.Dot(plane.PlaneNormal, StartPoint);
+            double distanceToStartFromOrigin = Vector3d.Dot(plane.PlaneNormal, StartPoint);
 
             double distanceFromPlane = distanceToStartFromOrigin - plane.DistanceToPlaneFromOrigin;
-            double denominator = Vector3.Dot(plane.PlaneNormal, Direction);
+            double denominator = Vector3d.Dot(plane.PlaneNormal, Direction);
 
             if (Math.Abs(denominator) < EqualityTolerance)
             {
@@ -190,13 +191,13 @@ namespace Net3dBool
                 }
                 else
                 {
-                    return Vector3.PositiveInfinity;
+                    return Vector3d.PositiveInfinity;
                 }
             }
             else // line intercepts the plane...
             {
                 double t = -distanceFromPlane / denominator;
-                Vector3 resultPoint = new Vector3();
+                Vector3d resultPoint = new Vector3d();
                 resultPoint.X = StartPoint.X + t * Direction.X;
                 resultPoint.Y = StartPoint.Y + t * Direction.Y;
                 resultPoint.Z = StartPoint.Z + t * Direction.Z;
@@ -210,12 +211,12 @@ namespace Net3dBool
         /// </summary>
         /// <param name="otherPoint">the point to compute the distance from the line point. The point is supposed to be on the same line.</param>
         /// <returns>points distance. If the point submitted is behind the direction, the distance is negative</returns>
-        public double ComputePointToPointDistance(Vector3 otherPoint)
+        public double ComputePointToPointDistance(Vector3d otherPoint)
         {
             double distance = (otherPoint - StartPoint).Length;
-            Vector3 vec = new Vector3(otherPoint.X - StartPoint.X, otherPoint.Y - StartPoint.Y, otherPoint.Z - StartPoint.Z);
+            Vector3d vec = new Vector3d(otherPoint.X - StartPoint.X, otherPoint.Y - StartPoint.Y, otherPoint.Z - StartPoint.Z);
             vec.Normalize();
-            if (Vector3.Dot(vec, Direction) < 0)
+            if (Vector3d.Dot(vec, Direction) < 0)
             {
                 return -distance;
             }
@@ -225,7 +226,7 @@ namespace Net3dBool
             }
         }
 
-        public Vector3 GetPoint()
+        public Vector3d GetPoint()
         {
             return StartPoint;
         }
@@ -235,7 +236,7 @@ namespace Net3dBool
         /// </summary>
         public void PerturbDirection()
         {
-            Vector3 perturbedDirection = Direction;
+            Vector3d perturbedDirection = Direction;
             perturbedDirection.X += 1e-5 * Random();
             perturbedDirection.Y += 1e-5 * Random();
             perturbedDirection.Z += 1e-5 * Random();
@@ -243,12 +244,12 @@ namespace Net3dBool
             Direction = perturbedDirection;
         }
 
-        public void SetDirection(Vector3 direction)
+        public void SetDirection(Vector3d direction)
         {
             Direction = direction;
         }
 
-        public void SetPoint(Vector3 point)
+        public void SetPoint(Vector3d point)
         {
             StartPoint = point;
         }

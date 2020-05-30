@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -69,7 +70,7 @@ namespace Net3dBool
         * @param p2 point relative to the second vertex
         * @param p3 point relative to the third vertex
         */
-        public Bound(Vector3 p1, Vector3 p2, Vector3 p3)
+        public Bound(Vector3d p1, Vector3d p2, Vector3d p3)
         {
             XMax = XMin = p1.X;
             YMax = YMin = p1.Y;
@@ -84,7 +85,7 @@ namespace Net3dBool
         * 
         * @param vertices the object vertices
         */
-        public Bound(Vector3[] vertices)
+        public Bound(Vector3d[] vertices)
         {
             XMax = XMin = vertices[0].X;
             YMax = YMin = vertices[0].Y;
@@ -135,7 +136,7 @@ namespace Net3dBool
         * 
         * @param vertex vertex to be tested
         */
-        private void CheckVertex(Vector3 vertex)
+        private void CheckVertex(Vector3d vertex)
         {
             if (vertex.X > XMax)
             {

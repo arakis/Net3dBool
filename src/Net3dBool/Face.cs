@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -53,7 +54,7 @@ namespace Net3dBool
         /** third vertex */
         public Vertex V3;
 
-        private Vector3 Center;
+        private Vector3d Center;
 
         /** face status relative to a solid  */
         private readonly static double EqualityTolerance = 1e-10f;
@@ -133,7 +134,7 @@ namespace Net3dBool
             return 350;
         }
 
-        public Vector3 GetCenter()
+        public Vector3d GetCenter()
         {
             return Center;
         }
@@ -141,15 +142,15 @@ namespace Net3dBool
         public double GetArea()
         {
             //area = (a * c * sen(B))/2
-            Vector3 p1 = V1.Position;
-            Vector3 p2 = V2.Position;
-            Vector3 p3 = V3.Position;
-            Vector3 xy = new Vector3(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
-            Vector3 xz = new Vector3(p3.X - p1.X, p3.Y - p1.Y, p3.Z - p1.Z);
+            Vector3d p1 = V1.Position;
+            Vector3d p2 = V2.Position;
+            Vector3d p3 = V3.Position;
+            Vector3d xy = new Vector3d(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            Vector3d xz = new Vector3d(p3.X - p1.X, p3.Y - p1.Y, p3.Z - p1.Z);
 
             double a = (p1 - p2).Length;
             double c = (p1 - p3).Length;
-            double B = Vector3.CalculateAngle(xy, xz);
+            double B = Vector3d.CalculateAngle(xy, xz);
 
             return (a * c * Math.Sin(B)) / 2d;
         }
@@ -169,16 +170,16 @@ namespace Net3dBool
         {
             if (PlaneCache == null)
             {
-                Vector3 p1 = V1.Position;
-                Vector3 p2 = V2.Position;
-                Vector3 p3 = V3.Position;
+                Vector3d p1 = V1.Position;
+                Vector3d p2 = V2.Position;
+                Vector3d p3 = V3.Position;
                 PlaneCache = new Plane(p1, p2, p3);
             }
 
             return PlaneCache;
         }
 
-        public Vector3 GetNormal()
+        public Vector3d GetNormal()
         {
             return GetPlane().PlaneNormal;
         }
@@ -206,7 +207,7 @@ namespace Net3dBool
 
             bool success;
             double distance;
-            Vector3 intersectionPoint;
+            Vector3d intersectionPoint;
             Face closestFace = null;
             double closestDistance;
 
@@ -223,7 +224,7 @@ namespace Net3dBool
                     //if ray intersects the plane...
                     if (intersectionPoint.X != double.PositiveInfinity)
                     {
-                        double dotProduct = Vector3.Dot(face.GetNormal(), ray.Direction);
+                        double dotProduct = Vector3d.Dot(face.GetNormal(), ray.Direction);
                         distance = ray.ComputePointToPointDistance(intersectionPoint);
 
                         //if ray lies in plane...
@@ -274,7 +275,7 @@ namespace Net3dBool
             }
             else //face found: test dot product
             {
-                double dotProduct = Vector3.Dot(closestFace.GetNormal(), ray.Direction);
+                double dotProduct = Vector3d.Dot(closestFace.GetNormal(), ray.Direction);
 
                 //distance = 0: coplanar faces
                 if (Math.Abs(closestDistance) < EqualityTolerance)
@@ -380,7 +381,7 @@ namespace Net3dBool
         /// <param name="pointLine1">one of the line ends</param>
         /// <param name="pointLine2">one of the line ends</param>
         /// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
-        private static Side LinePositionInX(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+        private static Side LinePositionInX(Vector3d point, Vector3d pointLine1, Vector3d pointLine2)
         {
             double a, b, z;
             if ((Math.Abs(pointLine1.Y - pointLine2.Y) > EqualityTolerance) && (((point.Y >= pointLine1.Y) && (point.Y <= pointLine2.Y)) || ((point.Y <= pointLine1.Y) && (point.Y >= pointLine2.Y))))
@@ -414,7 +415,7 @@ namespace Net3dBool
         /// <param name="pointLine1">one of the line ends</param>
         /// <param name="pointLine2">one of the line ends</param>
         /// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
-        private static Side LinePositionInY(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+        private static Side LinePositionInY(Vector3d point, Vector3d pointLine1, Vector3d pointLine2)
         {
             double a, b, z;
             if ((Math.Abs(pointLine1.X - pointLine2.X) > EqualityTolerance) && (((point.X >= pointLine1.X) && (point.X <= pointLine2.X)) || ((point.X <= pointLine1.X) && (point.X >= pointLine2.X))))
@@ -448,7 +449,7 @@ namespace Net3dBool
         /// <param name="pointLine1">one of the line ends</param>
         /// <param name="pointLine2">one of the line ends</param>
         /// <returns>position of the point relative to the line - UP, DOWN, ON, NONE</returns>
-        private static Side LinePositionInZ(Vector3 point, Vector3 pointLine1, Vector3 pointLine2)
+        private static Side LinePositionInZ(Vector3d point, Vector3d pointLine1, Vector3d pointLine2)
         {
             double a, b, y;
             if ((Math.Abs(pointLine1.X - pointLine2.X) > EqualityTolerance) && (((point.X >= pointLine1.X) && (point.X <= pointLine2.X)) || ((point.X <= pointLine1.X) && (point.X >= pointLine2.X))))
@@ -480,12 +481,12 @@ namespace Net3dBool
         /// </summary>
         /// <param name="point">point to be tested</param>
         /// <returns>true if the face contains the point, false otherwise</returns>
-        private bool ContainsPoint(Vector3 point)
+        private bool ContainsPoint(Vector3d point)
         {
             Side result1;
             Side result2;
             Side result3;
-            Vector3 normal = GetNormal();
+            Vector3d normal = GetNormal();
 
             //if x is constant...
             if (Math.Abs(normal.X) > EqualityTolerance)

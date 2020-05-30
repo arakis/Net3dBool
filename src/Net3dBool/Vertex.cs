@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System.Collections.Generic;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -44,7 +45,7 @@ namespace Net3dBool
     /// </summary>
     public class Vertex
     {
-        public Vector3 _Position;
+        public Vector3d _Position;
         /** references to vertices conected to it by an edge  */
         private List<Vertex> AdjacentVertices;
         /** vertex status relative to other object */
@@ -60,7 +61,7 @@ namespace Net3dBool
      * 
      * @param position vertex position
      */
-        public Vertex(Vector3 position)
+        public Vertex(Vector3d position)
         {
             _Position = position;
 
@@ -90,7 +91,7 @@ namespace Net3dBool
         /// </summary>
         /// <param name="position">vertex position</param>
         /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
-        public Vertex(Vector3 position, Status status)
+        public Vertex(Vector3d position, Status status)
         {
             _Position.X = position.X;
             _Position.Y = position.Y;
@@ -109,7 +110,7 @@ namespace Net3dBool
         /// <param name="status">vertex status - UNKNOWN, BOUNDARY, INSIDE or OUTSIDE</param>
         public Vertex(double x, double y, double z, Status status)
         {
-            _Position = new Vector3(x, y, z);
+            _Position = new Vector3d(x, y, z);
 
             AdjacentVertices = new List<Vertex>();
             _Status = status;
@@ -184,7 +185,7 @@ namespace Net3dBool
         * 
         * @return vertex position
         */
-        public Vector3 Position => _Position;
+        public Vector3d Position => _Position;
 
         /**
         * Gets an array with the adjacent vertices

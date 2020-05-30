@@ -37,6 +37,7 @@ either expressed or implied, of the FreeBSD Project.
 */
 
 using System;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -50,11 +51,11 @@ namespace Net3dBool
     {
         public static double SameSurfaceOffset = .00001;
 
-        public Vector3 Origin;
-        public Vector3 DirectionNormal;
+        public Vector3d Origin;
+        public Vector3d DirectionNormal;
         public double MinDistanceToConsider;
         public double MaxDistanceToConsider;
-        public Vector3 OneOverDirection;
+        public Vector3d OneOverDirection;
         public bool IsShadowRay;
         public IntersectionType IntersectionType;
 
@@ -62,14 +63,14 @@ namespace Net3dBool
 
         public RaySign[] Sign = new RaySign[3];
 
-        public Ray(Vector3 origin, Vector3 directionNormal, double minDistanceToConsider = 0, double maxDistanceToConsider = double.PositiveInfinity, IntersectionType intersectionType = IntersectionType.FrontFace)
+        public Ray(Vector3d origin, Vector3d directionNormal, double minDistanceToConsider = 0, double maxDistanceToConsider = double.PositiveInfinity, IntersectionType intersectionType = IntersectionType.FrontFace)
         {
             Origin = origin;
             DirectionNormal = directionNormal;
             MinDistanceToConsider = minDistanceToConsider;
             MaxDistanceToConsider = maxDistanceToConsider;
             IntersectionType = intersectionType;
-            OneOverDirection = 1 / directionNormal;
+            OneOverDirection = Vector3d.Divide(new Vector3d(1),directionNormal);
 
             Sign[0] = (OneOverDirection.X < 0) ? RaySign.negative : RaySign.positive;
             Sign[1] = (OneOverDirection.Y < 0) ? RaySign.negative : RaySign.positive;

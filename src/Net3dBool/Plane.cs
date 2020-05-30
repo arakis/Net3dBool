@@ -27,42 +27,44 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
 
+using OpenToolkit.Mathematics;
+
 namespace Net3dBool
 {
     public class Plane
     {
         public double DistanceToPlaneFromOrigin;
-        public Vector3 PlaneNormal;
+        public Vector3d PlaneNormal;
         private const double TreatAsZero = .000000001;
 
-        public Plane(Vector3 planeNormal, double distanceFromOrigin)
+        public Plane(Vector3d planeNormal, double distanceFromOrigin)
         {
-            PlaneNormal = planeNormal.GetNormal();
+            PlaneNormal = planeNormal.Normalized();
             DistanceToPlaneFromOrigin = distanceFromOrigin;
         }
 
-        public Plane(Vector3 point0, Vector3 point1, Vector3 point2)
+        public Plane(Vector3d point0, Vector3d point1, Vector3d point2)
         {
-            PlaneNormal = Vector3.Cross((point1 - point0), (point2 - point0)).GetNormal();
-            DistanceToPlaneFromOrigin = Vector3.Dot(PlaneNormal, point0);
+            PlaneNormal = Vector3d.Cross((point1 - point0), (point2 - point0)).Normalized();
+            DistanceToPlaneFromOrigin = Vector3d.Dot(PlaneNormal, point0);
         }
 
-        public Plane(Vector3 planeNormal, Vector3 pointOnPlane)
+        public Plane(Vector3d planeNormal, Vector3d pointOnPlane)
         {
-            PlaneNormal = planeNormal.GetNormal();
-            DistanceToPlaneFromOrigin = Vector3.Dot(planeNormal, pointOnPlane);
+            PlaneNormal = planeNormal.Normalized();
+            DistanceToPlaneFromOrigin = Vector3d.Dot(planeNormal, pointOnPlane);
         }
 
-        public double GetDistanceFromPlane(Vector3 positionToCheck)
+        public double GetDistanceFromPlane(Vector3d positionToCheck)
         {
-            double distanceToPointFromOrigin = Vector3.Dot(positionToCheck, PlaneNormal);
+            double distanceToPointFromOrigin = Vector3d.Dot(positionToCheck, PlaneNormal);
             return distanceToPointFromOrigin - DistanceToPlaneFromOrigin;
         }
 
         public double GetDistanceToIntersection(Ray ray, out bool inFront)
         {
             inFront = false;
-            double normalDotRayDirection = Vector3.Dot(PlaneNormal, ray.DirectionNormal);
+            double normalDotRayDirection = Vector3d.Dot(PlaneNormal, ray.DirectionNormal);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return double.PositiveInfinity;
@@ -73,18 +75,18 @@ namespace Net3dBool
                 inFront = true;
             }
 
-            return (DistanceToPlaneFromOrigin - Vector3.Dot(PlaneNormal, ray.Origin)) / normalDotRayDirection;
+            return (DistanceToPlaneFromOrigin - Vector3d.Dot(PlaneNormal, ray.Origin)) / normalDotRayDirection;
         }
 
-        public double GetDistanceToIntersection(Vector3 pointOnLine, Vector3 lineDirection)
+        public double GetDistanceToIntersection(Vector3d pointOnLine, Vector3d lineDirection)
         {
-            double normalDotRayDirection = Vector3.Dot(PlaneNormal, lineDirection);
+            double normalDotRayDirection = Vector3d.Dot(PlaneNormal, lineDirection);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return double.PositiveInfinity;
             }
 
-            double planeNormalDotPointOnLine = Vector3.Dot(PlaneNormal, pointOnLine);
+            double planeNormalDotPointOnLine = Vector3d.Dot(PlaneNormal, pointOnLine);
             return (DistanceToPlaneFromOrigin - planeNormalDotPointOnLine) / normalDotRayDirection;
         }
 
@@ -93,7 +95,7 @@ namespace Net3dBool
             distanceToHit = double.PositiveInfinity;
             hitFrontOfPlane = false;
 
-            double normalDotRayDirection = Vector3.Dot(PlaneNormal, ray.DirectionNormal);
+            double normalDotRayDirection = Vector3d.Dot(PlaneNormal, ray.DirectionNormal);
             if (normalDotRayDirection < TreatAsZero && normalDotRayDirection > -TreatAsZero) // the ray is parallel to the plane
             {
                 return false;
@@ -104,7 +106,7 @@ namespace Net3dBool
                 hitFrontOfPlane = true;
             }
 
-            double distanceToRayOriginFromOrigin = Vector3.Dot(PlaneNormal, ray.Origin);
+            double distanceToRayOriginFromOrigin = Vector3d.Dot(PlaneNormal, ray.Origin);
 
             double distanceToPlaneFromRayOrigin = DistanceToPlaneFromOrigin - distanceToRayOriginFromOrigin;
 
@@ -120,16 +122,16 @@ namespace Net3dBool
             return true;
         }
 
-        public bool LineHitPlane(Vector3 start, Vector3 end, out Vector3 intersectionPosition)
+        public bool LineHitPlane(Vector3d start, Vector3d end, out Vector3d intersectionPosition)
         {
-            double distanceToStartFromOrigin = Vector3.Dot(PlaneNormal, start);
+            double distanceToStartFromOrigin = Vector3d.Dot(PlaneNormal, start);
             if (distanceToStartFromOrigin == 0)
             {
                 intersectionPosition = start;
                 return true;
             }
 
-            double distanceToEndFromOrigin = Vector3.Dot(PlaneNormal, end);
+            double distanceToEndFromOrigin = Vector3d.Dot(PlaneNormal, end);
             if (distanceToEndFromOrigin == 0)
             {
                 intersectionPosition = end;
@@ -139,7 +141,7 @@ namespace Net3dBool
             if ((distanceToStartFromOrigin < 0 && distanceToEndFromOrigin > 0)
                 || (distanceToStartFromOrigin > 0 && distanceToEndFromOrigin < 0))
             {
-                Vector3 direction = (end - start).GetNormal();
+                Vector3d direction = (end - start).Normalized();
 
                 double startDistanceFromPlane = distanceToStartFromOrigin - DistanceToPlaneFromOrigin;
                 double endDistanceFromPlane = distanceToEndFromOrigin - DistanceToPlaneFromOrigin;
@@ -151,7 +153,7 @@ namespace Net3dBool
                 return true;
             }
 
-            intersectionPosition = Vector3.PositiveInfinity;
+            intersectionPosition = Vector3d.PositiveInfinity;
             return false;
         }
     }

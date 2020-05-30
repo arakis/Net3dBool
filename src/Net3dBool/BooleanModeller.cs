@@ -36,6 +36,7 @@ Project: https://github.com/MatterHackers/agg-sharp (an included library)
 */
 
 using System.Collections.Generic;
+using OpenToolkit.Mathematics;
 
 namespace Net3dBool
 {
@@ -158,7 +159,7 @@ namespace Net3dBool
             GroupObjectComponents(Object2, vertices, indices, faceStatus3, faceStatus3);
 
             //turn the arrayLists to arrays
-            Vector3[] verticesArray = new Vector3[vertices.Count];
+            Vector3d[] verticesArray = new Vector3d[vertices.Count];
             for (int i = 0; i < vertices.Count; i++)
             {
                 verticesArray[i] = vertices[i].Position;
