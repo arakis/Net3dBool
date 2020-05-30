@@ -11,9 +11,6 @@
 * Ported from Java to C# by Sebastian Loncar, Web: http://loncar.de
 * Project: https://github.com/Arakis/Net3dBool
 */
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Net3dBool
 {
