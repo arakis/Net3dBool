@@ -259,9 +259,9 @@ namespace Net3dBool
                                 distFace1Vert3 = ComputeDistance(face1.V3, face2);
 
                                 //distances signs from the face1 vertices to the face2 plane
-                                signFace1Vert1 = (distFace1Vert1 > EqualityTolerance ? 1 : (distFace1Vert1 < -EqualityTolerance ? -1 : 0));
-                                signFace1Vert2 = (distFace1Vert2 > EqualityTolerance ? 1 : (distFace1Vert2 < -EqualityTolerance ? -1 : 0));
-                                signFace1Vert3 = (distFace1Vert3 > EqualityTolerance ? 1 : (distFace1Vert3 < -EqualityTolerance ? -1 : 0));
+                                signFace1Vert1 = distFace1Vert1 > EqualityTolerance ? 1 : (distFace1Vert1 < -EqualityTolerance ? -1 : 0);
+                                signFace1Vert2 = distFace1Vert2 > EqualityTolerance ? 1 : (distFace1Vert2 < -EqualityTolerance ? -1 : 0);
+                                signFace1Vert3 = distFace1Vert3 > EqualityTolerance ? 1 : (distFace1Vert3 < -EqualityTolerance ? -1 : 0);
 
                                 //if all the signs are zero, the planes are coplanar
                                 //if all the signs are positive or negative, the planes do not intersect
@@ -274,9 +274,9 @@ namespace Net3dBool
                                     distFace2Vert3 = ComputeDistance(face2.V3, face1);
 
                                     //distances signs from the face2 vertices to the face1 plane
-                                    signFace2Vert1 = (distFace2Vert1 > EqualityTolerance ? 1 : (distFace2Vert1 < -EqualityTolerance ? -1 : 0));
-                                    signFace2Vert2 = (distFace2Vert2 > EqualityTolerance ? 1 : (distFace2Vert2 < -EqualityTolerance ? -1 : 0));
-                                    signFace2Vert3 = (distFace2Vert3 > EqualityTolerance ? 1 : (distFace2Vert3 < -EqualityTolerance ? -1 : 0));
+                                    signFace2Vert1 = distFace2Vert1 > EqualityTolerance ? 1 : (distFace2Vert1 < -EqualityTolerance ? -1 : 0);
+                                    signFace2Vert2 = distFace2Vert2 > EqualityTolerance ? 1 : (distFace2Vert2 < -EqualityTolerance ? -1 : 0);
+                                    signFace2Vert3 = distFace2Vert3 > EqualityTolerance ? 1 : (distFace2Vert3 < -EqualityTolerance ? -1 : 0);
 
                                     //if the signs are not equal...
                                     if (!(signFace2Vert1 == signFace2Vert2 && signFace2Vert2 == signFace2Vert3))

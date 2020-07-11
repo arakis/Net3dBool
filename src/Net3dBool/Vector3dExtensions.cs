@@ -13,9 +13,9 @@ namespace Net3dBool
         /// <returns>True if the instances are equal; false otherwise.</returns>
         public static bool Equals(this Vector3d vector, Vector3d OtherVector, double ErrorValue)
         {
-            if ((vector.X < OtherVector.X + ErrorValue && vector.X > OtherVector.X - ErrorValue) &&
-                (vector.Y < OtherVector.Y + ErrorValue && vector.Y > OtherVector.Y - ErrorValue) &&
-                (vector.Z < OtherVector.Z + ErrorValue && vector.Z > OtherVector.Z - ErrorValue))
+            if (vector.X < OtherVector.X + ErrorValue && vector.X > OtherVector.X - ErrorValue &&
+                vector.Y < OtherVector.Y + ErrorValue && vector.Y > OtherVector.Y - ErrorValue &&
+                vector.Z < OtherVector.Z + ErrorValue && vector.Z > OtherVector.Z - ErrorValue)
             {
                 return true;
             }

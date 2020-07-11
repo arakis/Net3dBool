@@ -45,7 +45,7 @@ namespace Net3dBool
 
         public Plane(Vector3d point0, Vector3d point1, Vector3d point2)
         {
-            PlaneNormal = Vector3d.Cross((point1 - point0), (point2 - point0)).Normalized();
+            PlaneNormal = Vector3d.Cross(point1 - point0, point2 - point0).Normalized();
             DistanceToPlaneFromOrigin = Vector3d.Dot(PlaneNormal, point0);
         }
 

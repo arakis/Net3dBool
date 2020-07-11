@@ -152,7 +152,7 @@ namespace Net3dBool
             double c = (p1 - p3).Length;
             double B = Vector3d.CalculateAngle(xy, xz);
 
-            return (a * c * Math.Sin(B)) / 2d;
+            return a * c * Math.Sin(B) / 2d;
         }
 
         public Bound GetBound()
