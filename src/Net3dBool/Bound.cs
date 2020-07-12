@@ -104,7 +104,7 @@ namespace Net3dBool
         * 
         * @return the string definition
         */
-        public String toString()
+        public string toString()
         {
             return "x: " + XMin + " .. " + XMax + "\ny: " + YMin + " .. " + YMax + "\nz: " + ZMin + " .. " + ZMax;
         }

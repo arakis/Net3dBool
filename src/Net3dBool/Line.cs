@@ -254,7 +254,7 @@ namespace Net3dBool
             StartPoint = point;
         }
 
-        public String toString()
+        public string toString()
         {
             return "Direction: " + Direction.ToString() + "\nPoint: " + StartPoint.ToString();
         }

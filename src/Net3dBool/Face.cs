@@ -214,7 +214,7 @@ namespace Net3dBool
             do
             {
                 success = true;
-                closestDistance = Double.MaxValue;
+                closestDistance = double.MaxValue;
                 //for each face from the other solid...
                 for (int faceIndex = 0; faceIndex < obj.NumFaces; faceIndex++)
                 {
