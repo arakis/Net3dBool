@@ -297,10 +297,15 @@ namespace Net3dBool
                                             SplitFace(i, segment1, segment2);
 
                                             //prevent from infinite loop (with a loss of faces...)
-                                            if(numFacesStart*20<NumFaces)
+                                            // TODO: Determine a ideal face number.
+                                            // 20 is too less!
+                                            // 87 is required for the Sample Application
+                                            // 1000 to be sure
+                                            // Is there a better way?
+                                            if (numFacesStart * 1000 < NumFaces)
                                             {
-                                              Console.WriteLine("possible infinite loop situation: terminating faces split");
-                                              return;
+                                                Console.WriteLine("possible infinite loop situation: terminating faces split");
+                                                return;
                                             }
 
                                             //if the face in the position isn't the same, there was a break
