@@ -6,10 +6,10 @@ using OpenToolkit.Graphics.OpenGL;
 using OpenToolkit.Input;
 using OpenToolkit.Mathematics;
 
-namespace Net3dBoolDemo
+namespace Net3dBool.Sample
 {
 
-    public class Demo : Window
+    public class Sample : Window
     {
 
         public Net3dBool.Solid Mesh;

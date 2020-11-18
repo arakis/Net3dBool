@@ -9,7 +9,7 @@ using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
 using OpenToolkit.Windowing.Desktop;
 
-namespace Net3dBoolDemo
+namespace Net3dBool.Sample
 {
 
     public abstract class Window : GameWindow
@@ -33,7 +33,7 @@ namespace Net3dBoolDemo
             GL.LoadBindings(new OpenToolkit.Windowing.GraphicsLibraryFramework.GLFWBindingsContext());
 
             VSync = VSyncMode.On;
-            Title = "Net3dBool Demo with OpenTK";
+            Title = "Net3dBool Sample with OpenTK";
 
             CameraMatrix = Matrix4.Identity;
             CameraLocation = new Vector3(1f, -5f, 2f);

@@ -1,16 +1,16 @@
 ﻿using System;
 using OpenToolkit;
 
-namespace Net3dBoolDemo
+namespace Net3dBool.Sample
 {
     class MainClass
     {
         public static void Main(string[] args)
         {
-            var demo = new Demo();
+            var sample = new Sample();
 
             // Run the game at 60 updates per second
-            demo.Run();
+            sample.Run();
         }
 
     }

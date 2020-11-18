@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Net3dBoolDemo/bin/Debug/netcoreapp3.1/Net3dBoolDemo.dll",
+            "program": "${workspaceFolder}/Net3dBool.Sample/bin/Debug/netcoreapp3.1/Net3dBoolS.ample.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Net3dBoolDemo",
+            "cwd": "${workspaceFolder}/Net3dBool.Sample",
             "console": "internalConsole",
             "stopAtEntry": false,
             "justMyCode": false
