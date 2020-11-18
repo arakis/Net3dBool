@@ -1,34 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool", "Net3dBool\Net3dBool.csproj", "{7EE4636D-8A92-4015-9562-7FCD6ADD0645}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool.Sample", "Net3dBool.Sample\Net3dBool.Sample.csproj", "{811065CC-16D7-4922-8545-B7244B9C3732}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool.Sample", "Net3dBool.Sample\Net3dBool.Sample.csproj", "{303329F6-C910-4043-81E5-5080659ECB28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net3dBool", "Net3dBool\Net3dBool.csproj", "{9ADECFBD-ADAA-42A4-8AF8-BDAFC1167A6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7EE4636D-8A92-4015-9562-7FCD6ADD0645}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7EE4636D-8A92-4015-9562-7FCD6ADD0645}.Debug|x86.Build.0 = Debug|Any CPU
-		{7EE4636D-8A92-4015-9562-7FCD6ADD0645}.Release|x86.ActiveCfg = Release|Any CPU
-		{7EE4636D-8A92-4015-9562-7FCD6ADD0645}.Release|x86.Build.0 = Release|Any CPU
-		{303329F6-C910-4043-81E5-5080659ECB28}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{303329F6-C910-4043-81E5-5080659ECB28}.Debug|x86.Build.0 = Debug|Any CPU
-		{303329F6-C910-4043-81E5-5080659ECB28}.Release|x86.ActiveCfg = Release|Any CPU
-		{303329F6-C910-4043-81E5-5080659ECB28}.Release|x86.Build.0 = Release|Any CPU
+		{811065CC-16D7-4922-8545-B7244B9C3732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811065CC-16D7-4922-8545-B7244B9C3732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811065CC-16D7-4922-8545-B7244B9C3732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811065CC-16D7-4922-8545-B7244B9C3732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ADECFBD-ADAA-42A4-8AF8-BDAFC1167A6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ADECFBD-ADAA-42A4-8AF8-BDAFC1167A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ADECFBD-ADAA-42A4-8AF8-BDAFC1167A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ADECFBD-ADAA-42A4-8AF8-BDAFC1167A6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F8550A3E-DC55-4594-A505-33ADC3863546}
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Net3dBool.Sample\Net3dBool.Sample.csproj
+		SolutionGuid = {09E9FC32-37FC-4A16-9DDD-F9759E3CA55F}
 	EndGlobalSection
 EndGlobal
